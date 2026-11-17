@@ -26,7 +26,7 @@ export const projects: Project[] = [
       "Infraestructura propia con monitoreo y copias de seguridad",
     ],
     stack: ["Next.js", "PostgreSQL", "n8n", "Docker", "WhatsApp", "Telegram"],
-    image: { src: "/projects/envo-panel.webp", alt: "Panel de Envo con los pedidos que necesitan una decisión y los pedidos en curso" },
+    image: { src: "/projects/envo-pedidos.webp", alt: "Lista de pedidos de Envo con su estado, repartidor y zona" },
     visible: true,
   },
   {
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     slug: "globalfia",
     name: "GlobalFia",
     category: "cliente",
-    summary: "Repuestos Fiat y stock de mostrador.",
+    summary: "Repuestos Fiat, con catálogo online y ventas de mostrador.",
     highlights: [
       "Landing pública para repuestos Fiat",
       "Acceso a la información del negocio",

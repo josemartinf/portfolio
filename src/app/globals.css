@@ -1,1 +1,2 @@
-@import "tailwindcss";
+/* El diseño sale del kit (public/assets) y de public/site.css.
+   Sin Tailwind: sus utilidades (start-7, border, outline, ...) chocan con las clases del kit. */
