@@ -10,3 +10,4 @@ out/
 # Notas de diseño internas (no públicas)
 docs/superpowers/
 .taste-skill/
+tsconfig.tsbuildinfo
