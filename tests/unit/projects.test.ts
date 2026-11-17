@@ -5,7 +5,7 @@ describe("projects", () => {
   it("lists the selected projects in order", () => {
     const slugs = projects.map((project) => project.slug);
     expect(slugs).toEqual([
-      "envo", "stokie", "zapateo-club", "moodi-home", "globalfia", "monjeep",
+      "envo", "stockie", "zapateo-club", "moodi-home", "globalfia", "monjeep",
       "aether-aerospace-care", "postulator", "rd550-mac", "trading-bot",
     ]);
     expect(slugs).not.toContain("hotcuer");
@@ -14,7 +14,7 @@ describe("projects", () => {
   });
 
   it("keeps product usage and public client URLs", () => {
-    expect(projects.find((project) => project.slug === "stokie")!.usedBy).toEqual(["MonJeep", "GlobalFia"]);
+    expect(projects.find((project) => project.slug === "stockie")!.usedBy).toEqual(["MonJeep", "GlobalFia"]);
     expect(projectsBy("cliente").every((project) => project.liveUrl?.startsWith("https://"))).toBe(true);
   });
 
@@ -22,7 +22,7 @@ describe("projects", () => {
     const envo = projects.find((project) => project.slug === "envo")!;
     envo.visible = false;
     try {
-      expect(projectsBy("producto").map((project) => project.slug)).toEqual(["stokie"]);
+      expect(projectsBy("producto").map((project) => project.slug)).toEqual(["stockie"]);
     } finally {
       envo.visible = true;
     }
