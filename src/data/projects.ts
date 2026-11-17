@@ -49,7 +49,7 @@ export const projects: Project[] = [
     slug: "zapateo-club",
     name: "Club Zapateo",
     category: "cliente",
-    summary: "Venta de entradas con Mercado Pago y validación con QR en la puerta.",
+    summary: "Entradas con Mercado Pago y acceso por QR.",
     highlights: [
       "Checkout con Mercado Pago",
       "Emisión automática de tickets por webhook",
@@ -65,7 +65,7 @@ export const projects: Project[] = [
     slug: "moodi-home",
     name: "Moodi Home",
     category: "cliente",
-    summary: "Tienda online de lámparas, macetas y decoración de diseño local, con envíos a todo el país.",
+    summary: "Tienda de decoración con envíos a todo el país.",
     highlights: [
       "Tienda con categorías de productos",
       "Ficha de producto con detalle",
@@ -80,7 +80,7 @@ export const projects: Project[] = [
     slug: "globalfia",
     name: "GlobalFia",
     category: "cliente",
-    summary: "Repuestos Fiat: vitrina para clientes y sistema de stock para el mostrador.",
+    summary: "Repuestos Fiat y stock de mostrador.",
     highlights: [
       "Landing pública para repuestos Fiat",
       "Acceso a la información del negocio",
@@ -95,7 +95,7 @@ export const projects: Project[] = [
     slug: "monjeep",
     name: "MonJeep",
     category: "cliente",
-    summary: "Repuestos Jeep, Dodge y Chrysler, con consultas que llegan por email.",
+    summary: "Repuestos Jeep, Dodge y Chrysler.",
     highlights: [
       "Landing de repuestos por marca",
       "Formulario de contacto por email con Resend",
@@ -110,7 +110,7 @@ export const projects: Project[] = [
     slug: "aether-aerospace-care",
     name: "Aether Aerospace Care",
     category: "cliente",
-    summary: "Sitio para especialistas certificados en mantenimiento de aviación.",
+    summary: "Servicios de mantenimiento aeronáutico.",
     highlights: [
       "Presentación de servicios de aviación",
       "Información profesional del equipo",

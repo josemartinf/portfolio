@@ -11,7 +11,7 @@ export function ProjectCard({ project, variant }: { project: Project; variant: "
       <h3>{project.name}</h3>
       <p>{project.summary}</p>
       {variant === "feature" && <ul className="chips" aria-label={`Tecnologías de ${project.name}`}>{project.stack.map((item) => <li key={item}>{item}</li>)}</ul>}
-      {project.liveUrl && <span className="link project-card__link">Ver sitio <span aria-hidden="true">↗</span></span>}
+      {project.liveUrl && <span className="link project-card__link">Ver sitio</span>}
     </div>
   </>;
   const className = `project-card panel project-card--${variant}`;

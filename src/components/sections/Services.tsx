@@ -6,8 +6,8 @@ const services = [
   ["Sistemas de stock y ventas", "Productos, depósito, ventas y vendedores con su propio acceso.", "Stockie"],
   ["Automatización con IA", "Bots de WhatsApp y Telegram y flujos en n8n para tareas que hoy hacés a mano.", "Envo, postulator"],
 ];
-export function Services() { return <section className="section" id="servicios" style={{ "--h": 2 } as React.CSSProperties} aria-labelledby="servicios-h"><div className="wrap grid grid--top">
+export function Services() { return <section className="section" id="servicios" aria-labelledby="servicios-h"><div className="wrap grid grid--top">
   <div className="span-5"><div className="section-head"><h2 id="servicios-h">Servicios para tu negocio. <span className="muted">Del sitio al sistema interno.</span></h2></div>
     <ul className="rows service-rows">{services.map(([title, line, example]) => <li key={title}><span className="rows__name">{title}<small>{line}</small></span><span className="rows__value">{example}</span></li>)}</ul></div>
-  <div className="span-6 start-7 service-visual"><div className="frame frame--photo"><Image src="/projects/moodi-home.webp" alt="Tienda Moodi Home con lámparas y macetas de colores" width={900} height={700} sizes="(max-width: 1023px) 100vw, 50vw" /></div></div>
+  <div className="span-6 start-7 service-visual"><div className="frame frame--photo"><Image src="/projects/moodi-home-mobile.webp" alt="Portada de Moodi Home con lámparas y macetas de colores" width={2560} height={1440} sizes="(max-width: 1023px) 100vw, 50vw" /></div></div>
 </div></section>; }
