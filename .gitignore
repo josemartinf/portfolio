@@ -11,3 +11,4 @@ out/
 docs/superpowers/
 .taste-skill/
 tsconfig.tsbuildinfo
+.vercel
