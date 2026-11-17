@@ -17,7 +17,7 @@ export const site: {
   tagline: "Desarrollo sitios y sistemas web, y automatizo procesos con IA.",
   backing: "QA en Naranja X",
   location: "Buenos Aires, Argentina",
-  url: "https://portfolio-josemartinf.vercel.app",
+  url: "https://josemartinflores.vercel.app",
   whatsapp: {
     number: "5491124078165",
     display: "+54 9 11 2407-8165",
