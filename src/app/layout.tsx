@@ -23,6 +23,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <link rel="stylesheet" href="/assets/icons/icon.css" />
       <link rel="stylesheet" href="/assets/diagrams/diagram.css" />
       <link rel="stylesheet" href="/assets/moments/picture-develops/moment.css" />
+      <link rel="stylesheet" href="/site.css" />
       <link rel="modulepreload" href="/assets/moments/moments.js" />
       <link rel="modulepreload" href="/assets/moments/lib.js" />
       <link rel="modulepreload" href="/assets/moments/picture-develops/moment.js" />
