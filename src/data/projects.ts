@@ -41,6 +41,7 @@ export const projects: Project[] = [
       "En uso por MonJeep y GlobalFia",
     ],
     stack: ["Next.js", "Prisma", "PostgreSQL", "Better Auth"],
+    image: { src: "/projects/stockie-dashboard.webp", alt: "Dashboard de Stockie con las ventas de los últimos 14 días y los indicadores de stock" },
     usedBy: ["MonJeep", "GlobalFia"],
     visible: true,
   },
@@ -64,7 +65,7 @@ export const projects: Project[] = [
     slug: "moodi-home",
     name: "Moodi Home",
     category: "cliente",
-    summary: "Tienda online con catálogo, categorías y carrito.",
+    summary: "Tienda online de lámparas, macetas y decoración de diseño local, con envíos a todo el país.",
     highlights: [
       "Tienda con categorías de productos",
       "Ficha de producto con detalle",
