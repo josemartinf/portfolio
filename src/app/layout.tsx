@@ -7,8 +7,8 @@ const title = "José Martin Flores — Sitios web y sistemas para negocios";
 const description = "Desarrollo sitios, tiendas online y sistemas de gestión para negocios en Buenos Aires. Next.js, Mercado Pago, automatización con IA.";
 export const metadata: Metadata = {
   metadataBase: new URL(site.url), title, description,
-  openGraph: { type: "website", title, description, images: [{ url: "/og.png", width: 1200, height: 630 }] },
-  twitter: { card: "summary_large_image", title, description, images: ["/og.png"] },
+  openGraph: { type: "website", title, description, images: [{ url: "/og.jpg", width: 1200, height: 630 }] },
+  twitter: { card: "summary_large_image", title, description, images: ["/og.jpg"] },
   icons: { icon: "/icon.svg" },
   other: { "page-type": "service", "site-kind": "other" },
 };
