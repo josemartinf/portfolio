@@ -5,8 +5,8 @@ import path from "node:path";
 import { projectsBy } from "../src/data/projects";
 
 const outputDir = path.resolve("public/projects");
-const desktop = { width: 1440, height: 900, deviceScaleFactor: 2 };
-const mobile = { width: 390, height: 844, deviceScaleFactor: 2 };
+const desktop = { viewport: { width: 1440, height: 900 }, deviceScaleFactor: 2 };
+const mobile = { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true };
 
 async function dismissCookieBanner(page: Page) {
   const labels = [
