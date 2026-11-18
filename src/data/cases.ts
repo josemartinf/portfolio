@@ -24,7 +24,7 @@ const STOCKIE_SIDE = { x: 0.116, w: 0.884 };
 const stockieShots = {
   intake: { src: "/projects/stockie-intake.webp", alt: "Ingreso de mercadería en Stockie con la impresión de etiquetas", frame: "browser", title: "Ingreso de mercadería" },
   fiscal: { src: "/projects/stockie-fiscal.webp", alt: "Stock fiscal de Stockie por producto", frame: "browser", title: "Stock fiscal", focus: STOCKIE_SIDE },
-  suppliers: { src: "/projects/stockie-suppliers.webp", alt: "Proveedores de Stockie con sus deudas, lo abonado y el saldo", frame: "browser", title: "Proveedores", focus: { x: 0.116, w: 0.7 } },
+  suppliers: { src: "/projects/stockie-suppliers.webp", alt: "Pedido sugerido de Stockie: los productos bajo el stock mínimo de un proveedor, cuánto pedir y el costo estimado", frame: "browser", title: "Pedido sugerido", focus: { x: 0.116, w: 0.7 } },
   credits: { src: "/projects/stockie-credits.webp", alt: "Créditos de Stockie para aprobar, cobrar o anular", frame: "browser", title: "Créditos", focus: { x: 0.116, w: 0.62 } },
   reports: { src: "/projects/stockie-reports.webp", alt: "Reportes de ventas de Stockie", frame: "browser", title: "Reportes", focus: { x: 0.116, w: 0.82 } },
   sale: { src: "/projects/stockie-sale.webp", alt: "Venta nueva en Stockie con la tasa BCV del día y un pago mixto", frame: "browser", title: "Venta con pago mixto", focus: STOCKIE_SIDE },
@@ -222,7 +222,7 @@ const stockie: CaseStudy = {
   },
   heroSets: [
     { label: "Depósito", line: "Ingreso de mercadería con etiquetas y stock fiscal por depósito.", main: { ...stockieShots.intake, focus: { x: 0.12, y: 0.095, w: HERO_MAIN_W } }, side: { ...stockieShots.fiscal, focus: { x: 0.12, y: 0.06, w: HERO_SIDE_W } } },
-    { label: "Administración", line: "Proveedores con deudas en dólares y bolívares, y créditos para aprobar, cobrar o anular.", main: { ...stockieShots.suppliers, focus: { x: 0.12, y: 0.02, w: HERO_MAIN_W } }, side: { ...stockieShots.credits, focus: { x: 0.12, y: 0.025, w: HERO_SIDE_W } } },
+    { label: "Administración", line: "Pedido sugerido a cada proveedor según el stock mínimo, y créditos para aprobar, cobrar o anular.", main: { ...stockieShots.suppliers, focus: { x: 0.12, y: 0.02, w: HERO_MAIN_W } }, side: { ...stockieShots.credits, focus: { x: 0.12, y: 0.025, w: HERO_SIDE_W } } },
     { label: "Venta", line: "Punto de venta con la tasa oficial del día (BCV) y pagos mixtos.", main: { ...stockieShots.sale, focus: { x: 0.12, y: 0.07, w: HERO_MAIN_W } }, side: { ...stockieShots.seller, focus: { x: 0.12, y: 0.04, w: HERO_SIDE_W } } },
   ],
   screens: "Un solo panel con dos roles: el administrador ve todo; el vendedor, su punto de venta y lo que el administrador le habilita.",
