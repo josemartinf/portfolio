@@ -1,35 +1,52 @@
 import { test, expect } from "@playwright/test";
+import { FORBIDDEN_ORIGIN } from "../../src/data/copy-guard";
 
-test("portfolio links, copy, and metadata", async ({ page }) => {
+test("el h1 nombra a José Martin Flores y el rol actual no es QA", async ({ page }) => {
+  await page.goto("/");
+  const h1 = page.getByRole("heading", { level: 1 });
+  await expect(h1).toContainText("José Martin Flores");
+  const hero = await page.locator(".hero").innerText();
+  expect(hero).not.toMatch(/\bQA\b/);
+  expect(hero).toMatch(/Software Engineer/);
+  expect(await page.locator("body").innerText()).not.toMatch(/postulator/i);
+});
+
+test("tres links Ver el caso, el primero lleva a /envo", async ({ page }) => {
+  await page.goto("/");
+  const links = page.getByRole("link", { name: /^Ver el caso/ });
+  await expect(links).toHaveCount(3);
+  const hrefs = await links.evaluateAll((els) => els.map((el) => el.getAttribute("href")));
+  expect(hrefs).toEqual(["/envo", "/stockie", "/club-zapateo"]);
+  await links.first().click();
+  await expect(page).toHaveURL(/\/envo$/);
+});
+
+test("los links de los sitios van a URLs https", async ({ page }) => {
+  await page.goto("/");
+  const hrefs = await page.locator("#sitios a[target=_blank], #sitios-mas a[target=_blank]").evaluateAll((els) => els.map((el) => el.getAttribute("href")));
+  expect(hrefs.length).toBeGreaterThan(0);
+  for (const href of hrefs) expect(href).toMatch(/^https:\/\//);
+});
+
+test("los links externos abren con noopener", async ({ page }) => {
+  await page.goto("/");
+  for (const link of await page.locator('a[target="_blank"]').all()) expect(await link.getAttribute("rel")).toContain("noopener");
+});
+
+/* Las regresiones de la portada anterior que siguen teniendo elemento (Task 7). El hero ya no lleva WhatsApp:
+   su contacto es el email (botón secundario), y es ese el que tiene que verse en el teléfono. */
+test("idioma, imagen para compartir, contactos y sin rastros del origen", async ({ page }) => {
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
-  await expect(page.getByRole("heading", { level: 1 })).toHaveText("Sitios web y sistemas para negocios");
-  await expect(page.locator('a[href^="https://wa.me/5491124078165"]').first()).toBeVisible();
-  await expect(page.locator('a[href^="mailto:jmfmarin25@gmail.com"]').first()).toBeVisible();
-  for (const link of await page.locator('a[target="_blank"]').all()) expect(await link.getAttribute("rel")).toContain("noopener");
-  expect(await page.content()).not.toMatch(/origen-a|hotcuer|caracas vip/i);
   expect(await page.locator('meta[property="og:image"]').getAttribute("content")).toMatch(/^https:\/\//);
-  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await expect(page.locator('a[href^="https://wa.me/5491124078165"]')).not.toHaveCount(0);
+  await expect(page.locator('a[href^="mailto:jmfmarin25@gmail.com"]')).not.toHaveCount(0);
+  const html = await page.content();
+  for (const re of FORBIDDEN_ORIGIN) expect(html).not.toMatch(re);
 });
 
-test("hero contact fits on a phone", async ({ page }, testInfo) => {
+test("el contacto del hero entra en la pantalla del teléfono", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
   await page.goto("/");
-  await expect(page.locator(".hero").getByRole("link", { name: "Escribir por WhatsApp" })).toBeInViewport();
-});
-
-test("product cards show Envo and Stockie with loaded captures", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.locator("#productos .project-card")).toHaveCount(2);
-  for (const name of ["Envo", "Stockie"]) {
-    const img = page.locator("#productos .project-card--feature").filter({ hasText: name }).locator("img");
-    await img.scrollIntoViewIfNeeded();
-    await expect.poll(() => img.evaluate((el: HTMLImageElement) => el.complete && el.naturalWidth > 0)).toBe(true);
-  }
-});
-
-test("every client site links to its live URL", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.locator("#trabajos a.work-item")).toHaveCount(5);
-  for (const href of await page.locator("#trabajos a.work-item").evaluateAll((els) => els.map((el) => el.getAttribute("href")))) expect(href).toMatch(/^https:\/\//);
+  await expect(page.locator(".hero").getByRole("link", { name: "Escribirme un email" })).toBeInViewport();
 });

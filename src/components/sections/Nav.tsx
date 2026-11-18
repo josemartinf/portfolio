@@ -1,11 +1,20 @@
-import { site, whatsappHref } from "@/lib/site";
-const links = [["Servicios", "#servicios"], ["Trabajos", "#trabajos"], ["Productos", "#productos"], ["Sobre mí", "#sobre-mi"]];
-export function Nav() {
+import { mailtoHref, site } from "@/lib/site";
+
+/** nav-centre (repartido): las cuatro palabras en el medio, la marca initial a la izquierda, la acción principal a la derecha. */
+export const navLinks: [string, string][] = [["Proyectos", "#proyectos"], ["Sitios", "#sitios"], ["Experiencia", "#experiencia"], ["Stack", "#stack"]];
+export const mainAction = { label: "Escribirme un email", href: mailtoHref() };
+
+/** La marca y el nombre. En la portada lleva a #top; en una página de caso, a la portada ("/"). */
+export function Logo({ mark = true, href = "#top" }: { mark?: boolean; href?: string }) {
+  return <a className="nav__logo" href={href}>{mark && <span className="mark mark--initial" aria-hidden="true">J</span>}<span className="nav__name">{site.name}</span></a>;
+}
+
+export function Nav({ links = navLinks, logoHref = "#top" }: { links?: [string, string][]; logoHref?: string }) {
   return <header className="nav nav--centre"><div className="wrap nav__bar">
     <a className="skip-link" href="#top">Ir al contenido</a>
-    <a className="nav__logo" href="#top"><span className="mark" data-mark="dots" aria-hidden="true" /><span className="nav__name">{site.name}</span></a>
+    <Logo href={logoHref} />
     <nav className="nav__links" aria-label="Principal">{links.map(([label, href]) => <div className="nav__item" key={href}><a className="nav__link" href={href}>{label}</a></div>)}</nav>
-    <div className="nav__actions"><a className="btn btn--primary" href={whatsappHref()}>Escribir por WhatsApp</a></div>
-    <button className="nav__toggle" type="button" aria-expanded="false" aria-label="Abrir menú"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg></button>
+    <div className="nav__actions"><a className="btn btn--primary" href={mainAction.href}>{mainAction.label}</a></div>
+    <button className="nav__toggle" type="button" aria-expanded="false" aria-label="Abrir el menú"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" /></svg></button>
   </div></header>;
 }

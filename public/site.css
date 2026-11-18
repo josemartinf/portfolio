@@ -1,162 +1,509 @@
-/* Loaded after the design kit so the dealt palette and fonts win. */
-@font-face { font-family: "Figtree"; src: url("/fonts/figtree-latin.woff2") format("woff2"); font-style: normal; font-weight: 400 700; font-display: swap; unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
-@font-face { font-family: "Figtree"; src: url("/fonts/figtree-latin-ext.woff2") format("woff2"); font-style: normal; font-weight: 400 700; font-display: swap; unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+/* Loaded after the design kit so the dealt palette and fonts win.
+   :root exactly as `start.mjs css --page software --palette soot-pale-lime --type familjen --radius sharp` printed it. */
 :root {
-  --p-bg: #ecebe7; --p-surface: #e1dfd9; --p-ink: #38450f; --p-muted: #5a6537;
-  --p-accent: #38450f; --p-accent-ink: #ecebe7; --p-action: #38450f; --p-action-ink: #ecebe7;
-  --p-inv-bg: #38450f; --p-inv-surface: #435020; --p-inv-ink: #ecebe7; --p-inv-muted: #bbbfaf;
-  --p-inv-accent: #ecebe7; --p-inv-accent-ink: #38450f; --p-inv-action: #ecebe7; --p-inv-action-ink: #38450f;
-  --font-display: "Figtree", system-ui, sans-serif;
-  --font-text: "Figtree", system-ui, sans-serif;
+  --p-bg: #0f0f0f; --p-surface: #1a1a1a; --p-ink: #ffffff; --p-muted: #8f8f8f;
+  --p-accent: #dafa9c; --p-accent-ink: #0f0f0f; --p-action: #dafa9c; --p-action-ink: #0f0f0f;
+  --p-inv-bg: #ffffff; --p-inv-surface: #ececec; --p-inv-ink: #0f0f0f; --p-inv-muted: #5f5f5f;
+  --p-inv-accent: #0f0f0f; --p-inv-accent-ink: #ffffff; --p-inv-action: #0f0f0f; --p-inv-action-ink: #ffffff;
+  --font-display: "Familjen Grotesk", system-ui, sans-serif;
+  --font-text: "Familjen Grotesk", system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --display-weight: 400;
-  --display-tracking: -0.025em;
-  --display-tracking-xl: -0.035em;
+  --display-tracking: -0.03em;
+  --display-tracking-xl: -0.04em;
 }
 /* Page layout and project captures. The kit remains untouched. */
+/* Page CSS, only where the kit asks for it (inside a visual, lists the system has no class for). The kit stays untouched. */
 html { scroll-behavior: auto; }
-.hero--split .hero__grid { width: 100%; min-width: 0; }
-.hero--split .hero__text { align-self: stretch; min-width: 0; }
-.hero--split .hero__grid > .hero__text { grid-column: 1 / span 5; }
-.hero--split .hero__grid > .hero__media { grid-column: 7 / span 6; }
-.hero--split h1 { font-size: clamp(38px, 4.16vw, 60px); overflow-wrap: normal; }
-.hero--split .hero__media { width: 100%; max-width: 100%; min-width: 0; box-sizing: border-box; border: 1px solid var(--line); }
-.hero--split .hero__media::before { content: "●  ●  ●"; position: absolute; inset: 0 0 auto; height: 36px; z-index: 1; padding: 8px 14px; box-sizing: border-box; border-bottom: 1px solid var(--line); background: var(--p-surface); color: var(--p-muted); font-size: 11px; letter-spacing: 2px; }
-.hero--split .hero__media::after { content: "clubzapateo.com"; position: absolute; top: 10px; left: 50%; z-index: 2; transform: translateX(-50%); color: var(--p-muted); font-size: 12px; }
-.hero--split .hero__media > img { top: 36px; bottom: 0; width: 100%; height: calc(100% - 36px); object-fit: cover; object-position: center top; }
-.hero--split .ly-float { width: min(300px, calc(100% - 2 * var(--s-5))); }
 
-.rows .rows__name small { display: block; margin-top: 8px; color: var(--p-ink); font-size: var(--t-body); font-weight: 400; line-height: 1.45; }
-#servicios > .wrap { height: 100%; align-content: stretch; align-items: stretch; }
-#servicios > .wrap > * { min-height: 0; }
-.service-rows li { display: flex; justify-content: space-between; align-items: baseline; gap: 20px; }
-.service-rows .rows__value { max-width: 135px; color: var(--p-ink); font-size: var(--t-small); text-align: right; white-space: normal; }
-#servicios .rows { margin-bottom: 0; }
-#servicios .rows li { padding-block: 13px; }
-.service-visual .frame { width: 100%; height: 100%; min-height: 0; overflow: hidden; border-radius: var(--r-lg); background: #f5e7dc; }
-.service-visual img { width: 100%; height: 100%; object-fit: contain; object-position: center top; }
+/* ---------------------------------------------------------------- captures: browser and phone frames */
+.bframe { position: relative; display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / .14); border-radius: var(--r-md); background: #141414; box-shadow: 0 28px 60px -32px rgb(0 0 0 / .7); }
+.bframe__bar { flex: none; display: flex; align-items: center; gap: 12px; height: 32px; padding: 0 12px; background: #1d1d1d; border-bottom: 1px solid rgb(255 255 255 / .08); color: #a6a6a6; font: 400 13px/1 var(--font-text); white-space: nowrap; overflow: hidden; }
+.bframe__dots { display: inline-flex; gap: 6px; flex: none; }
+/* the window's title is drawn, not text: the bar is a picture of a browser */
+.bframe__label { flex: 1; min-width: 0; overflow: hidden; text-align: center; margin-right: 39px; }
+.bframe__label::before { content: attr(data-label); white-space: nowrap; }
+@media (max-width: 639px) { .bframe__label[data-label-short]::before { content: attr(data-label-short); } }
+.bframe__dots i { width: 9px; height: 9px; border-radius: 50%; background: rgb(255 255 255 / .2); }
+.bframe__view { position: relative; overflow: hidden; background: var(--bf-bg, #0b0b0b); }
+.bframe__view img { display: block; width: 100%; height: auto; max-width: none; }
+.bframe--crop .bframe__view { aspect-ratio: var(--bf-ratio); }
+.bframe--crop .bframe__view img { height: 100%; object-fit: cover; object-position: var(--bf-pos, 50% 0%); }
+.pframe { position: relative; padding: 6px; border-radius: 26px; background: #1d1d1d; border: 1px solid rgb(255 255 255 / .16); box-shadow: 0 28px 60px -28px rgb(0 0 0 / .8); }
+.pframe__screen { overflow: hidden; border-radius: 20px; background: #000; }
+.pframe__screen img { display: block; width: 100%; height: auto; }
+a.site__shot { display: block; border-radius: var(--r-md); }
 
-.project-card { display: flex; flex-direction: column; min-width: 0; overflow: hidden; color: inherit; text-decoration: none; }
-.project-card__media { height: 245px; min-height: 0; background: var(--p-surface); overflow: hidden; }
-.project-card__media img { width: 100%; height: 100%; display: block; object-fit: cover; object-position: top; transition: transform .25s ease; }
-a.project-card:hover .project-card__media img { transform: scale(1.025); }
-a.project-card:focus-visible { outline: 3px solid var(--action); outline-offset: 4px; box-shadow: 0 0 0 6px var(--bg); }
-.project-card__body { padding: 24px; color: var(--p-ink); }
-.project-card__body h3 { margin-bottom: 10px; }
-.project-card__body p { color: var(--p-ink); font-size: var(--t-body); line-height: 1.45; }
-.project-card__link { display: inline-block; margin-top: 16px; }
-.work-grid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 16px 24px; }
-.work-item { display: block; grid-column: span 2; color: var(--p-ink); text-decoration: none; min-width: 0; }
-.work-item:nth-child(4) { grid-column: 1 / span 3; }
-.work-item:nth-child(5) { grid-column: 4 / span 3; }
-@media (min-width: 640px) { .work-item:nth-child(n+4) .work-item__frame { aspect-ratio: 2.95 / 1; } }
-.work-item__frame { position: relative; aspect-ratio: 1.9 / 1; overflow: hidden; background: var(--p-surface); border-radius: var(--r-md); }
-.work-item__frame img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; border-radius: inherit; }
-.work-item__label { padding-top: 12px; }
-.work-item__label h3 { margin: 0 0 2px; font-size: 19px; }
-.work-item__label p { margin: 0; font-size: 14px; line-height: 1.3; }
-.work-item:focus-visible { outline: 3px solid var(--p-action); outline-offset: 4px; border-radius: var(--r-md); }
-.work-item:hover .work-item__frame { transform: translateY(-2px); }
-.work-item:hover .work-item__frame img { transform: scale(1.025); }
-.work-item__frame img { transition: transform .3s ease; }
-.project-card__fallback { position: relative; height: 100%; min-height: 245px; padding: 32px; display: flex; align-items: flex-end; background: var(--p-surface); font-size: var(--t-h2); overflow: hidden; }
-.fallback-grid { position: absolute; inset: 24px; opacity: .15; background-image: linear-gradient(var(--p-ink) 1px,transparent 1px),linear-gradient(90deg,var(--p-ink) 1px,transparent 1px); background-size: 28px 28px; mask-image: linear-gradient(to bottom, black, transparent); }
+/* ---------------------------------------------------------------- hero collage: the Envo window and the note */
+.hero--collage h1 { text-wrap: balance; hyphens: manual; -webkit-hyphens: manual; }
+/* the Envo window starts --hero-in from the frame's left and top and runs out through its right and bottom
+   (layout.css). Its view shows the panel from the side bar's edge (x 282 of 1600) to just past the orders column
+   (x 1095), scaled so that span fills what the frame shows of the window: the cut falls in the gap after the
+   column, never through it, and the window runs past the frame's foot. --k is one source pixel. */
+.hero__art { container-type: inline-size; --hero-in: var(--s-8); }
+.hero__art > .bframe.ly-piece--main { --k: calc((100cqw - var(--hero-in)) / 813); }
+.hero__art > .bframe.ly-piece--main .bframe__view { height: calc(var(--k) * 1000); background: #f4f7f2; }
+.hero__art > .bframe.ly-piece--main .bframe__view img { position: absolute; top: 0; left: calc(var(--k) * -282); width: auto; height: 100%; max-width: none; }
+.hero__art > .hero-note { left: calc(var(--hero-in) + var(--s-4)); top: auto; bottom: var(--s-8); width: 300px; z-index: 2; }
+@media (max-width: 1023px) { .hero__art { --hero-in: var(--s-6); } .hero__art > .hero-note { display: none; } }
+@media (max-width: 639px) { .hero__art { --hero-in: var(--s-4); } }
+.hero-note { display: grid; gap: 10px; padding: 16px 18px; border-radius: var(--r-md); background: #fff; color: #161616; font: 400 14px/1.4 var(--font-text); box-shadow: 0 0 0 1px rgb(0 0 0 / .06), 0 22px 48px -22px rgb(0 0 0 / .55); }
+.hero-note__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.hero-note__row b { font-weight: 500; font-size: 15px; }
+.hero-note__chip { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 99px; background: var(--p-accent); color: var(--p-accent-ink); font-size: 13px; font-weight: 500; }
+.hero-note__line { display: flex; align-items: center; gap: 10px; margin: 0; }
+.hero-note__line i { display: inline-grid; place-items: center; flex: none; width: 22px; height: 22px; border-radius: 50%; background: #ececec; color: #3a3a3a; font: 500 12px/1 var(--font-mono); font-style: normal; }
+.hero-note__line b { font-weight: 500; }
 
-.product-capture { flex: none; margin: 0 0 24px; height: min(500px,56vh); overflow: hidden; border-radius: var(--r-lg); }
-.product-capture img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
-.product-grid { display: grid; flex: none; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
-.product-grid .project-card__media { flex: none; height: 240px; }
-.product-grid .project-card__body { flex: 1; }
-.product-grid .project-card { background: var(--p-bg); }
-.stack-line { margin: 16px 0 0; font-size: var(--t-small); color: var(--p-ink); }
-.products-section .btn-row { flex: none; margin-top: auto; }
-.products-section .group { display: contents; }
+/* ---------------------------------------------------------------- the three cases: three compositions */
+.case__grid { align-items: start; }
+.case__text { display: flex; flex-direction: column; gap: var(--s-5); min-width: 0; }
+.case__visual { min-width: 0; }
+.case__facts, .site__layers, .tl, .tl__certs, .sheet__list, .stack__wall { list-style: none; margin: 0; padding: 0; }
+.case__facts li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: var(--t-body); line-height: 1.5; }
+.case__facts li:first-child { padding-top: 0; }
+.case__link { align-self: flex-start; }
+/* Envo: the diagram's panel runs the height of the words beside it */
+.case--envo .case__grid { align-items: stretch; }
+.case--envo .case__visual { display: flex; }
+.case__diagram { flex: 1; display: flex; align-items: center; padding: var(--s-6) var(--s-5); overflow: hidden; border-radius: var(--r-lg); --frag: #ffffff; }
+.case__diagram > .dg { flex: 1; }
+/* the diagram's compact tier (a phone, a small laptop): the tile's square is drawn on its icon, not on the node that
+   also holds the name, so a name under its square ("Panel en vivo", one line) is never a line run out of a box */
+.case__diagram .dg[data-tier="c"] .dg-node--tile, .case__diagram .dg[data-tier="c"] .dg-node--tile.is-hit { background: none; border-color: transparent; box-shadow: none; }
+.case__diagram .dg[data-tier="c"] .dg-node--tile > .dg-ic { box-sizing: border-box; width: 36px; height: 36px; padding: 9px; border-radius: calc(var(--dg-r) + 2px); background: var(--dg-node); border: 1px solid var(--dg-border); box-shadow: var(--dg-shadow); transition: box-shadow 900ms var(--dg-ease), border-color 900ms var(--dg-ease); }
+.case__diagram .dg[data-tier="c"] .dg-node--tile.is-hit > .dg-ic { border-color: color-mix(in oklab, var(--dg-accent) 55%, var(--dg-border)); box-shadow: 0 0 0 3px color-mix(in oklab, var(--dg-accent) 14%, transparent), var(--dg-shadow); transition-duration: 160ms; }
+.case__diagram .dg[data-tier="c"] .dg-node--tile > .dg-cap { max-width: none; white-space: nowrap; }
 
-.tools-grid, .about-grid { flex: 1 1 auto; min-height: 0; align-items: stretch; }
-.tools-grid > *, .about-grid > * { min-height: 0; }
-.tools-grid .rows { margin: 0; }
-.tools-visual { display: flex; }
-@media (min-width: 1024px) { .tools-grid > .span-6:first-child { display: flex; flex-direction: column; } .tools-grid .rows { flex: 1; display: flex; flex-direction: column; justify-content: space-between; } .tools-visual { align-items: flex-start; } .tools-visual > .diagram-panel { flex: 1; height: auto; aspect-ratio: 1.3 / 1; min-height: 0; } }
-.diagram-panel { flex: 1; position: relative; min-height: 360px; }
-.diagram-panel > .dg { --dg-w: 3px; --dg-line: color-mix(in oklab, var(--dg-ink) 45%, transparent); }
+/* Stockie: a short row of words, a strip of parts, focus and state, then the capture across the block */
+.case__top { align-items: start; }
+.case__top .section-head { margin-bottom: 0; }
+.case__strip { margin: var(--s-5) 0 var(--s-6); }
+.case__strip dt { color: var(--p-muted); margin-bottom: 4px; }
+.case__strip dd { margin: 0; line-height: 1.5; }
+.case__wide { display: flex; flex-direction: column; justify-content: flex-start; min-height: 0; }
+/* Club Zapateo: the panel's window across its column, the door's phone over its lower right corner (inside it) */
+.case__pair { position: relative; }
+.case__pair > .pframe { position: absolute; right: var(--s-4); bottom: var(--s-4); width: 150px; }
 
-.about-links { display: flex; gap: 24px; margin-top: 32px; }
-.about-visual { display: flex; }
-.tech-wall { flex: 1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); align-content: start; gap: 48px 24px; margin: 0; padding: 0; list-style: none; }
-.tech-wall li { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; min-width: 0; font-size: var(--t-small); color: var(--p-ink); }
-.tech-wall img { width: 64px; height: 64px; }
+/* the tech sheet: one line a part on the home, every item on its own line on a case page */
+.sheet { display: grid; gap: var(--s-3); margin: 0; }
+.sheet__row { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: var(--s-4); align-items: baseline; }
+.sheet dt { color: var(--p-muted); }
+.sheet dd { margin: 0; font-size: var(--t-body); line-height: 1.5; }
+.sheet dd.mono, .sheet .mono { font-size: 14px; }
+/* an identifier inside a sheet's row (FOR UPDATE, HMAC): mono only, no chip, so the row's text keeps its left edge */
+.sheet code { padding: 0; background: none; font-size: .9em; }
+.status a { color: var(--p-ink); text-decoration: underline; text-decoration-color: rgb(255 255 255 / .35); text-underline-offset: 3px; }
+.status a:hover { text-decoration-color: currentColor; }
 
-.closing__cta.close--type { display: flex; flex-direction: column; align-items: flex-start; }
-.closing__cta.close--type .section-head { margin-bottom: 24px; }
-.closing__cta.close--type > .btn--xl { width: min(50%, 640px); }
-.footer__lede + .link { margin-top: 12px; }
+/* ---------------------------------------------------------------- statement (liquid-type) */
+.statement__grid { align-items: start; align-content: start; }
+.statement__body { display: grid; gap: var(--s-6); }
+.statement__proof { display: grid; gap: var(--s-6); margin: 0; }
+.statement__proof dt { font-weight: 500; font-size: var(--t-card); }
+.statement__proof dd { margin: 6px 0 0; color: var(--p-ink); line-height: 1.5; }
+.statement__line { margin: 0; max-width: 54ch; font-size: var(--t-lead); line-height: 1.5; }
 
-@media (min-width: 640px) and (max-width: 1023px) {
-  #servicios > .wrap > .span-5 { display: flex; flex-direction: column; }
-  #servicios .service-rows { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-  /* Productos en dos pantallas: el encabezado y la captura, después las dos tarjetas y el botón */
-  #productos > .wrap { display: grid; grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); row-gap: calc(var(--padt) + var(--padb) + var(--bar)); }
-  #productos .group { display: flex; flex-direction: column; min-height: 0; }
-  #productos .product-capture { flex: 1; height: auto; min-height: 0; margin: 0; }
-  #productos .product-grid { flex: 1; }
-  .tools-grid, .about-grid { display: flex; flex-direction: column; gap: 48px; }
-  .tools-grid > .tools-visual, .about-grid > .about-visual { flex: 1; }
-  .tech-wall { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 40px 24px; align-content: space-evenly; }
-  .tech-wall img { width: 56px; height: 56px; }
-  .closing__cta.close--type > .btn--xl { height: var(--btn-h); font: 500 16px/1 var(--font-text); letter-spacing: 0; }
-  .products-section .btn-row { margin-top: 32px; }
-  .work-grid .work-item, .work-grid .work-item:nth-child(4) { grid-column: auto / span 3; }
-  .work-grid .work-item:nth-child(5) { grid-column: 1 / -1; }
-  .work-grid .work-item .work-item__frame, .work-grid .work-item:nth-child(4) .work-item__frame { aspect-ratio: 2.1 / 1; }
-  .work-grid .work-item:nth-child(5) .work-item__frame { aspect-ratio: 4 / 1; }
-  @media (min-width: 800px) { .work-grid .work-item:nth-child(5) .work-item__frame { aspect-ratio: 3 / 1; } }
-  .tools-grid, .about-grid { flex: 1 1 auto; }
-  .closing__links .grid > .span-4 { grid-column: 1 / -1; }
-  .closing__links .grid > .footer__col { grid-column: auto / span 4; }
-  .footer__legal { flex-direction: column; align-items: flex-start; }
+/* ---------------------------------------------------------------- sites */
+.site { align-items: start; }
+.site__text { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
+.site__name h3 { margin: 0; }
+.site__status { margin: 4px 0 0; color: var(--p-ink); font-size: var(--t-body); line-height: 1.5; }
+.site__layers { display: grid; gap: 4px; }
+.site__layers li { font-size: var(--t-body); line-height: 1.45; }
+/* GlobalFia and MonJeep: its lines a step apart, the row near the foot of its screen */
+.site--lead .site__text { gap: var(--s-5); }
+/* Moodi and Aether, one after the other with a real gap (128px, 96 on a phone), so neither site's name reads as the
+   other's caption. Each window shows the site's first screen (2:1 of the 16:10 capture, its foot trimmed). At 1280 and
+   wider the two sit side by side on the page's columns (1-5 and 8-12, from line to line), the window over its lines,
+   so the section stays one screen */
+.sites--more > .wrap { display: flex; flex-direction: column; gap: var(--s-10); justify-content: flex-start; }
+@media (max-width: 639px) { .sites--more > .wrap { gap: var(--s-9); } }
+@media (min-width: 1280px) {
+  main > .section.sites--more > .wrap { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: start; align-content: start; }
+  .sites--more .site { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-6); }
+  .sites--more .site { grid-row: 1; }
+  .sites--more .site:first-of-type { grid-column: 1 / span 5; }
+  .sites--more .site:last-of-type { grid-column: 8 / span 5; }
+  .sites--more .site > .site__shot { grid-column: 1; grid-row: 1; width: 100%; }
+  .sites--more .site > .site__col { grid-column: 1; grid-row: 2; }
 }
+/* a tablet: the windows eight columns wide, so the two sites and their gap stay under a screen and a half */
+@media (min-width: 640px) and (max-width: 1023px) { .sites--more .site > .site__shot { max-width: calc((100% - 11 * var(--gutter)) / 12 * 8 + 7 * var(--gutter)); } }
+/* it continues the list of #sitios (no heading of its own on screen): it opens closer to it than a new section would,
+   so the two read as one list and the air between them stays near the page's gap */
+@media (min-width: 1024px) { main > .section.sites--more { padding-top: var(--s-8); } }
+.sites--more .site .bframe__view { aspect-ratio: 2 / 1; }
+.sites--more .bframe__view img { height: 100%; object-fit: cover; object-position: 50% 0%; }
+
+/* ---------------------------------------------------------------- experience: the timeline */
+.experience .section-head { margin-bottom: var(--s-6); }
+.tl { display: grid; gap: var(--s-3); }
+.tl__item { align-items: start; }
+.tl__when h3 { margin: 0; }
+.tl__date { margin: 6px 0 0; color: var(--p-muted); font-size: var(--t-small); font-variant-numeric: tabular-nums; }
+.tl__roles p, .tl__study p { margin: 0; line-height: 1.45; }
+.tl__role + .tl__role { margin-top: var(--s-2); }
+.tl__title { font-weight: 500; margin-bottom: 2px !important; }
+.tl__range { color: var(--p-muted); font-weight: 400; }
+.tl__study { margin-top: var(--s-4); align-items: start; }
+.tl__study h3 { margin: 0 0 var(--s-2); }
+.tl__certs { display: grid; gap: 4px; line-height: 1.5; }
+
+/* ---------------------------------------------------------------- stack: the wall across the block, square tiles (radius sharp) */
+/* on the container's lines: each tile and its name start at the left of its column, the row runs edge to edge */
+.stack__wall { display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: var(--s-9) var(--s-4); width: 100%; }
+.stack__item { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-3); min-width: 0; }
+.stack__tile { --tile: 144px; --tile-bg: #fff; --tile-line: rgb(0 0 0 / .06); border-radius: var(--r-sm); }
+.stack__tile > img.ic { width: 55%; height: 55%; object-fit: contain; }
+.stack__tile:has([data-icon="langgraph"]) { --tile-bg: #1c2a38; }
+.stack__name { font-size: var(--t-body); color: var(--ink); }
+
+/* ---------------------------------------------------------------- tools */
+.tools__grid { align-items: start; }
+.tools__text { display: flex; flex-direction: column; gap: var(--s-5); }
+
+/* ---------------------------------------------------------------- the close: the line under the h2, the button its own width */
+.closing__cta .section-head p { margin: 0; }
+.closing__cta.close--type > .btn { align-self: flex-start; width: auto; }
+/* a phone: the close's button across the column, as the hero's (one width rule for the page's buttons) */
+@media (max-width: 639px) { .closing__cta.close--type > .btn { align-self: stretch; width: 100%; } }
+/* a case page: the close's button as large as the hero's (layout.css, hero--triptych), so the page draws one size */
+.closing--case .closing__cta > .btn { height: 64px; padding-inline: var(--s-6); font-size: var(--t-lead); }
+@media (min-width: 1024px) and (max-width: 1279px) { .closing--case .closing__cta > .btn { height: 56px; font-size: var(--t-body); } }
+
+/* ---------------------------------------------------------------- tablet and phone */
 @media (max-width: 1023px) {
-  /* Servicios en dos pantallas (la lista, después la captura), como un .g2 del kit */
-  #servicios { --h: 2; --hm: 2; }
-  #servicios > .wrap { grid-template-rows: minmax(0, 1fr) minmax(0, 1fr); row-gap: calc(var(--padt) + var(--padb) + var(--bar)); align-content: stretch; }
-  #servicios .service-visual .frame { height: calc(100svh - var(--padt) - var(--padb) - var(--bar)); min-height: 0; margin-top: 0; }
-  .hero--split .hero__media { width: 100%; max-width: 100%; min-width: 0; }
-  .service-visual .frame { height: 460px; }
+  .closing--case .closing__cta > .btn { height: 56px; }
+  .statement__proof { margin-top: var(--s-7); }
+  .case__grid, .tools__grid, .statement__grid { align-content: start; }
+  .case__visual { margin-top: var(--s-5); }
+  .case--envo .case__grid { align-items: start; }
+  .case__visual > .bframe, .tools__grid .bframe, .case__pair { max-width: 560px; }
+  .case__strip > div { grid-column: 1 / -1; }
+  .case__strip { row-gap: var(--s-3); }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  /* the wall on a tablet: four tiles a row, four rows, large enough to fill its screen (no panel around it) */
+  .stack__wall { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-7) var(--s-4); }
+  .stack__tile { --tile: 96px; }
+  /* the sites on a tablet: the name, the layers and the sheet, then the window across the column, large enough to read */
+  .site { grid-template-columns: minmax(0, 1fr); grid-template-areas: "name" "layers" "sheet" "shot"; row-gap: var(--s-4); }
+  .site > .site__col, .site .site__text { display: contents; }
+  .site .site__name { grid-area: name; }
+  .site .site__layers { grid-area: layers; }
+  .site .site__text > .sheet { grid-area: sheet; }
+  .site > .site__shot { grid-area: shot; align-self: start; width: 100%; }
+  /* across the column the window shows the site's first screen, its foot trimmed (16:9 of the 16:10 capture), so a
+     screen holds a site and its window */
+  .site .bframe__view { aspect-ratio: 16 / 9; }
+  .site .bframe__view img { height: 100%; object-fit: cover; object-position: 50% 0%; }
+  /* a tablet: what holds about a screen is one screen grown to it (min-height, system.css), not two with a hole */
+  .experience { --h: 1; }
+  main > .section > .wrap > .fill { flex: 1 0 auto; min-height: auto; }
+}
+/* a short laptop screen (1024x768 holds 576px): tighter lists, a smaller wall */
+@media (min-width: 1024px) and (max-height: 800px) {
+  .case__facts li { padding: 6px 0; }
+  .case__text, .site__text, .tools__text { gap: var(--s-3); }
+  .sheet { gap: var(--s-2); }
+}
+/* a small laptop: the eight columns are narrower than the desktop's tile */
+@media (min-width: 1024px) and (max-width: 1279px) { .stack__tile { --tile: 88px; } }
+@media (max-width: 639px) {
+  /* one screen grown to what it holds (min-height one screen): a section that holds a screen and a bit never becomes
+     two screens with a hole under it; the timeline, past a screen and a half, is two */
+  .case, .tools, .statement { --hm: 1; }
+  .experience { --hm: 2; }
+  /* a .fill grows to its screen but never shrinks under what it holds (a narrow phone, 320px, runs the words longer) */
+  main > .section > .wrap > .fill { flex: 1 0 auto; min-height: auto; }
+  .case--envo .case__diagram { flex: 1 1 auto; height: 430px; }
+  /* the timeline's studies a step below it, the wall's tiles a step larger: each section ends near its screen's foot */
+  .tl__study { margin-top: var(--s-9); }
+  .stack__wall { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-6) var(--s-2); }
+  .stack__tile { --tile: 76px; }
+  /* Stockie's capture whole on a phone: the wide strip would be too small to read */
+  .case--stockie .bframe--crop .bframe__view { aspect-ratio: 1.6; }
+  /* the door's phone below the window, not over it: on a phone the window takes the whole width */
+  .case__pair > .pframe { position: static; width: 132px; margin: var(--s-4) 0 0 auto; }
+  /* Club Zapateo's card under a screen and a half: the door's phone a little smaller, its facts a little tighter */
+  .case--zapateo .case__pair > .pframe { width: 104px; margin-top: var(--s-3); }
+  .case--zapateo .case__facts li { padding: 4px 0; }
+  .case--zapateo .case__visual { margin-top: var(--s-4); }
+  .sheet__row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
+  .nav .nav__name { display: none; }
+}
+
+/* ================================================================ the case pages (/envo, /stockie, /club-zapateo) */
+/* the kit's rhythm (system.css): every section one screen or two at 1280 and wider, at least its screens on a
+   tablet or a phone. What sits under the heading follows it at once (no .fill stretched under a floating heading,
+   M2); the room a screen leaves goes below the content, as air before the next section. Pantallas is two screens
+   (.g2), a role a screen. */
+main.case-page > .section > .wrap > .fill, main.case-page > .section > .wrap > .group > .fill { flex: 0 0 auto; min-height: auto; }
+main.case-page > .section.g2 > .wrap > .group { justify-content: flex-start; }
+/* Club Zapateo's chapters, live: the stage opens at the page's top padding, its heading where every section's sits
+   (the moment centres it in the screen), so the air before it is the page's one gap */
+main.case-page > [data-moment="pinned-chapters"][data-moment].is-live > .mo-pc__grid { align-content: start; padding-top: var(--padt); }
+/* its shared frame a little taller than 4:3 (1.1), so the stage, held one screen, ends near the screen's foot and
+   the air under it when it lets go stays the page's gap, not a hole */
+main.case-page > [data-moment="pinned-chapters"].is-live .mo-pc__visuals { aspect-ratio: 1.1; }
+main.case-page > [data-moment="pinned-chapters"].is-live .mo-pc__visual.mo-pc__visual--lit { aspect-ratio: auto; }
+/* Pantallas, two screens at 1280 and wider: the two roles follow each other, and the room the two screens leave is
+   split in two equal parts, one between the roles and one before the next section (the .wrap reaches down to the next
+   section's content: its padding and the next one's top padding are part of that last part). So the gap inside the
+   section is never larger than the gap after it, and neither leaves a hole */
+@media (min-width: 1280px) {
+  main.case-page > .section.g2 > .wrap { display: flex; flex-direction: column; margin-bottom: calc(-1 * (var(--padb) + var(--padt))); }
+  main.case-page > .section.g2 > .wrap > .group { flex: none; height: auto; min-height: 0; max-height: none; }
+  main.case-page > .section.g2 > .wrap > .group + .group { margin-block: auto; }
+}
+/* a tablet or a small laptop: each section as tall as what it holds, one gap between sections (96 + 64px), the roles
+   of Pantallas one gap apart; no screen-sized section leaves a hole under a short content */
+@media (min-width: 640px) and (max-width: 1279px) {
+  main.case-page > .section:not(.hero, [data-moment]) { height: auto; min-height: 0; padding: var(--s-9) 0 var(--s-8); }
+  main.case-page > .section:not(.hero, [data-moment]) > .wrap { height: auto; flex: none; }
+  main.case-page > .section.g2 > .wrap { display: flex; flex-direction: column; row-gap: var(--s-9); }
+  main.case-page > .section.g2 > .wrap > .group { flex: none; height: auto; min-height: 0; max-height: none; }
+  main.case-page > [data-moment="pinned-chapters"][data-moment]:not(.is-live) { min-height: 0; padding: var(--s-9) 0 var(--s-8); }
+  /* live from 1024px: the stage is one screen and sticks (the kit's tablet rule grows every .wrap to its section, which
+     would make the stage two screens tall and never stick) */
+  main.case-page > [data-moment="pinned-chapters"][data-moment].is-live > .mo-pc__grid { flex: none; }
+}
+/* a phone: a section at least one screen and two when what it holds runs past a screen and a half (the ficha, the
+   decisions of Envo), so the next section never shows on the second screen of it */
+@media (max-width: 639px) {
+  .case-page--envo #decisiones, .case-page--envo #ficha, .case-page--stockie #ficha, .case-page--club-zapateo #ficha { --hm: 2; }
+}
+/* a part of a capture, larger (BrowserFrame focus): the view keeps its proportion and the capture moves under it */
+.bframe--focus .bframe__view img { position: absolute; left: var(--bf-left); top: var(--bf-top); width: var(--bf-img-w); height: auto; max-width: none; object-fit: fill; }
+main code { font-family: var(--font-mono); font-size: .88em; letter-spacing: 0; color: var(--ink); background: rgb(255 255 255 / .07); padding: 1px 5px; border-radius: 3px; white-space: nowrap; }
+
+/* ---------------------------------------------------------------- hero: name, line, status and parts | the collage by role | the button */
+.case-hero__text { display: flex; flex-direction: column; min-width: 0; }
+.case-hero__status { margin: var(--s-5) 0 0; color: var(--p-muted); font-size: 14px; line-height: 1.5; }
+.case-hero__status a { color: var(--ink); text-decoration: underline; text-underline-offset: 3px; text-decoration-color: rgb(255 255 255 / .35); }
+.case-hero__parts { list-style: none; margin: var(--s-4) 0 0; padding: var(--s-4) 0 0; border-top: 1px solid var(--line); display: grid; gap: 6px; font-size: 14px; line-height: 1.4; color: var(--ink); }
+.case-hero__parts li { display: flex; gap: 10px; align-items: baseline; }
+/* plain muted markers: lime is kept for signals (G2) */
+.case-hero__parts li::before { content: ""; flex: none; width: 5px; height: 5px; border-radius: 50%; background: var(--p-muted); transform: translateY(-2px); }
+.hero--triptych.case-hero .hero__cta { flex-direction: column; align-items: flex-end; justify-content: center; gap: var(--s-4); }
+.hero--triptych.case-hero .hero__cta .btn--secondary { height: 48px; font-size: var(--t-body); }
+/* a tablet: the hero's main button as wide as its words, not across the page (a phone keeps it across the column) */
+@media (min-width: 640px) and (max-width: 1023px) { .hero--triptych.case-hero .hero__cta .btn--primary { align-self: flex-start; width: auto; } }
+/* the collage, on one scale (fix round 1, M4/M5): per set a main window at 80% of the collage (top left), a second
+   piece at 58% ending on the pause disc's corner (96% x 96%) over the main one's lower right, and the role's note
+   on the main window's lower-left corner, inside it. The collage is a size container, so the note's top follows the
+   main window's real height: 80% of the width / its crop (1.15) plus its bar. */
+.case-hero .ly-collage { container-type: inline-size; }
+.case-set .ly-piece { border-radius: var(--r-md); }
+.case-set > .case-piece--main { left: 0; top: 0; width: 80%; }
+.case-set > .case-piece--side { right: 4%; bottom: 4%; width: 58%; z-index: 1; }
+/* the note sits on the main window's lower-left corner, inside it (its foot 16px over the window's foot), never under
+   it as a caption */
+.case-set > .case-note { left: var(--s-5); top: calc(80cqw / 1.15 + 30px - var(--s-4)); translate: 0 -100%; width: calc(38% - 2 * var(--s-5)); z-index: 2; }
+/* (its right edge 24px short of the second window, which starts at 38%: the two never touch) */
+/* a phone as the main piece: the phone at 40% on the left, over the window; the note on the right, at the top */
+.case-set--phone > .case-piece--main { left: 2%; top: 0; width: 40%; padding: 5px; border-radius: 24px; z-index: 2; }
+.case-set--phone > .case-note { left: auto; right: 4%; top: 0; translate: none; width: 54%; }
+/* a phone as the second piece (Club Zapateo's door): a phone's width at the corner */
+.case-set--side-phone > .case-piece--side { width: 30%; padding: 5px; border-radius: 24px; }
+/* Club Zapateo's events list: the note starts after the events' date column (a fifth of the window), so DIC 05 reads */
+.case-set--side-phone > .case-note { left: 16%; top: calc(80cqw / 1.6 + 30px - var(--s-4)); }
+/* beside a phone the second window starts where the phone ends */
+.case-set--phone > .case-piece--side { right: 0; }
+.ly-collage .case-note { display: grid; gap: 6px; padding: 16px 18px; background: #fff; color: #161616; font: 400 14px/1.45 var(--font-text); box-shadow: 0 0 0 1px rgb(0 0 0 / .06), 0 22px 48px -22px rgb(0 0 0 / .55); }
+.case-note b { font-weight: 500; font-size: 15px; }
+@media (max-width: 1023px) {
+  /* a tablet or a phone: the parts stay, as one line under the status (the full list is in #ficha too) */
+  .case-hero .case-hero__parts { display: block; margin-top: var(--s-3); padding-top: var(--s-3); font-size: 13px; color: var(--p-muted); }
+  .case-hero .case-hero__parts li { display: inline-block; }   /* atomic boxes: the line breaks between parts (no spaces between the li) */
+  .case-hero .case-hero__parts li::before { display: none; }
+  /* the separator ends its line, never opens the next one */
+  .case-hero .case-hero__parts li:not(:last-child)::after { content: " ·"; margin-right: 6px; }
+  .case-hero__status { margin-top: var(--s-3); }
+  /* each set's main window across the collage; the second window and the note are a desktop layer */
+  .case-set > .case-piece--side, .case-set > .case-note { display: none; }
+  /* the collage's height is set by the hero (layout.css), so it is a size container: a window sits in its middle,
+     never at its top over a hole, and is never taller than it (its view at crop 1.15 plus its bar), so it never
+     climbs over the hero's text */
+  .case-hero .ly-collage { container-type: size; --win-w: min(100cqw, 600px, (100cqh - 30px) * 1.15); }
+  .case-set > .case-piece--main, .case-set:not(:has(> .case-piece--side)) > .case-piece--main { left: 50%; right: auto; top: 50%; bottom: auto; width: var(--win-w); transform: translate(-50%, -50%); }
+  .case-set--phone > .case-piece--main { left: 50%; top: 0; width: auto; height: 100%; transform: translateX(-50%); }
+  .case-set--phone > .case-piece--main .pframe__screen { height: 100%; }
+  .case-set--phone > .case-piece--main .pframe__screen img { height: 100%; width: auto; }
+  /* the pause disc on the window's lower right corner (the window is centred in the collage) */
+  .case-hero .ly-collage > button.loop-pause.loop-pause { right: calc((100cqw - var(--win-w)) / 2 + 12px); bottom: calc((100cqh - var(--win-w) / 1.15 - 30px) / 2 + 12px); }
+}
+
+/* ---------------------------------------------------------------- text | window rows (#problema, #pantallas, the courier) */
+/* the columns top-aligned (one top line), right under the heading */
+.case-split { align-items: start; }
+.case-split__text, .case-role__text, .case-more__text { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
+.case-lede { font-size: var(--t-lead); line-height: 1.5; max-width: 46ch; }
+.case-split__visual, .case-role__visual { min-width: 0; }
+.case-role { align-items: start; }
+.case-screens .group { justify-content: flex-start; }
+.case-role__text h3, .case-more__text h3 { font-family: var(--font-text); font-weight: 500; font-size: var(--t-lead); line-height: 1.3; letter-spacing: -0.01em; }
+.case-role__text p, .case-more__text p { max-width: 52ch; }
+.case-role__list { margin-top: var(--s-2); }
+.case-role__list li { padding-block: 12px; }
+.case-more__text { gap: var(--s-6); }
+.case-more__text > div { display: grid; gap: var(--s-3); }
+/* the courier's phone at a phone's size on its lit panel (the section is as tall as what it holds) */
+.case-more__visual, .case-role__phone { --ratio: 0px; align-self: start; box-sizing: border-box; padding: var(--s-5) var(--s-6); }
+.case-more__visual > .pframe, .case-role__phone > .pframe { width: min(240px, 72%); height: auto; }
+.case-more__visual > .pframe .pframe__screen, .case-more__visual > .pframe .pframe__screen img, .case-role__phone > .pframe .pframe__screen, .case-role__phone > .pframe .pframe__screen img { height: auto; width: 100%; }
+
+/* ---------------------------------------------------------------- Club Zapateo: the three places as pinned chapters */
+.case-chapters .mo-pc__text > .section-head { margin-bottom: 0; }
+.case-chapters .mo-pc__visual--lit > .bframe { width: 100%; }
+.case-chapters .mo-pc__visual--lit > .pframe { height: 100%; aspect-ratio: 780 / 1688; width: auto; }
+.case-chapters .mo-pc__visual--lit > .pframe .pframe__screen { height: 100%; }
+.case-chapters .mo-pc__visual--lit > .pframe .pframe__screen img { height: 100%; width: auto; }
+/* at rest (a phone, a tablet, a short screen, reduced motion) each step's window is as wide as its column and the
+   door's phone at a phone's size: no cap on the height, so every capture reads */
+.case-chapters:not(.is-live) .mo-pc__visual--lit { aspect-ratio: auto; max-height: none; padding: var(--s-6); }
+.case-chapters:not(.is-live) .mo-pc__visual--lit > .bframe { width: 100%; height: auto; }
+.case-chapters:not(.is-live) .mo-pc__visual--lit > .pframe { width: min(240px, 66%); height: auto; aspect-ratio: auto; }
+.case-chapters:not(.is-live) .mo-pc__visual--lit > .pframe .pframe__screen, .case-chapters:not(.is-live) .mo-pc__visual--lit > .pframe .pframe__screen img { height: auto; width: 100%; }
+/* below 1024px the text over its capture, as every split of the page stacks */
+@media (max-width: 1023px) {
+  [data-moment="pinned-chapters"].case-chapters:not(.is-live) .mo-pc__step { grid-template-columns: minmax(0, 1fr); }
+  [data-moment="pinned-chapters"].case-chapters:not(.is-live) .mo-pc__step .mo-pc__visual { grid-column: 1; grid-row: auto; margin-top: var(--s-4); }
+  [data-moment="pinned-chapters"].case-chapters:not(.is-live) .mo-pc__step h3 { align-self: start; }
+}
+
+/* the steps' rule: a 1px hairline, the open step told by its title's colour (ink against muted), never a lime side
+   stripe (M6) */
+[data-moment="pinned-chapters"].case-chapters .mo-pc__step { border-left-width: 1px; }
+[data-moment="pinned-chapters"].case-chapters.is-live .mo-pc__step.is-on { border-left-color: var(--line); }
+/* the screen list's open row: marked in ink, lime stays for signals (G2) */
+.case-role__list [data-peek-to] .rows__name::after { background: var(--ink); width: 6px; height: 6px; }
+
+/* ---------------------------------------------------------------- #arquitectura: the diagram across the block, on the lit ground */
+.case-arch__panel { position: relative; padding: 0; border-radius: var(--r-lg); --frag: #ffffff; height: clamp(400px, 55vh, 540px); }
+.case-arch__panel > .dg { position: absolute; inset: var(--s-6) var(--s-6); }
+.case-arch .section-head p { max-width: 70ch; }
+@media (max-width: 639px) {
+  /* a phone: the panel takes what the screen leaves under the heading and the diagram spreads over it (its compact
+     places are fractions of the panel), so neither the panel nor the screen holds an empty band (M1, M8) */
+  main.case-page > .section > .wrap > .case-arch__panel { --ratio: 0px; flex: 1 1 auto; height: auto; min-height: 420px; padding: 0; }
+  .case-arch__panel > .dg { position: absolute; inset: var(--s-5); }
+}
+
+/* ---------------------------------------------------------------- #decisiones: what | why rows */
+.case-decisions { list-style: none; margin: 0; padding: 0; row-gap: 0; align-items: stretch; }
+.case-decisions > li { display: grid; gap: var(--s-2); align-content: start; padding: var(--s-5) 0 var(--s-6); border-top: 1px solid var(--line); }
+.case-decisions h3 { font-family: var(--font-text); font-weight: 500; font-size: var(--t-lead); line-height: 1.3; letter-spacing: -0.01em; }
+.case-decisions p { max-width: 62ch; line-height: 1.55; }
+
+/* ---------------------------------------------------------------- #calidad and the figures */
+.case-quality__grid { align-items: start; }
+/* #calidad and #ficha: what sits under the heading is one block, right under it */
+.case-body { display: flex; flex-direction: column; min-width: 0; }
+.case-quality__list li { padding-block: 14px; }
+.case-quality__list li p { margin: 0; line-height: 1.5; font-size: var(--t-lead); }
+@media (min-width: 1024px) {
+  .case-quality__list--wide { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--gutter); }
+  .case-quality__list--wide li { padding-right: var(--s-6); align-content: start; }
+  .case-quality__list--wide > li:nth-child(2) { padding-top: 0; }
+}
+/* Club Zapateo's figure, bare beside the list (M3): the same type as the figure rows, no card */
+.case-quality__figures { display: grid; gap: var(--s-6); align-content: start; }
+/* Club Zapateo: the evidence and its bare figure left (below a heading's size: the section's one heading is its h2),
+   the CI that runs it right, one card of steps on the lit ground (no states, no results) */
+.case-quality__text { display: grid; gap: var(--s-7); align-content: start; }
+.case-quality__text .case-quality__figures .t-stat { font-size: clamp(28px, 2.5vw, 36px); }
+.case-ci { display: flex; align-items: center; justify-content: center; padding: var(--s-7) var(--s-6); border-radius: var(--r-lg); min-height: 400px; box-sizing: border-box; }
+.case-ci__card { width: min(100%, 420px); background: #fff; color: #161616; border-radius: var(--r-md); box-shadow: 0 1px 2px rgb(0 0 0 / .06), 0 12px 32px rgb(0 0 0 / .12); overflow: hidden; }
+.case-ci__title { display: flex; align-items: center; gap: var(--s-3); margin: 0; padding: var(--s-4) var(--s-5); font-size: var(--t-small); font-weight: 500; border-bottom: 1px solid rgb(0 0 0 / .08); }
+.case-ci__steps { list-style: none; margin: 0; padding: var(--s-2) 0; counter-reset: ci; }
+.case-ci__steps li { display: grid; grid-template-columns: 22px minmax(0, 1fr) auto; align-items: center; column-gap: var(--s-4); padding: var(--s-4) var(--s-5); font-size: var(--t-body); }
+.case-ci__steps li + li { border-top: 1px solid rgb(0 0 0 / .06); }
+.case-ci__steps img.ic { width: 22px; height: 22px; object-fit: contain; }
+.case-ci__note { color: #5d625c; font-size: var(--t-small); }
+@media (max-width: 639px) { .case-ci { min-height: 0; padding: var(--s-5) var(--s-4); } .case-ci__steps li { grid-template-columns: 22px minmax(0, 1fr); } .case-ci__note { grid-column: 2; } }
+/* never larger than the h1 (52px): a figure is proof, not a second headline */
+.case-quality__figures .t-stat, .case-figures .t-stat { font-size: clamp(30px, 3.4vw, 50px); line-height: 1; letter-spacing: var(--display-tracking-xl); color: var(--ink); }
+.case-figures { margin-top: var(--s-9); row-gap: var(--s-6); }
+.case-figures__label { margin: var(--s-2) 0 0; color: var(--p-muted); font-size: var(--t-body); line-height: 1.45; max-width: 26ch; }
+
+/* ---------------------------------------------------------------- #ficha: the whole sheet, the stack with its real icons */
+.case-sheet__grid { align-items: start; row-gap: var(--s-6); }
+/* the label over its content: every part starts on the container's left or on the split line */
+.case-sheet .sheet__row { grid-template-columns: minmax(0, 1fr); gap: var(--s-2); }
+.case-sheet .sheet__list li { padding-block: 3px; line-height: 1.5; }
+.case-sheet .sheet__list li b { font-weight: 500; }
+/* (bare marks on the page's ground, no card around each: the home's wall is the one wall of tiles) */
+.case-stack { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(136px, 1fr)); gap: var(--s-3) var(--s-4); }
+.case-stack__tile { display: flex; flex-direction: column; align-items: flex-start; gap: var(--s-3); min-width: 0; padding: var(--s-5) 0; font-size: var(--t-small); line-height: 1.3; }
+.case-stack__tile > img.ic { width: 32px; height: 32px; object-fit: contain; }
+.case-stack__tile > .ic-light { filter: invert(1); }
+.case-stack__tile > .ic-land { width: 56px; }
+.case-sheet__right .sheet__row:first-child { padding-bottom: var(--s-4); }
+
+@media (max-width: 1023px) {
+  .case-split, .case-role, .case-quality__grid, .case-sheet__grid { row-gap: var(--s-6); }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .case-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-figures > * { grid-column: auto; }
 }
 @media (max-width: 639px) {
-  .nav .nav__bar { gap: 4px; }
-  .nav:not(.is-open) .nav__actions { margin-left: auto; }
-  .nav:not(.is-open) .nav__actions .btn { padding-inline: 8px; }
-  .nav .nav__name { display: none; }
-  .nav .nav__logo { flex: none; }
-  .hero--split .hero__grid { max-width: 100%; }
-  .hero--split .hero__text { width: 100%; }
-  .hero--split h1 { font-size: clamp(36px, 10vw, 40px); overflow-wrap: anywhere; }
-  .hero--split .hero__media { flex: 1 1 0; height: auto; min-height: 220px; max-width: 100%; }
-  .hero--split .hero__media > img { object-position: center top; }
-  #trabajos { --hm: 2; }
-  #servicios > .wrap { display: flex; flex-direction: column; row-gap: 0; }
-  #servicios .service-visual { flex: 1; display: flex; margin-top: 48px; min-height: 360px; }
-  #servicios .service-visual .frame { position: relative; flex: 1; height: auto; }
-  #servicios .service-visual img { position: absolute; inset: 0; }
-  .tech-wall { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  .work-grid .work-item__frame, .work-grid .work-item:nth-child(n) .work-item__frame { aspect-ratio: 1.75 / 1; }
-  .work-grid, .product-grid { display: grid; flex: none; grid-template-columns: minmax(0,1fr); grid-template-rows: auto; gap: 12px; }
-  .work-item, .work-item:nth-child(4), .work-item:nth-child(5) { grid-column: auto; }
-  .service-rows li { display: block; }
-  .service-rows .rows__value { display: block; max-width: none; margin-top: 8px; text-align: left; }
-  .product-capture { height: 270px; }
-  .product-grid .project-card__media { height: 220px; }
-  .tools-grid, .about-grid { flex: none; }
-  .tech-wall { gap: 14px 12px; margin-top: 20px; }
-  .tech-wall li { gap: 6px; }
-  .tech-wall img { width: 36px; height: 36px; }
-  .diagram-panel { width: 100%; height: 200px; min-height: 0; flex: none; --p-h: 200px; }
-  .closing__cta.close--type .section-head { margin-bottom: 12px; }
-  #herramientas .rows li { padding-block: 12px; }
-  .closing__links .grid > .footer__col { grid-column: auto / span 4; }
-  .closing__links .footer__col h4 { margin-bottom: 8px; }
-  .closing__links .footer__col li { font-size: var(--t-small); }
-  .footer__legal { font-size: 12px; gap: 4px; }
-  .closing__cta.close--type > .btn--xl { width: 100%; }
-  .about-links { flex-direction: column; gap: 12px; }
+  /* the hero's collage gives way first when the words run long (a 34-character name stays one screen) */
+  .case-hero .ly-collage { min-height: 220px; }
+  /* the problem's text and its window a step further apart, the stack's marks a row further apart: each of these
+     sections ends near its screen's foot, so the air before the next is the page's one gap */
+  .case-problem .case-split { row-gap: var(--s-7); }
+  .case-stack { row-gap: var(--s-5); }
+  /* an odd last mark takes its row (two marks a row on a phone) */
+  .case-stack__tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
+  /* Pantallas holds two screens on a phone: the roles' lists and gaps a little tighter */
+  .case-role { row-gap: var(--s-5); }
+  .case-role__text { gap: var(--s-3); }
+  .case-role__list { margin-top: 0; }
+  .case-role__list li { padding-block: 8px; }
+  /* Club Zapateo's chapters at rest, two screens: each window bare (no lit ground around it), the door's phone smaller */
+  .case-chapters:not(.is-live) .mo-pc__step { padding-left: var(--s-4); }
+  .case-chapters:not(.is-live) .mo-pc__steps { gap: var(--s-4); }
+  .case-chapters:not(.is-live) .mo-pc__visual--lit:has(> .bframe) { padding: 0; background: none; }
+  /* the door's phone beside its few lines, at a phone's width, not under them with empty ground either side */
+  .case-chapters:not(.is-live) .mo-pc__step:has(.pframe) { grid-template-columns: minmax(0, 1fr) 140px; grid-template-rows: auto 1fr; column-gap: var(--s-4); align-items: start; align-content: start; }
+  .case-chapters:not(.is-live) .mo-pc__step:has(.pframe) > .mo-pc__visual { grid-column: 2; grid-row: 1 / span 2; margin: 0; padding: 0; background: none; aspect-ratio: auto; }
+  .case-chapters:not(.is-live) .mo-pc__visual--lit > .pframe { width: 100%; }
+  /* at rest the moment is as tall as its steps (moments.md); on a phone that is two screens exactly, so the next
+     section never shows on its second screen */
+  main.case-page > [data-moment="pinned-chapters"][data-moment]:not(.is-live) { min-height: calc(2 * 100vh); min-height: calc(2 * 100lvh); }
+  .case-sheet .sheet__row { grid-template-columns: minmax(0, 1fr); }
+  .case-figures .t-stat, .case-quality__figures .t-stat { font-size: 30px; }
+  .case-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .case-figures > * { grid-column: auto; }
+  .case-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+/* counter-rolls (I7): each digit column one line, clipped (the kit's 1em window), and its top and foot faded over the
+   line's empty part (Familjen Grotesk's digits sit from .23em to .91em of a line-height 1), so a rolling strip never
+   shows a sliver of the digit above or below outside the digit's own band; at rest the digit is whole */
+.mo-cr__col { height: 1em; line-height: 1; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent .16em, #000 .22em, #000 .92em, transparent .97em); mask-image: linear-gradient(to bottom, transparent .16em, #000 .22em, #000 .92em, transparent .97em); }
+/* Club Zapateo's problem on a phone: its dashboard window a little taller (the figures and the events under them,
+   larger), so the section ends near its screen's foot and the air before the chapters stays the page's gap */
+@media (max-width: 639px) {
+  .case-page--club-zapateo #problema .bframe--focus .bframe__view { aspect-ratio: 1.2; }
+  .case-page--club-zapateo #problema .bframe--focus .bframe__view img { --bf-img-w: 196.078%; --bf-left: -35.294%; --bf-top: -11.765%; }
+}
+
+/* fix round 2 (R3): the air a short section leaves goes inside it, a step at a time, so no visible blank band runs past
+   400px. Each step stays smaller than the gap after the section. */
+@media (min-width: 1280px) {
+  /* the statement: its type and its line a step further apart */
+  .statement__body { gap: var(--s-8); }
+  /* Envo's Calidad: the figures a step further below the list */
+  .case-quality .case-figures { margin-top: calc(var(--s-9) + var(--s-8)); }
+  /* Club Zapateo's two rows of decisions, each a step taller */
+  .case-page--club-zapateo #decisiones .case-decisions > * { padding-top: var(--s-7); padding-bottom: var(--s-7); }
+}
+/* a phone: Envo's six decisions (two screens) a step apart each */
+@media (max-width: 639px) {
+  .case-page--envo #decisiones .case-decisions > * { padding-top: var(--s-6); padding-bottom: var(--s-7); }
 }
