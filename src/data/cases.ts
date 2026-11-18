@@ -456,6 +456,16 @@ const clubZapateo: CaseStudy = {
   liveUrl: "https://clubzapateo.com",
 };
 
+/** La ventana del hero de la home: el bloque "Salud del sistema" de la pantalla de Alertas de Envo, solo
+ *  (scripts/capture.mjs envo envo-health, contra la demo pública). */
+export const envoHealthShot: Shot = {
+  src: "/projects/envo-health.webp",
+  alt: "Salud del sistema en el panel de Envo: el panel y la API, la base, el procesador de tareas, las notificaciones, las automatizaciones y el canal de Telegram, todo operativo",
+  frame: "browser",
+  title: "Salud del sistema",
+  height: 850,
+};
+
 export const cases: CaseStudy[] = [envo, stockie, clubZapateo];
 
 export function caseBySlug(slug: CaseSlug): CaseStudy {

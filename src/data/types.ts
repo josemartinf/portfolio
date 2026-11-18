@@ -11,6 +11,8 @@ export interface Shot {
   /** La parte de la captura que se muestra en una ventana más baja o más chica: desde `x` e `y` (fracciones del ancho
    * y del alto de la captura), `w` del ancho. Sin esto se ve la captura entera. Solo escritorio. */
   focus?: Focus;
+  /** Alto en px de una captura de escritorio recortada a un bloque (su ancho sigue siendo 1600); sin esto, 1000. */
+  height?: number;
 }
 
 export interface Focus {

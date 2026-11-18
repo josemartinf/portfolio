@@ -36,16 +36,26 @@ a.site__shot { display: block; border-radius: var(--r-md); }
 
 /* ---------------------------------------------------------------- hero collage: the Envo window and the note */
 .hero--collage h1 { text-wrap: balance; hyphens: manual; -webkit-hyphens: manual; }
-/* the Envo window starts --hero-in from the frame's left and top and runs out through its right and bottom
-   (layout.css). Its view shows the panel from the side bar's edge (x 282 of 1600) to just past the orders column
-   (x 1095), scaled so that span fills what the frame shows of the window: the cut falls in the gap after the
-   column, never through it, and the window runs past the frame's foot. --k is one source pixel. */
-.hero__art { container-type: inline-size; --hero-in: var(--s-8); }
-.hero__art > .bframe.ly-piece--main { --k: calc((100cqw - var(--hero-in)) / 813); }
-.hero__art > .bframe.ly-piece--main .bframe__view { height: calc(var(--k) * 1000); background: #f4f7f2; }
-.hero__art > .bframe.ly-piece--main .bframe__view img { position: absolute; top: 0; left: calc(var(--k) * -282); width: auto; height: 100%; max-width: none; }
-.hero__art > .hero-note { left: calc(var(--hero-in) + var(--s-4)); top: auto; bottom: var(--s-8); width: 300px; z-index: 2; }
-@media (max-width: 1023px) { .hero__art { --hero-in: var(--s-6); } .hero__art > .hero-note { display: none; } }
+/* the Envo window holds one block of its Alerts screen ("Salud del sistema", 1600x850: scripts/capture.mjs
+   envo-health) at full width: it starts --hero-in from the frame's left and runs --ly-cut out through its right
+   edge (layout.css), where the cut falls in the page ground the capture keeps past the block, never through it.
+   The window and what goes under it sit together in the middle of the frame, never closer than --hero-in to its
+   top: on a wide screen the note, which lies over the window's empty foot (under the block's last row, 34 of the
+   capture's 700 px) and over the ground at its lower-left corner, never over a line of the window; on a narrower
+   one (no note) a 56px band for the pause disc, which stays on the ground at the frame's lower-right corner.
+   The custom properties are read by the pieces, so 100% and cqw are the frame's. */
+.hero__art {
+  container-type: inline-size; --hero-in: var(--s-8);
+  --win-w: calc(100cqw - var(--hero-in) + var(--ly-cut));
+  --win-h: calc(32px + var(--win-w) * 850 / 1600);
+  --note-over: calc(var(--win-w) * .03);
+  --after: calc(152px - var(--note-over));
+  --win-top: max(var(--hero-in), calc((100% - var(--win-h) - var(--after)) / 2));
+}
+.hero__art > .ly-piece--main.ly-piece--main { top: var(--win-top); }
+.hero__art > .bframe.ly-piece--main .bframe__view { background: #f4f7f2; }
+.hero__art > .hero-note { left: var(--s-4); top: calc(var(--win-top) + var(--win-h) - var(--note-over)); bottom: auto; width: 300px; z-index: 2; }
+@media (max-width: 1023px) { .hero__art { --hero-in: var(--s-6); --after: 56px; } .hero__art > .hero-note { display: none; } }
 @media (max-width: 639px) { .hero__art { --hero-in: var(--s-4); } }
 .hero-note { display: grid; gap: 10px; padding: 16px 18px; border-radius: var(--r-md); background: #fff; color: #161616; font: 400 14px/1.4 var(--font-text); box-shadow: 0 0 0 1px rgb(0 0 0 / .06), 0 22px 48px -22px rgb(0 0 0 / .55); }
 .hero-note__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }

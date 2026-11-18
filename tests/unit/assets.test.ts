@@ -3,13 +3,14 @@ import { describe, expect, it } from "vitest";
 import { existsSync } from "node:fs";
 import path from "node:path";
 import sharp from "sharp";
-import { cases } from "@/data/cases";
+import { cases, envoHealthShot } from "@/data/cases";
 import { sites } from "@/data/sites";
 import { tools } from "@/data/tools";
 import type { Shot } from "@/data/types";
 
 const shots: Shot[] = [
   ...cases.flatMap((c) => [c.heroShot, ...c.roles.flatMap((r) => r.shots)]),
+  envoHealthShot,
   ...sites.map((s) => s.shot),
   ...tools.flatMap((t) => (t.shot ? [t.shot] : [])),
 ];
@@ -24,11 +25,11 @@ describe("assets de capturas", () => {
     if (shot.frame === "phone") {
       expect([meta.width, meta.height]).toEqual([780, 1688]);
     } else {
-      expect([meta.width, meta.height]).toEqual([1600, 1000]);
+      expect([meta.width, meta.height]).toEqual([1600, shot.height ?? 1000]);
       const small = file(src.replace(/\.webp$/, "-800.webp"));
       expect(existsSync(small)).toBe(true);
       const m2 = await sharp(small).metadata();
-      expect([m2.width, m2.height]).toEqual([800, 500]);
+      expect([m2.width, m2.height]).toEqual([800, Math.round((shot.height ?? 1000) / 2)]);
     }
   });
 });
