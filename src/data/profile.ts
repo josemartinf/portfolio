@@ -54,27 +54,36 @@ export const education: Education = {
   to: "2017",
 };
 
-export const certifications: string[] = [
-  "Claude Code para Programadores · Platzi, noviembre de 2026",
-  "Fundamentos de Ingeniería de Software · Platzi, noviembre de 2026",
+/** El stack por área, con los íconos reales de public/assets/icons. */
+export const stackGroups: { label: string; items: { name: string; icon: string }[] }[] = [
+  { label: "Lenguajes y backend", items: [
+    { name: "TypeScript", icon: "/assets/icons/typescript.svg" },
+    { name: "Node.js", icon: "/assets/icons/nodejs.svg" },
+    { name: "NestJS", icon: "/assets/icons/nestjs.svg" },
+    { name: "Python", icon: "/assets/icons/python.svg" },
+    { name: "Next.js", icon: "/assets/icons/nextjs.svg" },
+  ] },
+  { label: "Datos y mensajería", items: [
+    { name: "PostgreSQL", icon: "/assets/icons/postgres.svg" },
+    { name: "Kafka", icon: "/assets/icons/kafka.svg" },
+    { name: "Prisma", icon: "/assets/icons/prisma.svg" },
+  ] },
+  { label: "IA y automatización", items: [
+    { name: "LangGraph", icon: "/assets/icons/langgraph.svg" },
+    { name: "n8n", icon: "/assets/icons/n8n.svg" },
+  ] },
+  { label: "Infraestructura", items: [
+    { name: "AWS", icon: "/assets/icons/aws.svg" },
+    { name: "Kubernetes", icon: "/assets/icons/kubernetes.svg" },
+    { name: "Docker", icon: "/assets/icons/docker.svg" },
+    { name: "GitLab", icon: "/assets/icons/gitlab.svg" },
+    { name: "Datadog", icon: "/assets/icons/datadog.svg" },
+  ] },
+  { label: "Testing", items: [
+    { name: "Playwright", icon: "/assets/icons/playwright.svg" },
+    { name: "Vitest", icon: "/assets/icons/vitest.svg" },
+  ] },
 ];
 
-/** Íconos reales de public/assets/icons, en el orden del spec. */
-export const stackIcons: { name: string; icon: string }[] = [
-  { name: "Python", icon: "/assets/icons/python.svg" },
-  { name: "TypeScript", icon: "/assets/icons/typescript.svg" },
-  { name: "Node.js", icon: "/assets/icons/nodejs.svg" },
-  { name: "NestJS", icon: "/assets/icons/nestjs.svg" },
-  { name: "PostgreSQL", icon: "/assets/icons/postgres.svg" },
-  { name: "Kafka", icon: "/assets/icons/kafka.svg" },
-  { name: "AWS", icon: "/assets/icons/aws.svg" },
-  { name: "Kubernetes", icon: "/assets/icons/kubernetes.svg" },
-  { name: "Docker", icon: "/assets/icons/docker.svg" },
-  { name: "n8n", icon: "/assets/icons/n8n.svg" },
-  { name: "LangGraph", icon: "/assets/icons/langgraph.svg" },
-  { name: "GitLab", icon: "/assets/icons/gitlab.svg" },
-  { name: "Datadog", icon: "/assets/icons/datadog.svg" },
-  { name: "Next.js", icon: "/assets/icons/nextjs.svg" },
-  { name: "Prisma", icon: "/assets/icons/prisma.svg" },
-  { name: "Playwright", icon: "/assets/icons/playwright.svg" },
-];
+/** Las mismas herramientas en una sola lista. */
+export const stackIcons = stackGroups.flatMap((g) => g.items);

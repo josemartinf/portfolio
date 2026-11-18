@@ -1,8 +1,10 @@
-import { mailtoHref, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 /** nav-centre (repartido): las cuatro palabras en el medio, la marca initial a la izquierda, la acción principal a la derecha. */
 export const navLinks: [string, string][] = [["Proyectos", "#proyectos"], ["Sitios", "#sitios"], ["Experiencia", "#experiencia"], ["Stack", "#stack"]];
-export const mainAction = { label: "Escribirme un email", href: mailtoHref() };
+/** La acción principal lleva al cierre, donde el email está escrito y se puede copiar (un mailto solo no alcanza:
+ *  en una computadora sin cliente de correo el clic no hace nada). Toda página tiene su #contacto. */
+export const mainAction = { label: "Contacto", href: "#contacto" };
 
 /** La marca y el nombre. En la portada lleva a #top; en una página de caso, a la portada ("/"). */
 export function Logo({ mark = true, href = "#top" }: { mark?: boolean; href?: string }) {

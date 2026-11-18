@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import { CaseStudyPage } from "@/components/case/CaseStudyPage";
 import { cases } from "@/data/cases";
+import { site } from "@/lib/site";
 import { readFileSync } from "node:fs";
 
 const next = (i: number) => cases[(i + 1) % cases.length];
@@ -92,10 +93,11 @@ describe("case pages", () => {
       it("ends with a neutral contact close", () => {
         render(<CaseStudyPage study={study} />);
         const close = document.querySelector("footer.closing")!;
-        // el botón del cierre al tamaño del del hero: un solo tamaño de botón por página (button-styles)
-        const btn = close.querySelector("a.btn--primary");
-        expect(btn).toHaveAttribute("href", expect.stringMatching(/^mailto:/));
-        expect(btn).not.toHaveClass("btn--xl");
+        // revisión 2026-11-18: el email escrito (mailto) con su botón para copiarlo, y el CV
+        expect(close.querySelector(".email-copy__addr")).toHaveAttribute("href", `mailto:${site.email}`);
+        expect(close.querySelector(".email-copy__addr")).toHaveTextContent(site.email);
+        expect(close.querySelector("button[data-copy]")).not.toBeNull();
+        expect(close.querySelector("a[download]")).toHaveAttribute("href", site.cv);
         expect(close.textContent).not.toMatch(/contratame|presupuesto|disponible|busco/i);
       });
     });
@@ -151,6 +153,14 @@ describe("case pages", () => {
     expect(demo).toHaveAttribute("href", "https://envo-demo.tech/demo");
     expect(demo).toHaveAttribute("rel", expect.stringContaining("noopener"));
     expect(document.querySelector("a[href*='/admin'], a[href*='/login']")).toBeNull();
+    // revisión 2026-11-18: la demo es el botón principal, junto al título; la arquitectura queda como secundario
+    expect(document.querySelector(".hero .btn--primary")).toHaveAttribute("href", "https://envo-demo.tech/demo");
+    expect(document.querySelector(".case-hero__text .btn--secondary")).toHaveAttribute("href", "#arquitectura");
+    expect(document.querySelector(".case-hero__code")).toHaveTextContent("El código es privado");
+  });
+
+  it("Club Zapateo, without a demo, leads with the architecture", () => {
+    render(<CaseStudyPage study={cases[2]} />);
     expect(document.querySelector(".hero .btn--primary")).toHaveAttribute("href", "#arquitectura");
   });
 

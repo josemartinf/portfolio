@@ -5,10 +5,11 @@ import { cases } from "@/data/cases";
 import { site, whatsappHref } from "@/lib/site";
 import { BrowserFrame, PhoneFrame } from "@/components/Frame";
 import { Parts, StatusText, TechSheet } from "@/components/TechSheet";
-import { Logo, mainAction, Nav } from "@/components/sections/Nav";
+import { Logo, Nav } from "@/components/sections/Nav";
+import { EmailCopy } from "@/components/EmailCopy";
 
 /* Página de caso (spec "Páginas de caso", brief-v2 "Composición de la página de caso"):
-   hero triptych (el nombre, la línea corta, el estado y las partes; el collage por rol; "Ver la arquitectura") →
+   hero (el nombre, la línea corta, el estado, las partes y los botones: "Abrir la demo" primero; el collage por rol) →
    #problema (texto | la captura principal) → #pantallas por rol (texto y lista de pantallas al lado de la ventana) →
    #arquitectura (el diagrama con pulsos a todo el ancho) → #decisiones (filas qué | por qué) → #calidad (lo que consta)
    → #ficha (la ficha técnica completa) → footer.closing (contacto neutro y los otros dos casos).
@@ -77,13 +78,16 @@ function Hero({ study }: { study: CaseStudy }) {
       <p className="hero__lead">{study.lead}</p>
       <p className="case-hero__status status"><StatusText text={study.status} urls={study.liveUrl ? [study.liveUrl] : []} /> · {study.heroFact}</p>
       <ul className="case-hero__parts" aria-label="Partes del sistema">{study.parts.map((p) => <li key={p}>{p}</li>)}</ul>
+      {/* la demo es la prueba más fuerte: va primero y junto al título; sin demo, la arquitectura */}
+      <div className="case-hero__cta">
+        {study.demoUrl
+          ? <><a className="btn btn--primary" href={study.demoUrl} target="_blank" rel="noopener noreferrer">Abrir la demo</a><a className="btn btn--secondary" href="#arquitectura">Ver la arquitectura</a></>
+          : <a className="btn btn--primary" href="#arquitectura">Ver la arquitectura</a>}
+      </div>
+      <p className="case-hero__code">El código es privado; lo muestro en una llamada.</p>
     </div>
-    <div className="ly-collage span-6 start-4" role="img" aria-label={`Pantallas de ${study.name} por rol: ${roles}`}>
+    <div className="ly-collage span-8 start-5" role="img" aria-label={`Pantallas de ${study.name} por rol: ${roles}`}>
       {study.heroSets.map((s, i) => <Set key={s.label} set={s} index={i} />)}
-    </div>
-    <div className="span-3 start-10 hero__cta">
-      <a className="btn btn--primary" href="#arquitectura">Ver la arquitectura</a>
-      {study.demoUrl && <a className="btn btn--secondary" href={study.demoUrl} target="_blank" rel="noopener noreferrer">Abrir la demo</a>}
     </div>
   </div></div></section>;
 }
@@ -286,7 +290,8 @@ function Close({ study }: { study: CaseStudy }) {
   return <footer className="footer closing closing--case" id="contacto" aria-labelledby="contacto-h"><div className="wrap">
     <div className="closing__cta close--type">
       <div className="section-head"><h2 id="contacto-h">Contacto</h2><p>Si querés hablar de {study.name} o de cómo está hecho, por email es lo más directo.</p></div>
-      <a className="btn btn--primary" href={mainAction.href}>{mainAction.label}</a>
+      <EmailCopy />
+      <a className="btn btn--secondary" href={site.cv} download>Descargar el CV (PDF)</a>
     </div>
     <div className="closing__links">
       <div className="grid">

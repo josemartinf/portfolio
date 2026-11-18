@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
 import Home from "@/app/page";
+import { site } from "@/lib/site";
 
 describe("home", () => {
   afterEach(cleanup);
@@ -11,25 +12,31 @@ describe("home", () => {
     expect(screen.getAllByRole("link", { name: /Ver el caso/ }).map((a) => a.getAttribute("href"))).toEqual(["/envo", "/stockie", "/club-zapateo"]);
     expect(document.querySelector("#servicios")).toBeNull();
     ["#proyectos", "#sitios", "#sitios-mas", "#experiencia", "#stack", "#herramientas", "#contacto"].forEach((id) => expect(document.querySelector(id)).not.toBeNull());
-    // "Escribirme un email" aparece tres veces: el botón lleno del nav, el secundario del hero y el botón grande del
-    // cierre (getByRole del brief exigía uno solo). El botón lleno del hero es "Ver los proyectos" (ruling A, abajo).
-    const email = screen.getAllByRole("link", { name: "Escribirme un email" });
-    expect(email).toHaveLength(3);
-    email.forEach((a) => expect(a).toHaveAttribute("href", expect.stringMatching(/^mailto:/)));
+    // Revisión 2026-11-18: la acción del nav lleva al cierre, donde el email está escrito (un mailto solo no hace nada
+    // sin cliente de correo); el secundario del hero descarga el CV.
+    expect(document.querySelector(".nav .btn--primary")).toHaveAttribute("href", "#contacto");
     expect(screen.getByRole("link", { name: "Ver los proyectos" })).toHaveAttribute("href", "#proyectos");
-    // Ruling A (fix round 1): el botón lleno del hero es "Ver los proyectos"; el email queda como secundario.
     const hero = document.querySelector(".hero")!;
     expect(hero.querySelector(".btn--primary")).toHaveTextContent("Ver los proyectos");
-    expect(hero.querySelector(".btn--secondary")).toHaveTextContent("Escribirme un email");
+    const cv = hero.querySelector(".btn--secondary")!;
+    expect(cv).toHaveTextContent("Descargar el CV");
+    expect(cv).toHaveAttribute("href", site.cv);
+    expect(cv).toHaveAttribute("download");
+    // el statement va justo después del hero, antes de los casos
+    const order = [...document.querySelectorAll("main > section")].map((s) => s.id);
+    expect(order.slice(1, 3)).toEqual(["como-trabajo", "proyectos"]);
+    // los datos de la persona para los buscadores
+    const ld = JSON.parse(document.querySelector('script[type="application/ld+json"]')!.innerHTML);
+    expect(ld).toMatchObject({ "@type": "Person", name: site.name, sameAs: expect.arrayContaining([site.github]) });
   });
 
-  it("shows the parts and status of every case and site, and no empty tech-sheet part", () => {
+  it("shows the parts and status of every case, the status of every site, and no empty tech-sheet part", () => {
     render(<Home />);
     const parts = (slug: string) => (document.querySelector(`[data-project='${slug}'] .parts`)?.textContent ?? "").split(" · ").filter(Boolean);
     expect(parts("envo")).toContain("Mini App de Telegram");
     expect(parts("club-zapateo")).toContain("App de puerta");
+    ["envo", "stockie", "club-zapateo"].forEach((slug) => expect(parts(slug).length).toBeGreaterThan(0));
     ["envo", "stockie", "club-zapateo", "repuestos", "moodi-home", "aether-aerospace-care"].forEach((slug) => {
-      expect(parts(slug).length).toBeGreaterThan(0);
       expect(document.querySelector(`[data-project='${slug}'] .status`)?.textContent?.trim()).toBeTruthy();
     });
     expect(screen.getByText(/En uso en MonJeep y GlobalFia/)).toBeInTheDocument();
@@ -40,11 +47,16 @@ describe("home", () => {
     expect(envoStatus.querySelector("a")).toHaveAttribute("href", "https://envo-demo.tech/demo");
     expect(envoStatus.querySelector("a")).toHaveAttribute("rel", expect.stringContaining("noopener"));
     expect(document.querySelector("a[href*='envo-demo.tech/admin'], a[href*='envo-demo.tech/login']")).toBeNull();
-    // R1: los puntos de enfoque, cortos, en cada proyecto de la portada.
-    const focus = (slug: string) => document.querySelector(`[data-project='${slug}'] .focus`)?.textContent ?? "";
-    expect(focus("envo")).toBe("Alta disponibilidad · Autenticación · Base de datos");
-    expect(focus("club-zapateo")).toBe("Pagos · Concurrencia");
-    ["stockie", "repuestos", "moodi-home", "aether-aerospace-care"].forEach((slug) => expect(focus(slug).length).toBeGreaterThan(0));
+    // Revisión 2026-11-18: el enfoque vive en la ficha de cada caso; la portada no repite "Partes" ni "Enfoque" como filas.
+    expect(document.querySelector("[data-project] .focus")).toBeNull();
+    ["#proyectos", "#sitios", "#sitios-mas"].forEach((id) => expect(document.querySelector(id)!.textContent).not.toMatch(/Enfoque|Partes/));
+    // la imagen de cada caso también lleva al caso, fuera del orden del teclado
+    ["envo", "stockie", "club-zapateo"].forEach((slug) => {
+      const a = document.querySelector(`[data-project='${slug}'] a.case__visual-link`)!;
+      expect(a).toHaveAttribute("href", `/${slug}`);
+      expect(a).toHaveAttribute("tabindex", "-1");
+      expect(a).toHaveAttribute("aria-hidden", "true");
+    });
     // I3: la ficha completa vive en el caso; en la portada no se repiten Arquitectura, Prácticas ni Patrones.
     expect(document.querySelector("#proyectos").textContent).not.toMatch(/Arquitectura|Prácticas|Patrones/);
     expect(document.querySelector("#sitios").textContent).not.toMatch(/Arquitectura|Prácticas|Patrones/);
@@ -60,6 +72,10 @@ describe("home", () => {
   it("keeps contact neutral: email, LinkedIn, GitHub and WhatsApp as text links", () => {
     render(<Home />);
     const contact = document.querySelector("#contacto")!;
+    // la dirección se lee escrita, es un mailto y tiene su botón para copiarla (oculto hasta que site.js lo muestra)
+    expect(screen.getByRole("link", { name: site.email })).toHaveAttribute("href", `mailto:${site.email}`);
+    expect(contact.querySelector(`button[data-copy='${site.email}']`)).not.toBeNull();
+    expect(contact.querySelector("a[download]")).toHaveAttribute("href", site.cv);
     ["LinkedIn", "GitHub", "WhatsApp"].forEach((name) => expect(contact.textContent).toContain(name));
     expect(contact.textContent).not.toMatch(/contratame|presupuesto|disponible/i);
   });
