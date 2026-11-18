@@ -31,7 +31,7 @@ export function BrowserFrame({ shot, sizes, eager, label, labelShort, className,
   const cls = `bframe${ratio ? " bframe--crop" : ""}${focus ? " bframe--focus" : ""}${className ? ` ${className}` : ""}`;
   return <div className={cls} style={style} data-peek-for={dataPeekFor} hidden={hidden}>
     <div className="bframe__bar" aria-hidden="true"><span className="bframe__dots"><i /><i /><i /></span><span className="bframe__label" data-label={full} data-label-short={short !== full ? short : undefined} /></div>
-    <div className={`bframe__view${zoom ? " m-zoom" : ""}`}><Shot src={shot.src} alt={shot.alt} sizes={focus ? focusSizes(sizes, focus.w) : sizes} eager={eager} /></div>
+    <div className={`bframe__view${zoom ? " m-zoom" : ""}`}><Shot src={shot.src} alt={shot.alt} sizes={focus ? focusSizes(sizes, focus.w) : sizes} eager={eager} height={shot.height} /></div>
   </div>;
 }
 

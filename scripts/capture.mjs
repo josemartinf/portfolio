@@ -147,15 +147,50 @@ const ENVO_VIEWS = {
 
 async function envo(views) {
   const want = only(views);
-  await withBrowser(DESKTOP, async (page) => {
+  if (Object.keys(ENVO_VIEWS).some(want)) {
+    await withBrowser(DESKTOP, async (page) => {
+      await envoLogin(page);
+      for (const [name, v] of Object.entries(ENVO_VIEWS)) {
+        if (!want(name)) continue;
+        await go(page, ENVO + v.route);
+        if (v.prep) await v.prep(page);
+        await save(page, name, "browser");
+        await page.setViewportSize(DESKTOP.viewport);
+      }
+    });
+  }
+  if (want("envo-health")) await envoHealth();
+}
+
+// La ventana del hero de la home: el bloque "Salud del sistema" de Alertas, solo. A 900 px de ancho (con la barra lateral) la grilla sigue en
+// tres columnas, se lee entera y "Última señal hace 12 s" no se parte. Se recorta desde 22 px antes del
+// bloque (después del borde de la barra lateral) hasta el borde de la ventana del navegador, con 14 px arriba y abajo
+// (sin los bordes de las tarjetas vecinas), y se completa a la derecha con el fondo de la página hasta 700 px: en el hero
+// la ventana sale 28 px por el borde derecho del marco y ese corte cae en el fondo, nunca sobre el bloque. Sale a
+// 1600 px de ancho (escala 2,29, sin agrandar) y en dos tamaños, como las otras capturas de escritorio.
+const HEALTH = { viewport: 900, width: 700, pad: 14, before: 22 };
+async function envoHealth() {
+  const scale = 1600 / HEALTH.width;
+  await withBrowser({ viewport: { width: HEALTH.viewport, height: 1000 }, deviceScaleFactor: scale }, async (page) => {
     await envoLogin(page);
-    for (const [name, v] of Object.entries(ENVO_VIEWS)) {
-      if (!want(name)) continue;
-      await go(page, ENVO + v.route);
-      if (v.prep) await v.prep(page);
-      await save(page, name, "browser");
-      await page.setViewportSize(DESKTOP.viewport);
-    }
+    await go(page, `${ENVO}/admin/alerts`);
+    const salud = page.locator("section", { has: page.getByText("Salud del sistema", { exact: true }) }).last();
+    await salud.waitFor({ timeout: 15000 });
+    await page.mouse.move(HEALTH.viewport - 10, 990);
+    await page.waitForTimeout(800);
+    const box = await salud.boundingBox();
+    if (!box) throw new Error("No encontré el bloque Salud del sistema");
+    const x = Math.round(box.x - HEALTH.before);
+    const clip = { x, y: Math.round(box.y - HEALTH.pad), width: HEALTH.viewport - x, height: Math.round(box.height + 2 * HEALTH.pad) };
+    const png = await page.screenshot({ type: "png", clip });
+    const { data } = await sharp(png).extract({ left: 4, top: 4, width: 1, height: 1 }).raw().toBuffer({ resolveWithObject: true });
+    const background = { r: data[0], g: data[1], b: data[2] };
+    const meta = await sharp(png).metadata();
+    const full = await sharp(png).extend({ right: 1600 - meta.width, background }).png().toBuffer();
+    await mkdir(OUT, { recursive: true });
+    await sharp(full).webp({ quality: 86 }).toFile(path.join(OUT, "envo-health.webp"));
+    await sharp(full).resize(800).webp({ quality: 86 }).toFile(path.join(OUT, "envo-health-800.webp"));
+    console.log("ok envo-health", `1600×${meta.height}`);
   });
 }
 
