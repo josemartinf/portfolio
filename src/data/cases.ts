@@ -285,13 +285,20 @@ const stockie: CaseStudy = {
     },
   ],
   decisionsLead: "Lo que mantiene exactos el stock y el costo de lo vendido, con dos monedas y una tasa que cambia cada día.",
-  // Casi no hay tests (spec): la sección de calidad se omite. TypeScript estricto va en las prácticas y el endpoint de
-  // integridad, en la decisión del costo FIFO.
-  quality: [],
+  // Los tests de integración de stock-core (npm run test:db, desde el 18 de noviembre de 2026): lo que se prueba contra
+  // PostgreSQL real. Las 26 pantallas siguen en el hero (heroFact).
+  qualityLead: "Lo que corre en npm run test:db contra PostgreSQL real: el costo FIFO y el bloqueo de stock con ventas simultáneas.",
+  quality: [
+    "Dos ventas de la última unidad al mismo tiempo: la segunda espera el bloqueo y corta por falta de stock.",
+    "Diez ventas contra cinco unidades: se venden cinco, en orden FIFO, y ningún lote queda negativo.",
+    "Sin el SELECT … FOR UPDATE, esos dos tests fallan.",
+    "Cada corrida usa su propia base de PostgreSQL: la crea, le aplica las migraciones y la vacía antes de cada test.",
+  ],
   figures: {
-    in: "ficha",
+    in: "calidad",
     items: [
-      { value: "26", label: "pantallas" },
+      { value: "9", label: "tests de integración contra PostgreSQL real" },
+      { value: "12", label: "tests unitarios de la búsqueda" },
       { value: "59", label: "rutas de API" },
       { value: "31", label: "modelos" },
     ],
@@ -311,13 +318,14 @@ const stockie: CaseStudy = {
       "Lógica de negocio concentrada en las transacciones de stock-core",
       "Guardas por rol en páginas y API",
       "Migraciones de Prisma",
+      "Tests de integración contra PostgreSQL real",
       "TypeScript estricto",
     ],
     patterns: ["Costeo FIFO", "Pessimistic locking (SELECT … FOR UPDATE)"],
     short: {
       architecture: "Next.js con guardas por rol y transacciones de stock",
       stack: "Next.js, TypeScript, Prisma, PostgreSQL, Zod",
-      practices: "Transacciones, guardas por rol, migraciones",
+      practices: "Transacciones, tests contra PostgreSQL, guardas por rol",
       patterns: "Costeo FIFO, SELECT … FOR UPDATE",
     },
   },
