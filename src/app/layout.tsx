@@ -50,6 +50,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <script type="module" src="/assets/motion/motion.js" />
       <script type="module" src="/assets/layout/layout.js" />
       <script type="module" src="/assets/diagrams/mount.js" />
+      <script type="module" src="/site.js" />
     </body>
   </html>;
 }

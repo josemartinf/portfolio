@@ -1,16 +1,19 @@
 import { site, whatsappHref } from "@/lib/site";
-import { Logo, mainAction } from "./Nav";
+import { EmailCopy } from "@/components/EmailCopy";
+import { Logo } from "./Nav";
 
-/* footer.closing: close-type (el h2, el botón grande con la acción principal) y footer-columns.
-   Contacto neutro: el email es el principal; LinkedIn, GitHub y WhatsApp van como links de texto. */
+/* footer.closing: close-type (el h2, la dirección de email escrita con su botón para copiarla, y el CV) y footer-columns.
+   Contacto neutro: el email es el principal; LinkedIn, GitHub y WhatsApp van como links de texto. La dirección se ve
+   escrita porque un mailto no hace nada en una computadora sin cliente de correo. */
 const external = [["LinkedIn", site.linkedin], ["GitHub", site.github], ["WhatsApp", whatsappHref()]];
-const home = [["Proyectos", "#proyectos"], ["Sitios", "#sitios"], ["Experiencia", "#experiencia"], ["Stack", "#stack"], ["Herramientas", "#herramientas"]];
+const home = [["Proyectos", "#proyectos"], ["Sitios", "#sitios"], ["Experiencia", "#experiencia"], ["Stack", "#stack"], ["Proyecto personal", "#herramientas"]];
 
 export function Contact() {
-  return <footer className="footer closing" id="contacto" aria-labelledby="contacto-h"><div className="wrap">
+  return <footer className="footer closing closing--home" id="contacto" aria-labelledby="contacto-h"><div className="wrap">
     <div className="closing__cta close--type">
       <div className="section-head"><h2 id="contacto-h">Contacto</h2><p>Por email es lo más directo. También estoy en LinkedIn y GitHub.</p></div>
-      <a className="btn btn--primary" href={mainAction.href}>{mainAction.label}</a>
+      <EmailCopy />
+      <a className="btn btn--secondary" href={site.cv} download>Descargar el CV (PDF)</a>
     </div>
     <div className="closing__links">
       <div className="grid">

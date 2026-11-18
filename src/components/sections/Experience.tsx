@@ -1,8 +1,8 @@
 import type { Job } from "@/data/types";
-import { certifications, education, jobs } from "@/data/profile";
+import { education, jobs } from "@/data/profile";
 
 /* #experiencia, la línea de tiempo, en la banda .ground-surface (la única de la portada) que abre la moment
-   iris-opens. Una pantalla: los cuatro empleos y, al pie, la formación y las certificaciones (como pide el spec). */
+   iris-opens. Los cuatro empleos y, al pie, la formación. */
 const MONTHS = ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"];
 const month = (ym: string) => { const [y, m] = ym.split("-"); return `${MONTHS[Number(m) - 1]} ${y}`; };
 const range = (j: Job) => `${month(j.from)} – ${j.to ? month(j.to) : "hoy"}`;
@@ -34,7 +34,6 @@ export function Experience() {
     <ol className="tl">{byCompany(jobs).map((g) => <Entry key={g.company} {...g} />)}</ol>
     <div className="grid tl__study">
       <div className="span-5"><h3>Formación</h3><p className="tl__title">{education.degree}, {education.from} – {education.to}</p><p>{education.school}</p></div>
-      <div className="span-6 start-7"><h3>Certificaciones</h3><ul className="tl__certs">{certifications.map((c) => <li key={c}>{c}</li>)}</ul></div>
     </div>
   </div></section>;
 }

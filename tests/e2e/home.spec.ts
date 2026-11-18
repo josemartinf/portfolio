@@ -45,8 +45,30 @@ test("idioma, imagen para compartir, contactos y sin rastros del origen", async 
   for (const re of FORBIDDEN_ORIGIN) expect(html).not.toMatch(re);
 });
 
-test("el contacto del hero entra en la pantalla del teléfono", async ({ page }, testInfo) => {
+test("el CV del hero entra en la pantalla del teléfono", async ({ page }, testInfo) => {
   test.skip(testInfo.project.name !== "mobile");
   await page.goto("/");
-  await expect(page.locator(".hero").getByRole("link", { name: "Escribirme un email" })).toBeInViewport();
+  await expect(page.locator(".hero").getByRole("link", { name: /Descargar el CV/ })).toBeInViewport();
+});
+
+test("el email del cierre se lee escrito y se copia", async ({ page, context, browserName }, testInfo) => {
+  await page.goto("/");
+  const addr = page.locator("#contacto .email-copy__addr");
+  await expect(addr).toHaveAttribute("href", /^mailto:/);
+  const email = (await addr.innerText()).trim();
+  expect(email).toMatch(/@/);
+  const btn = page.locator("#contacto button[data-copy]");
+  await expect(btn).toBeVisible();
+  test.skip(browserName !== "chromium" || testInfo.project.name === "mobile", "permisos de portapapeles solo en Chromium de escritorio");
+  await context.grantPermissions(["clipboard-read", "clipboard-write"]);
+  await btn.click();
+  await expect(btn).toHaveText("Copiado");
+  expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(email);
+});
+
+test("robots.txt y sitemap.xml existen", async ({ request }) => {
+  expect((await request.get("/robots.txt")).status()).toBe(200);
+  const map = await request.get("/sitemap.xml");
+  expect(map.status()).toBe(200);
+  expect(await map.text()).toContain("/club-zapateo");
 });

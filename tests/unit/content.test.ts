@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { caseBySlug, cases } from "@/data/cases";
 import { sites } from "@/data/sites";
 import { tools } from "@/data/tools";
-import { certifications, education, jobs, stackIcons } from "@/data/profile";
+import { education, jobs, stackGroups, stackIcons } from "@/data/profile";
 import { allCopy, FORBIDDEN_COPY, FORBIDDEN_ORIGIN, SECRET_PATTERNS } from "@/data/copy-guard";
 import { site } from "@/lib/site";
 
@@ -94,13 +94,18 @@ describe("content", () => {
     });
   });
 
-  it("profile has the full timeline, education, certifications and real stack icons", () => {
+  it("profile has the full timeline, education and the real stack icons by area", () => {
     expect(jobs.map((j) => j.company)).toEqual(["Naranja X", "Naranja X", "Ualá", "ECOSISTEMAS", "SIAHO.net"]);
     expect(JSON.stringify(education)).toMatch(/UGMA/);
-    expect(certifications).toHaveLength(2);
     expect(stackIcons.length).toBeGreaterThanOrEqual(10);
-    stackIcons.forEach((i) => expect(i.icon).toMatch(/^\/assets\/icons\/[a-z0-9-]+\.svg$/));
+    expect(stackGroups.every((g) => g.items.length > 0)).toBe(true);
+    stackIcons.forEach((i) => {
+      expect(i.icon).toMatch(/^\/assets\/icons\/[a-z0-9-]+\.svg$/);
+      expect(existsSync(`public${i.icon}`)).toBe(true);
+    });
   });
+
+  it("the CV the site links exists", () => expect(existsSync(`public${site.cv}`)).toBe(true));
 
   it("envo and stockie tell every layer of the spec", () => {
     const envoCopy = JSON.stringify({ ...caseBySlug("envo"), sheet: undefined });

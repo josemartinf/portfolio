@@ -1,13 +1,13 @@
 import type { SiteProject } from "@/data/types";
 import { sites } from "@/data/sites";
 import { BrowserFrame } from "@/components/Frame";
-import { Focus, Parts, StatusText, TechSheet } from "@/components/TechSheet";
+import { StatusText, TechSheet } from "@/components/TechSheet";
 
 /* #sitios, una pantalla: el encabezado y GlobalFia con MonJeep (de donde salió Stockie), el texto a la izquierda y la
    captura entera a la derecha, en la misma línea de split que los casos. #sitios-mas: Moodi Home y Aether; desde 1280
    lado a lado en una pantalla, cada uno con su captura arriba; por debajo, una fila cada uno con una brecha real entre
    las dos (dos pantallas de teléfono). Sus capturas muestran la primera pantalla del sitio, recortada a 2:1.
-   Cada sitio lleva el nombre con su estado, las capas, partes, enfoque y una línea de stack; cada captura lleva al
+   Cada sitio lleva el nombre con su estado, las capas y una línea de stack (las capas ya dicen sus partes); cada captura lleva al
    sitio en vivo (zoom dentro del marco al pasar el puntero). */
 const host = (url: string) => new URL(url).host.replace(/^www\./, "");
 
@@ -23,7 +23,7 @@ function SiteText({ s }: { s: SiteProject }) {
   return <div className="site__text">
     <div className="site__name"><h3>{s.name}</h3><Status s={s} /></div>
     <ul className="site__layers">{s.layers.map((l) => <li key={l}>{l}</li>)}</ul>
-    <TechSheet sheet={s.sheet} compact only={["stack"]} rows={[{ label: "Partes", content: <Parts parts={s.parts} /> }, { label: "Enfoque", content: <Focus focus={s.focus} /> }]} />
+    <TechSheet sheet={s.sheet} compact only={["stack"]} />
   </div>;
 }
 
@@ -45,8 +45,8 @@ export function Sites() {
       {row(repuestos, true)}
     </div></section>
     {/* Moodi Home y Aether siguen la lista de arriba (lado a lado desde 1280, una fila cada uno por debajo); el título
-        es para un lector de pantalla, a la vista es la misma lista. Dos pantallas en el teléfono (.g2m). */}
-    <section className="section g2m sites sites--more" id="sitios-mas" aria-labelledby="sitios-mas-h"><div className="wrap">
+        es para un lector de pantalla, a la vista es la misma lista. */}
+    <section className="section sites sites--more" id="sitios-mas" aria-labelledby="sitios-mas-h"><div className="wrap">
       <h2 id="sitios-mas-h" className="sr-only">Dos sitios más</h2>
       {rest.map((s) => row(s))}
     </div></section>

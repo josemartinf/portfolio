@@ -2,6 +2,7 @@ export const site: {
   name: string;
   role: string;
   tagline: string;
+  cv: string;
   location: string;
   url: string;
   whatsapp: { number: string; display: string; defaultMessage: string };
@@ -11,7 +12,8 @@ export const site: {
 } = {
   name: "José Martin Flores",
   role: "Software Engineer · Backend, integraciones y automatización con IA",
-  tagline: "Construyo backend, integraciones y automatización con IA que funcionan en producción.",
+  tagline: "Diseño backend, integraciones y automatización con IA empezando por cómo pueden fallar.",
+  cv: "/cv-jose-martin-flores.pdf",
   location: "Buenos Aires, Argentina",
   url: "https://www.joseflores.codes",
   whatsapp: {

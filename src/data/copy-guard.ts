@@ -1,7 +1,7 @@
 import { cases } from "./cases";
 import { sites } from "./sites";
 import { tools } from "./tools";
-import { certifications, currentFact, education, jobs, stackIcons } from "./profile";
+import { currentFact, education, jobs, stackIcons } from "./profile";
 import { site } from "../lib/site";
 
 /** Frases de venta o de búsqueda laboral, y adjetivos sobre sí mismo. */
@@ -36,5 +36,5 @@ export const SECRET_PATTERNS: RegExp[] = [
 
 /** Todo el texto de los módulos de datos y de `site`, concatenado. */
 export function allCopy(): string {
-  return JSON.stringify([cases, sites, tools, jobs, education, certifications, stackIcons, currentFact, site]);
+  return JSON.stringify([cases, sites, tools, jobs, education, stackIcons, currentFact, site]);
 }

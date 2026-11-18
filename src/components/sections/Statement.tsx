@@ -1,4 +1,4 @@
-/* El statement de la portada (sección propia, una vez): la moment liquid-type repartida en el titular, que ondula
+/* El statement de la portada (sección propia, una vez, justo después del hero: es lo que distingue el perfil): la moment liquid-type repartida en el titular, que ondula
    bajo el puntero y vuelve a quedar nítido; en touch y con movimiento reducido queda quieto. A la derecha, un caso
    de cada una de esas cuatro cosas, con hechos que no se repiten en el resto de la portada. */
 const proof: [string, string][] = [
@@ -13,7 +13,7 @@ export function Statement() {
     <div className="grid statement__grid fill">
       <div className="span-5 statement__body" data-moment="liquid-type" data-moment-opts='{"strength": 0.8}'>
         <h2 id="como-trabajo-h" className="mo-lt__type">Del testing al backend</h2>
-        <p className="statement__line">Empecé en QA en 2019. Por eso diseño cada sistema empezando por cómo puede fallar: reintentos, idempotencia, alertas y tests.</p>
+        <p className="statement__line">Empecé en QA en 2019 y hoy desarrollo en Naranja X. Antes del camino feliz defino qué pasa si un aviso se pierde, si un pago llega dos veces o si un canal se cae.</p>
       </div>
       <dl className="span-6 start-7 statement__proof">{proof.map(([k, v]) => <div key={k}><dt>{k}</dt><dd>{v}</dd></div>)}</dl>
     </div>
