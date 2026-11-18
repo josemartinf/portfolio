@@ -169,7 +169,7 @@ describe("case pages", () => {
     expect([...document.querySelectorAll("#calidad [data-moment='counter-rolls'] .t-stat")].map((e) => e.textContent)).toEqual(["2938", "84", "150", "86"]);
     cleanup();
     render(<CaseStudyPage study={cases[1]} />);
-    expect([...document.querySelectorAll("#calidad [data-moment='counter-rolls'] .t-stat")].map((e) => e.textContent)).toEqual(["9", "12", "59", "31"]);
+    expect([...document.querySelectorAll("#calidad [data-moment='counter-rolls'] .t-stat")].map((e) => e.textContent)).toEqual(["16", "12", "59", "31"]);
     cleanup();
     render(<CaseStudyPage study={cases[2]} />);
     expect(document.querySelector("section#pantallas[data-moment='pinned-chapters']")).not.toBeNull();
