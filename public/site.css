@@ -35,6 +35,10 @@ html { scroll-behavior: auto; }
 a.site__shot { display: block; border-radius: var(--r-md); }
 
 /* ---------------------------------------------------------------- hero collage: the Envo window and the note */
+/* the h1's last two names and their comma never part: the entrance (motion.js) sets each word in a box of its own,
+   so a no-break space would not hold them, and this keeps the lines the same while it runs and once it ends */
+.hero__name-end { white-space: nowrap; }
+
 .hero--collage h1 { text-wrap: balance; hyphens: manual; -webkit-hyphens: manual; }
 /* the Envo window holds one block of its Alerts screen ("Salud del sistema", 1600x850: scripts/capture.mjs
    envo-health) at full width: it starts --hero-in from the frame's left and runs --ly-cut out through its right
