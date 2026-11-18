@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint .",
     "test": "vitest run",
+    "check:out": "tsx scripts/check-out.mjs",
     "postbuild": "node scripts/strip-next-runtime.mjs out"
   },
   "dependencies": {

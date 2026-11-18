@@ -12,3 +12,5 @@ docs/superpowers/
 .taste-skill/
 tsconfig.tsbuildinfo
 .vercel
+.superpowers/
+test-results/
