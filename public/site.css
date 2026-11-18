@@ -389,7 +389,9 @@ main code { font-family: var(--font-mono); font-size: .88em; letter-spacing: 0; 
 
 /* ---------------------------------------------------------------- #arquitectura: the diagram across the block, on the lit ground */
 .case-arch__panel { position: relative; padding: 0; border-radius: var(--r-lg); --frag: #ffffff; height: clamp(400px, 55vh, 540px); }
-.case-arch__panel > .dg { position: absolute; inset: var(--s-6) var(--s-6); }
+/* width auto: the kit gives .dg width 100%, and with position absolute that wins over the right inset, so the diagram
+   started --s-6 in from the left and ran past the frame on the right (clipped): off centre, with right-hand nodes on the edge */
+.case-arch__panel > .dg { position: absolute; inset: var(--s-6) var(--s-6); width: auto; }
 .case-arch .section-head p { max-width: 70ch; }
 @media (max-width: 639px) {
   /* a phone: the panel takes what the screen leaves under the heading and the diagram spreads over it (its compact
