@@ -1,7 +1,7 @@
 import type { Education, Job } from "./types";
 
 /** Frase del extracto de LinkedIn, para el dato duro del hero. */
-export const currentFact = "Software Engineer SSR en Naranja X · en banca y fintech desde 2019";
+export const currentFact = "Software Engineer en Naranja X · 7 años en banca y fintech";
 
 /** Del PDF de LinkedIn. Solo lo que dice ahí: nada interno de Naranja X. */
 export const jobs: Job[] = [
@@ -11,7 +11,7 @@ export const jobs: Job[] = [
     from: "2026-08",
     to: null,
     summary:
-      "Diseño e implemento agentes de IA y sistemas multiagente con n8n y LangGraph, pipelines de RAG e integraciones por APIs REST, webhooks y MCP. Los servicios corren en AWS EKS con PostgreSQL, Kafka y Amazon MSK, y los monitoreo en producción con Datadog.",
+      "Diseño e implemento agentes de IA y sistemas multiagente con n8n y LangGraph, pipelines de RAG e integraciones por APIs REST, webhooks y MCP. Los servicios corren en AWS EKS con PostgreSQL y Kafka (Amazon MSK), y los monitoreo en producción con Datadog.",
   },
   {
     company: "Naranja X",
@@ -19,7 +19,7 @@ export const jobs: Job[] = [
     from: "2022-02",
     to: "2026-08",
     summary:
-      "Desarrollé servicios backend con TypeScript, Node.js y NestJS en arquitectura hexagonal, y procesos asíncronos con Kafka y Amazon MSK con idempotencia y patrón Outbox, con pruebas unitarias, de integración y end-to-end.",
+      "Desarrollé servicios backend con TypeScript, Node.js y NestJS en arquitectura hexagonal, y procesos asíncronos con Kafka (Amazon MSK), idempotencia y patrón Outbox, con pruebas unitarias, de integración y end-to-end.",
   },
   {
     company: "Ualá",

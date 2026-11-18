@@ -5,13 +5,13 @@ export const sites: SiteProject[] = [
     slug: "repuestos",
     name: "GlobalFia y MonJeep",
     summary:
-      "Dos comercios de repuestos, uno de Fiat y otro de Jeep, Dodge y Chrysler. Cada uno tiene una landing pública y un sistema de stock interno en el subdominio stock., que después se convirtió en Stockie.",
+      "Dos comercios de repuestos, uno de Fiat y otro de Jeep, Dodge y Chrysler. Cada uno tiene una landing pública y un sistema de stock interno en su subdominio «stock», que después se convirtió en Stockie.",
     layers: [
       "Landing de GlobalFia: un cotizador que arma el mensaje de WhatsApp con modelo, año y repuesto",
       "Landing de MonJeep: formulario de contacto validado que envía por Resend",
-      "Sistema de stock interno en el subdominio stock., aislado por middleware",
+      "Sistema de stock interno en el subdominio «stock» de cada sitio, aislado por middleware",
       "En MonJeep, búsqueda indexada con tsvector y pg_trgm, mantenida por triggers",
-      "En MonJeep, Cashea como medio de pago con liquidación semanal, y marcas",
+      "En MonJeep, Cashea como medio de pago con liquidación semanal, y marcas de producto para filtrar el catálogo",
     ],
     parts: ["Landing de GlobalFia", "Landing de MonJeep", "Sistema de stock"],
     focus: [
