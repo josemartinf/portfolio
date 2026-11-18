@@ -298,8 +298,11 @@ const stockie: CaseStudy = {
   },
   parts: ["Panel web", "API con guardas por rol", "Etiquetas TSPL"],
   focus: ["Base de datos: costo FIFO por lote y stock bloqueado con SELECT … FOR UPDATE"],
-  status: "En uso en MonJeep y GlobalFia",
+  status: "En uso en MonJeep y GlobalFia · demo en stockie.envo-demo.tech",
   heroFact: "26 pantallas",
+  /** La demo pública: entra al panel con datos demo, sin login. Nunca /admin ni /login. */
+  liveUrl: "https://stockie.envo-demo.tech/demo",
+  demoUrl: "https://stockie.envo-demo.tech/demo",
   sheet: {
     architecture:
       "Next.js con proxy de sesión y API con guardas por rol; las transacciones de stock-core escriben en PostgreSQL y la tasa del BCV entra por su propia API.",

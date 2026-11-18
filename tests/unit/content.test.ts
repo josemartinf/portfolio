@@ -46,6 +46,14 @@ describe("content", () => {
     expect(JSON.stringify(cases)).not.toMatch(/envo-demo\.tech\/(admin|login)/);
   });
 
+  it("stockie keeps its real use and links its public demo, never /admin or /login", () => {
+    const stockie = caseBySlug("stockie");
+    expect(stockie.status).toBe("En uso en MonJeep y GlobalFia · demo en stockie.envo-demo.tech");
+    expect(stockie.liveUrl).toBe("https://stockie.envo-demo.tech/demo");
+    expect(stockie.demoUrl).toBe("https://stockie.envo-demo.tech/demo");
+    expect(JSON.stringify(cases)).not.toMatch(/stockie\.envo-demo\.tech\/(admin|login|dashboard)/);
+  });
+
   it("every focus point names its topic first and every site status reads neutrally", () => {
     [...cases, ...sites].forEach((p) => p.focus.forEach((f) => expect(f.split(":")[0].trim().length).toBeGreaterThan(0)));
     sites.forEach((s) => expect(s.status).toMatch(/^En línea: /));
