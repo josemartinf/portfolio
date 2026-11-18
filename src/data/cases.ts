@@ -287,17 +287,18 @@ const stockie: CaseStudy = {
   decisionsLead: "Lo que mantiene exactos el stock y el costo de lo vendido, con dos monedas y una tasa que cambia cada día.",
   // Los tests de integración de stock-core (npm run test:db, desde el 18 de noviembre de 2026): lo que se prueba contra
   // PostgreSQL real. Las 26 pantallas siguen en el hero (heroFact).
-  qualityLead: "Lo que corre en npm run test:db contra PostgreSQL real: el costo FIFO y el bloqueo de stock con ventas simultáneas.",
+  qualityLead: "Lo que corre en npm run test:db contra PostgreSQL real: el costo FIFO y el bloqueo de stock en cada operación que lo toca.",
   quality: [
     "Dos ventas de la última unidad al mismo tiempo: la segunda espera el bloqueo y corta por falta de stock.",
     "Diez ventas contra cinco unidades: se venden cinco, en orden FIFO, y ningún lote queda negativo.",
-    "Sin el SELECT … FOR UPDATE, esos dos tests fallan.",
+    "Sin el SELECT … FOR UPDATE, los dos tests de ventas simultáneas fallan.",
+    "Transferir, ajustar, anular una venta o cerrar y anular una compra mientras hay una venta en curso: el stock de cada depósito sigue siendo la suma de sus lotes y ningún lote queda negativo.",
     "Cada corrida usa su propia base de PostgreSQL: la crea, le aplica las migraciones y la vacía antes de cada test.",
   ],
   figures: {
     in: "calidad",
     items: [
-      { value: "9", label: "tests de integración contra PostgreSQL real" },
+      { value: "16", label: "tests de integración contra PostgreSQL real" },
       { value: "12", label: "tests unitarios de la búsqueda" },
       { value: "59", label: "rutas de API" },
       { value: "31", label: "modelos" },

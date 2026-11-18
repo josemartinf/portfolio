@@ -114,7 +114,7 @@ describe("content", () => {
     const stockieCopy = JSON.stringify(stockie);
     // las cifras de Stockie van como fila de counter-rolls en Calidad, con sus tests de integración primero
     expect(stockie.figures?.in).toBe("calidad");
-    expect(stockie.figures?.items.map((f) => `${f.value} ${f.label}`)).toEqual(["9 tests de integración contra PostgreSQL real", "12 tests unitarios de la búsqueda", "59 rutas de API", "31 modelos"]);
+    expect(stockie.figures?.items.map((f) => `${f.value} ${f.label}`)).toEqual(["16 tests de integración contra PostgreSQL real", "12 tests unitarios de la búsqueda", "59 rutas de API", "31 modelos"]);
     expect(stockie.quality.join(" ")).toContain("SELECT … FOR UPDATE");
     ["dos precios más uno manual", "historial de precios", "modelos compatibles", "búsqueda por SKU con acentos", "defectuosos quedan fuera de stock", "límite diario", "WebUSB o USB"].forEach((f) => expect(stockieCopy).toContain(f));
   });
