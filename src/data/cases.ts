@@ -47,8 +47,8 @@ const envo: CaseStudy = {
   lead: "Pedidos y entregas con varios repartidores, por Telegram y WhatsApp.",
   moment: "counter-rolls",
   homeFacts: [
-    "Outbox transaccional con reintentos, circuit breaker y dead letter",
-    "2938 tests, con integración contra PGlite y PostgreSQL real y 84 specs e2e con axe",
+    "Ningún aviso se pierde aunque Telegram o WhatsApp estén caídos: outbox transaccional, circuit breaker y dead letter",
+    "2938 tests, con integración contra PGlite y PostgreSQL real y 84 specs e2e con chequeos de accesibilidad (axe)",
     "150 rutas de API, 64 tablas y 86 migraciones SQL sin ORM",
   ],
   problem:
@@ -139,7 +139,7 @@ const envo: CaseStudy = {
     },
     {
       title: "Autenticación, firmas y límites",
-      why: "Contraseñas con argon2id, TOTP con protección contra reuso y re-autenticación para acciones sensibles. Los eventos hacia n8n van firmados con HMAC y timestamp, el rate limiting corre en PostgreSQL y la media privada se re-codifica a WebP.",
+      why: "Contraseñas con argon2id, TOTP con protección contra reutilización y reautenticación para acciones sensibles. Los eventos hacia n8n van firmados con HMAC y timestamp, el rate limiting corre en PostgreSQL y los archivos privados se recodifican a WebP.",
     },
   ],
   decisionsLead: "Lo que hace que un aviso no se pierda aunque un canal esté caído y que un cobro no se registre dos veces.",
@@ -162,7 +162,7 @@ const envo: CaseStudy = {
   parts: ["Panel web de operación", "API", "Worker de la outbox", "Mini App de Telegram", "Página de pedidos"],
   focus: [
     "Alta disponibilidad: outbox transaccional y circuit breaker",
-    "Autenticación: TOTP, re-autenticación y permisos granulares",
+    "Autenticación: TOTP, reautenticación y permisos granulares",
     "Base de datos: 64 tablas y 86 migraciones SQL con checksum",
   ],
   status: "Demo en línea en envo-demo.tech",
@@ -203,16 +203,16 @@ const stockie: CaseStudy = {
   slug: "stockie",
   name: "Stockie",
   tagline:
-    "Stock, depósitos y ventas para comercios de repuestos, con costo por lote FIFO y cobros en bolívares y dólares. Nació en MonJeep y GlobalFia, que lo usan.",
-  lead: "Stock, depósitos y ventas para comercios de repuestos, en bolívares y dólares.",
+    "Stock, depósitos y ventas para comercios de repuestos en Venezuela, con costo por lote FIFO y cobros en bolívares y dólares. Nació en MonJeep y GlobalFia, que lo usan.",
+  lead: "Stock, depósitos y ventas para comercios de repuestos en Venezuela, en bolívares y dólares.",
   moment: "counter-rolls",
   homeFacts: [
-    "Costo por lote FIFO: cada línea de venta sabe su lote y su proveedor",
-    "SELECT … FOR UPDATE sobre el stock antes de descontar, sin sobreventa",
-    "Cada venta guarda USD, Bs y la tasa BCV del día",
+    "Margen real por venta: cada línea sabe de qué lote salió y a qué proveedor se compró (costo FIFO)",
+    "Dos vendedores no pueden vender la última unidad a la vez: el stock se bloquea antes de descontar (SELECT … FOR UPDATE)",
+    "Cada venta guarda el monto en dólares, en bolívares y la tasa oficial del día (BCV)",
   ],
   problem:
-    "Un comercio de repuestos vende en mostrador, por WhatsApp y a crédito, cobra con Pago Móvil, POS, efectivo, Zelle o USDT, y le debe a proveedores en dólares y en bolívares. Con una tasa que cambia todos los días, saber cuánto stock queda y cuánto costó lo vendido exige que cada movimiento guarde su lote, su costo y su tasa. Stockie nació adentro de MonJeep y GlobalFia para resolver eso.",
+    "Un comercio de repuestos en Venezuela vende en mostrador, por WhatsApp y a crédito, cobra con Pago Móvil, POS, efectivo, Zelle o USDT, y le debe a proveedores en dólares y en bolívares. Con una tasa que cambia todos los días, saber cuánto stock queda y cuánto costó lo vendido exige que cada movimiento guarde su lote, su costo y su tasa. Stockie nació adentro de MonJeep y GlobalFia para resolver eso.",
   heroShot: {
     src: "/projects/stockie-dashboard.webp",
     alt: "Dashboard de Stockie con las ventas y el stock de la demo de ferretería",
@@ -222,28 +222,28 @@ const stockie: CaseStudy = {
   },
   heroSets: [
     { label: "Depósito", line: "Ingreso de mercadería con etiquetas y stock fiscal por depósito.", main: { ...stockieShots.intake, focus: { x: 0.12, y: 0.095, w: HERO_MAIN_W } }, side: { ...stockieShots.fiscal, focus: { x: 0.12, y: 0.06, w: HERO_SIDE_W } } },
-    { label: "Administración", line: "Proveedores con deudas en USD y Bs, y créditos para aprobar, cobrar o anular.", main: { ...stockieShots.suppliers, focus: { x: 0.12, y: 0.02, w: HERO_MAIN_W } }, side: { ...stockieShots.credits, focus: { x: 0.12, y: 0.025, w: HERO_SIDE_W } } },
-    { label: "Venta", line: "Punto de venta con la tasa BCV del día y pagos mixtos.", main: { ...stockieShots.sale, focus: { x: 0.12, y: 0.07, w: HERO_MAIN_W } }, side: { ...stockieShots.seller, focus: { x: 0.12, y: 0.04, w: HERO_SIDE_W } } },
+    { label: "Administración", line: "Proveedores con deudas en dólares y bolívares, y créditos para aprobar, cobrar o anular.", main: { ...stockieShots.suppliers, focus: { x: 0.12, y: 0.02, w: HERO_MAIN_W } }, side: { ...stockieShots.credits, focus: { x: 0.12, y: 0.025, w: HERO_SIDE_W } } },
+    { label: "Venta", line: "Punto de venta con la tasa oficial del día (BCV) y pagos mixtos.", main: { ...stockieShots.sale, focus: { x: 0.12, y: 0.07, w: HERO_MAIN_W } }, side: { ...stockieShots.seller, focus: { x: 0.12, y: 0.04, w: HERO_SIDE_W } } },
   ],
-  screens: "Un solo panel con dos roles: ADMIN ve todo, y VENDEDOR su punto de venta y lo que ADMIN le habilita.",
+  screens: "Un solo panel con dos roles: el administrador ve todo; el vendedor, su punto de venta y lo que el administrador le habilita.",
   roles: [
     {
-      role: "Administración (ADMIN)",
+      role: "Administración",
       summary:
-        "Productos con dos precios más uno manual, historial de precios, modelos compatibles y búsqueda por SKU con acentos; vender bajo costo es solo de ADMIN y queda auditado. Depósitos, ingreso de mercadería con etiquetas TSPL por WebUSB o USB, escáner de códigos con la cámara, transferencias y ajustes. Proveedores con deudas en USD y Bs, pagos parciales y pedido sugerido por stock mínimo; créditos para aprobar, cobrar y anular; devoluciones, donde los defectuosos quedan fuera de stock; anulaciones con límite diario; stock fiscal, reportes y usuarios.",
+        "Productos con dos precios más uno manual, historial de precios, modelos compatibles y búsqueda por SKU con acentos; solo el administrador puede vender bajo costo, y queda auditado. Depósitos, ingreso de mercadería con etiquetas TSPL por WebUSB o USB, escáner de códigos con la cámara, transferencias y ajustes. Proveedores con deudas en dólares y bolívares, pagos parciales y pedido sugerido por stock mínimo; créditos para aprobar, cobrar y anular; devoluciones, donde los defectuosos quedan fuera de stock; anulaciones con límite diario; stock fiscal, reportes y usuarios.",
       shots: [stockieShots.intake, stockieShots.fiscal, stockieShots.suppliers, stockieShots.credits, stockieShots.reports],
     },
     {
-      role: "Venta (VENDEDOR)",
+      role: "Venta",
       summary:
-        "Punto de venta para mostrador, WhatsApp o crédito, con cobro en Pago Móvil, POS, efectivo en Bs o USD, Zelle o USDT, y pagos mixtos. El vendedor ve sus ventas y su dashboard, más los paneles que ADMIN le habilita.",
+        "Punto de venta para mostrador, WhatsApp o crédito, con cobro en Pago Móvil, POS, efectivo en bolívares o dólares, Zelle o USDT, y pagos mixtos. El vendedor ve sus ventas y su dashboard, más los paneles que el administrador le habilita.",
       shots: [stockieShots.sale, stockieShots.seller],
     },
   ],
   diagram: {
     preset: "free",
     nodes: [
-      { id: "nav", label: "Navegador", sub: "ADMIN o VENDEDOR", at: [0.07, 0.34], atCompact: [0.3, 0.07] },
+      { id: "nav", label: "Navegador", sub: "administrador o vendedor", at: [0.07, 0.34], atCompact: [0.3, 0.07] },
       { id: "proxy", label: "Proxy de sesión", icon: "nextjs", sub: "antes de cada página", at: [0.28, 0.34], atCompact: [0.3, 0.25] },
       { id: "api", label: "API", sub: "guardas por rol", at: [0.49, 0.34], atCompact: [0.3, 0.43] },
       { id: "core", label: "stock-core", icon: "prisma", sub: "transacciones", at: [0.69, 0.34], atCompact: [0.3, 0.61] },
@@ -273,15 +273,15 @@ const stockie: CaseStudy = {
     },
     {
       title: "Una sola conversión a USD",
-      why: "Cliente y servidor usan la misma función de conversión a USD, con tolerancia de redondeo, así el total que ve el vendedor es el que valida la API. Cada venta guarda el monto en USD, en Bs y la tasa BCV del día.",
+      why: "Cliente y servidor usan la misma función de conversión a USD, con tolerancia de redondeo, así el total que ve el vendedor es el que valida la API. Cada venta guarda el monto en dólares, en bolívares y la tasa BCV del día.",
     },
     {
       title: "Tasa BCV diaria, con carga manual",
-      why: "La tasa se toma del sitio del BCV una vez por día y también se puede cargar a mano. El scraper nunca pisa una tasa manual.",
+      why: "La tasa oficial se toma del sitio del Banco Central de Venezuela (BCV) una vez por día y también se puede cargar a mano. La carga automática nunca pisa una tasa manual.",
     },
     {
       title: "Paneles por vendedor, en páginas y en API",
-      why: "ADMIN habilita paneles a cada vendedor, y el permiso se aplica en la página y en la API: un vendedor no llega a un dato por una URL directa.",
+      why: "El administrador habilita paneles a cada vendedor, y el permiso se aplica en la página y en la API: un vendedor no llega a un dato por una URL directa.",
     },
   ],
   decisionsLead: "Lo que mantiene exactos el stock y el costo de lo vendido, con dos monedas y una tasa que cambia cada día.",
@@ -331,9 +331,9 @@ const clubZapateo: CaseStudy = {
   lead: "Venta de entradas con Mercado Pago y control de acceso en la puerta.",
   moment: "pinned-chapters",
   homeFacts: [
-    "Cada entrada se emite en una transacción Serializable, idempotente y con control de capacidad",
-    "Conciliación con Mercado Pago para los pagos cuyo aviso nunca llegó",
-    "252 tests con vitest y CI con lint, tipos, cobertura y build",
+    "Nunca se vende por encima de la capacidad ni se emite una entrada de más: transacción Serializable e idempotente",
+    "Si Mercado Pago no avisa un pago, la conciliación lo detecta y lo corrige",
+    "252 tests con Vitest y CI con lint, tipos, cobertura y build",
   ],
   problem:
     "Club Zapateo vende entradas con Mercado Pago y las controla en la puerta con un QR. Si el aviso de un pago no llega, alguien pagó y no tiene entrada. Si dos compras llegan juntas, se puede vender por encima de la capacidad. Si un QR sirve en otro evento, la puerta deja pasar a quien no corresponde.",
@@ -348,13 +348,13 @@ const clubZapateo: CaseStudy = {
     {
       role: "Público y comprador",
       summary:
-        "Los eventos salen de la base de datos. El comprador paga con el checkout de Mercado Pago, recibe un email con un QR por entrada y puede verificar el estado de su entrada en una página pública. El hero 3D de Spline tiene un modo liviano para equipos lentos y para quien pide reducir movimiento.",
+        "Los eventos salen de la base de datos. El comprador paga con el checkout de Mercado Pago, recibe un email con un QR por entrada y puede verificar el estado de su entrada en una página pública. La animación 3D de la portada, hecha con Spline, tiene un modo liviano para equipos lentos y para quien pide reducir movimiento.",
       shots: [zapateoShots.home],
     },
     {
       role: "Administración",
       summary:
-        "Vive en un subdominio propio, aislado por middleware. Tiene el dashboard con recaudación, emitidas y usadas, pagado sin entrada y vendidas contra capacidad; eventos con afiches que se crean, publican, pausan y archivan; conciliación con Mercado Pago, búsqueda de órdenes y emisión manual.",
+        "Vive en un subdominio propio, aislado por middleware. Tiene el dashboard con recaudación, entradas emitidas y usadas, pagos sin entrada y vendidas contra capacidad; eventos con afiches que se crean, publican, pausan y archivan; conciliación con Mercado Pago, búsqueda de órdenes y emisión manual.",
       shots: [zapateoShots.reconciliation, zapateoShots.events],
     },
     {
@@ -372,7 +372,7 @@ const clubZapateo: CaseStudy = {
       { id: "webhook", label: "Webhook", sub: "HMAC en tiempo constante", at: [0.46, 0.3], atCompact: [0.3, 0.43] },
       { id: "emit", label: "Emisión", icon: "prisma", sub: "transacción Serializable", at: [0.66, 0.3], atCompact: [0.3, 0.61] },
       { id: "mail", label: "Email con QR", icon: "resend", sub: "una entrada, un QR", at: [0.86, 0.3], atCompact: [0.78, 0.61] },
-      { id: "pg", label: "Postgres en Neon", icon: "postgres", at: [0.66, 0.76], atCompact: [0.25, 0.82] },
+      { id: "pg", label: "PostgreSQL en Neon", icon: "postgres", at: [0.66, 0.76], atCompact: [0.25, 0.82] },
       { id: "admin", label: "Administración y puerta", sub: "concilia y controla", at: [0.38, 0.76], atCompact: [0.72, 0.82] },
     ],
     edges: [
@@ -385,7 +385,7 @@ const clubZapateo: CaseStudy = {
       { from: "admin", to: "mp", curve: "elbow" },
     ],
     shots: [["buyer>mp", "mp>webhook", "webhook>emit", ["emit>pg", "emit>mail"]], ["admin>pg", "admin>mp"]],
-    alt: "El comprador paga en Mercado Pago, que avisa por un webhook verificado con HMAC. La entrada se emite en una transacción Serializable sobre Postgres en Neon y Resend envía el email con el QR. La administración y la puerta leen la misma base, y la administración concilia contra Mercado Pago.",
+    alt: "El comprador paga en Mercado Pago, que avisa por un webhook verificado con HMAC. La entrada se emite en una transacción Serializable sobre PostgreSQL en Neon y Resend envía el email con el QR. La administración y la puerta leen la misma base, y la administración concilia contra Mercado Pago.",
   },
   decisions: [
     {
@@ -415,18 +415,18 @@ const clubZapateo: CaseStudy = {
     steps: [
       { label: "Lint", icon: "ui-file-text" },
       { label: "Tipos", icon: "typescript", note: "TypeScript" },
-      { label: "Tests con cobertura", icon: "vitest", note: "vitest" },
+      { label: "Tests con cobertura", icon: "vitest", note: "Vitest" },
       { label: "Build", icon: "nextjs", note: "Next.js 14" },
     ],
   },
-  figures: { in: "calidad", items: [{ value: "252", label: "tests con vitest" }] },
+  figures: { in: "calidad", items: [{ value: "252", label: "tests con Vitest" }] },
   parts: ["Sitio público", "Checkout con Mercado Pago", "Panel de administración", "App de puerta"],
   focus: ["Pagos: webhook verificado con HMAC y conciliación", "Concurrencia: emisión Serializable e idempotente"],
   status: "En producción en clubzapateo.com",
   heroFact: "252 tests",
   sheet: {
     architecture:
-      "Next.js 14 con Prisma sobre Postgres en Neon; Mercado Pago avisa por webhook, la emisión corre en una transacción y Resend envía las entradas. La administración vive en un subdominio aparte.",
+      "Next.js 14 con Prisma sobre PostgreSQL en Neon; Mercado Pago avisa por webhook, la emisión corre en una transacción y Resend envía las entradas. La administración vive en un subdominio aparte.",
     stack: ["Next.js 14", "TypeScript", "Prisma", "PostgreSQL (Neon)", "Mercado Pago", "Resend", "Vercel Blob", "Spline", "Zod", "Vitest"],
     practices: [
       "CI en GitHub Actions: lint, tipos, tests con cobertura y build",
@@ -440,7 +440,7 @@ const clubZapateo: CaseStudy = {
     ],
     short: {
       architecture: "Next.js 14, Prisma y Neon, con webhook de Mercado Pago",
-      stack: "Next.js 14, Prisma, Postgres, Mercado Pago, Resend",
+      stack: "Next.js 14, Prisma, PostgreSQL, Mercado Pago, Resend",
       practices: "CI en GitHub Actions, pre-commit y Zod",
     },
   },
