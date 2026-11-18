@@ -171,7 +171,14 @@ async function stockieLogin(page, email, password) {
 }
 
 const STOCKIE_ADMIN = {
-  "stockie-dashboard": { route: "/dashboard" },
+  "stockie-dashboard": {
+    route: "/dashboard",
+    // La semana y no el día: a primera hora "Hoy" puede estar en cero.
+    prep: async (page) => {
+      await page.getByRole("button", { name: "Esta semana" }).click();
+      await page.waitForTimeout(2500);
+    },
+  },
   "stockie-sale": {
     route: "/ventas/nueva",
     prep: async (page) => {
@@ -189,7 +196,13 @@ const STOCKIE_ADMIN = {
       await methods.nth(1).selectOption("PAGO_MOVIL");
       const amounts = page.locator('input[placeholder="0.00"]');
       await amounts.nth(-2).fill("20");
-      await amounts.nth(-1).fill("20800");
+      await page.waitForTimeout(800);
+      // El resto en bolívares a la tasa que muestra la pantalla, así la venta queda cubierta con cualquier tasa del día.
+      const text = await page.evaluate(() => document.body.innerText);
+      const total = Number(text.match(/Total:\s*\$\s*([\d.]+)/)?.[1]);
+      const tasa = Number(text.match(/Tasa al ingresar:\s*([\d.]+)/)?.[1]);
+      if (!total || !tasa) throw new Error(`No encontré el total (${total}) o la tasa (${tasa}) en la venta`);
+      await amounts.nth(-1).fill(((total - 20) * tasa).toFixed(2));
       await page.waitForTimeout(800);
     },
   },
@@ -199,7 +212,7 @@ const STOCKIE_ADMIN = {
   "stockie-suppliers": {
     route: "/dashboard/proveedores",
     prep: async (page) => {
-      await page.getByText("Deudas", { exact: true }).click();
+      await page.getByText("Pedido Sugerido", { exact: true }).click();
       await page.waitForTimeout(2000);
     },
   },
@@ -208,13 +221,13 @@ const STOCKIE_ADMIN = {
     prep: async (page) => {
       await page.getByText("Seleccionar proveedor").first().click();
       await page.waitForTimeout(600);
-      await page.getByText("Tornillería del Sur (demo)").first().click();
+      await page.getByText("Importadora Sur Demo").first().click();
       await page.waitForTimeout(600);
       await page.locator("select").first().selectOption({ index: 1 });
       await page.fill('input[placeholder="FAC-001"]', "FAC-0042");
       await page.fill('input[placeholder^="Buscar producto, SKU"]', "Arandela plana M8");
       await page.waitForTimeout(1800);
-      await page.getByText("STK-0006").first().click();
+      await page.getByText("STK-00006").first().click();
       await page.waitForTimeout(800);
       const numbers = page.locator('input[placeholder="0"], input[placeholder="0.00"]');
       await numbers.nth(0).fill("120");
