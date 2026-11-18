@@ -354,6 +354,17 @@
     "trademark": false
   },
   {
+    "file": "ui-shopping-bag.svg",
+    "icon": "ui:shopping-bag",
+    "name": "Shopping Bag",
+    "kind": "line",
+    "source": "@iconify-json/lucide@1.2.100",
+    "author": "Lucide Contributors",
+    "licence": "ISC",
+    "url": "https://github.com/lucide-icons/lucide",
+    "trademark": false
+  },
+  {
     "file": "ui-usb.svg",
     "icon": "ui:usb",
     "name": "Usb",

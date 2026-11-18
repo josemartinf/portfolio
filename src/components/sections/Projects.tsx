@@ -12,18 +12,24 @@ import { Parts, StatusText } from "@/components/TechSheet";
    ficha técnica completa viven en su página. La imagen también lleva al caso (fuera del orden del teclado: el link
    "Ver el caso" es el mismo destino). */
 
-/** El recorrido de un pedido en Envo: entra por n8n a la API y PostgreSQL, y sale por la outbox y el worker a cada canal.
- *  Sin `done`: en la portada el diagrama queda quieto y su anillo de estado nunca se llenaría. */
+/** El recorrido de un pedido en Envo, como lo hace su código: los mensajes de Telegram y WhatsApp entran por n8n
+ *  (/api/v1/internal/n8n/inbox) y la página de pedidos va directo a la API (/api/v1/customer/orders). El pedido y su
+ *  aviso quedan en PostgreSQL en la misma transacción; de ahí salen los avisos (un solo worker vacía la outbox hacia
+ *  n8n, que los manda por Telegram o WhatsApp) y el panel en vivo (NOTIFY y SSE). Es el mismo recorrido que dibuja la
+ *  arquitectura de /envo, en corto. Sin `done`: en la portada el diagrama queda quieto y su anillo de estado nunca se llenaría. */
 const envoFlow = {
-  layout: "lanes",
+  layout: "bowtie",
   curve: "curve",
-  alt: "Un pedido entra por Telegram o WhatsApp y n8n a la API de Next.js, que lo guarda en PostgreSQL. De ahí salen los avisos por la outbox y el worker hacia Telegram y WhatsApp, y el panel se actualiza en vivo con NOTIFY y SSE.",
-  input: { label: "Pedido", icon: "n8n", sub: "llega por n8n" },
+  alt: "Los pedidos entran por Telegram o WhatsApp a través de n8n, o desde la página de pedidos directo a la API de Next.js, que guarda el pedido y su aviso en PostgreSQL en la misma transacción. De ahí salen los avisos, que un worker toma de la outbox y manda por n8n, y el panel se actualiza en vivo con NOTIFY y SSE.",
+  sources: [
+    { label: "Telegram", icon: "telegram", sub: "por n8n", cap: true },
+    { label: "WhatsApp", icon: "whatsapp", sub: "por n8n", cap: true },
+    { label: "Página de pedidos", icon: "ui:shopping-bag", sub: "directo a la API", cap: true },
+  ],
   core: { label: "API y PostgreSQL", icon: "postgres" },
-  lanes: [
-    { label: "Telegram", icon: "telegram", sub: "outbox y worker" },
-    { label: "WhatsApp", icon: "whatsapp", sub: "outbox y worker" },
-    { label: "Panel en vivo", icon: "nextjs", sub: "NOTIFY y SSE" },
+  targets: [
+    { label: "Avisos", icon: "n8n", sub: "outbox, worker y n8n", cap: true },
+    { label: "Panel en vivo", icon: "nextjs", sub: "NOTIFY y SSE", cap: true },
   ],
 };
 
