@@ -94,7 +94,7 @@ a.site__shot { display: block; border-radius: var(--r-md); }
 .sheet dd.mono, .sheet .mono { font-size: 14px; }
 /* an identifier inside a sheet's row (FOR UPDATE, HMAC): mono only, no chip, so the row's text keeps its left edge */
 .sheet code { padding: 0; background: none; font-size: .9em; }
-.status a { color: var(--p-ink); text-decoration: underline; text-decoration-color: rgb(255 255 255 / .35); text-underline-offset: 3px; }
+.status a { color: var(--p-ink); text-decoration: underline; text-decoration-color: rgb(255 255 255 / .35); text-underline-offset: 3px; white-space: nowrap; }
 .status a:hover { text-decoration-color: currentColor; }
 
 /* ---------------------------------------------------------------- statement (liquid-type) */
