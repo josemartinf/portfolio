@@ -95,8 +95,8 @@ const envo: CaseStudy = {
   diagram: {
     preset: "free",
     nodes: [
-      { id: "tg", label: "Telegram", icon: "telegram", sub: "cliente y repartidor", at: [0.08, 0.28], atCompact: [0.25, 0.08] },
-      { id: "wa", label: "WhatsApp", icon: "whatsapp", sub: "cliente", at: [0.08, 0.72], atCompact: [0.75, 0.08] },
+      { id: "tg", label: "Telegram", icon: "telegram", sub: "chat y Mini App", at: [0.08, 0.28], atCompact: [0.25, 0.08] },
+      { id: "wa", label: "WhatsApp", icon: "whatsapp", sub: "chat del cliente", at: [0.08, 0.72], atCompact: [0.75, 0.08] },
       { id: "n8n", label: "n8n", icon: "n8n", sub: "eventos con HMAC", at: [0.3, 0.5], atCompact: [0.5, 0.28] },
       { id: "api", label: "API", icon: "nextjs", sub: "Next.js, comandos idempotentes", at: [0.52, 0.24], atCompact: [0.25, 0.5] },
       { id: "pg", label: "PostgreSQL", icon: "postgres", sub: "outbox y NOTIFY", at: [0.74, 0.5], atCompact: [0.5, 0.72] },
@@ -105,6 +105,7 @@ const envo: CaseStudy = {
     ],
     edges: [
       { from: "tg", to: "n8n" },
+      { from: "tg", to: "api" },
       { from: "wa", to: "n8n" },
       { from: "n8n", to: "api" },
       { from: "api", to: "pg" },
@@ -113,8 +114,8 @@ const envo: CaseStudy = {
       { from: "pg", to: "panel" },
       { from: "panel", to: "api" },
     ],
-    shots: [["tg>n8n", "n8n>api", "api>pg"], ["pg>worker", "worker>n8n", ["n8n>tg", "n8n>wa"]], ["pg>panel"]],
-    alt: "Un pedido entra por Telegram o WhatsApp, pasa por n8n a la API de Next.js y se guarda en PostgreSQL. El worker toma el aviso de la outbox y lo envía por n8n a Telegram o WhatsApp. PostgreSQL avisa con NOTIFY y el panel, que opera sobre la API, se actualiza por SSE.",
+    shots: [["tg>n8n", "n8n>api", "api>pg"], ["tg>api", "api>pg"], ["pg>worker", "worker>n8n", ["n8n>tg", "n8n>wa"]], ["pg>panel"]],
+    alt: "Los mensajes de Telegram y WhatsApp pasan por n8n a la API de Next.js, y la Mini App de Telegram llama a la API directo; todo se guarda en PostgreSQL. El worker toma el aviso de la outbox y lo envía por n8n a Telegram o WhatsApp. PostgreSQL avisa con NOTIFY y el panel, que opera sobre la API, se actualiza por SSE.",
   },
   decisions: [
     {
@@ -244,23 +245,23 @@ const stockie: CaseStudy = {
     preset: "free",
     nodes: [
       { id: "nav", label: "Navegador", sub: "administrador o vendedor", at: [0.07, 0.34], atCompact: [0.3, 0.07] },
-      { id: "proxy", label: "Proxy de sesión", icon: "nextjs", sub: "antes de cada página", at: [0.28, 0.34], atCompact: [0.3, 0.25] },
+      { id: "mw", label: "Middleware de sesión", icon: "nextjs", sub: "antes de cada página", at: [0.28, 0.34], atCompact: [0.3, 0.25] },
       { id: "api", label: "API", sub: "guardas por rol", at: [0.49, 0.34], atCompact: [0.3, 0.43] },
       { id: "core", label: "stock-core", icon: "prisma", sub: "transacciones", at: [0.69, 0.34], atCompact: [0.3, 0.61] },
       { id: "pg", label: "PostgreSQL", icon: "postgres", sub: "lotes FIFO", at: [0.89, 0.34], atCompact: [0.3, 0.82] },
-      { id: "bcv", label: "Tasa del BCV", sub: "una vez por día o a mano", at: [0.69, 0.74], atCompact: [0.72, 0.82] },
-      { id: "printer", label: "Impresora de etiquetas", sub: "TSPL", at: [0.49, 0.74], atCompact: [0.72, 0.43] },
+      { id: "bcv", label: "Tasa del BCV", sub: "una vez por día o a mano", at: [0.38, 0.74], atCompact: [0.72, 0.61] },
+      { id: "printer", label: "Impresora de etiquetas", sub: "TSPL por USB o en archivo", at: [0.6, 0.74], atCompact: [0.7, 0.43] },
     ],
     edges: [
-      { from: "nav", to: "proxy" },
-      { from: "proxy", to: "api" },
+      { from: "nav", to: "mw" },
+      { from: "mw", to: "api" },
       { from: "api", to: "core" },
       { from: "core", to: "pg" },
-      { from: "bcv", to: "pg", curve: "elbow" },
+      { from: "bcv", to: "api" },
       { from: "api", to: "printer" },
     ],
-    shots: [["nav>proxy", "proxy>api", "api>core", "core>pg"], ["bcv>pg"], ["api>printer"]],
-    alt: "El navegador pasa por el proxy de sesión a la API, que aplica las guardas por rol y escribe en PostgreSQL a través de las transacciones de stock-core. La tasa del BCV entra por su propia API a PostgreSQL, y la API envía las etiquetas a la impresora.",
+    shots: [["nav>mw", "mw>api", "api>core", "core>pg"], ["bcv>api"], ["api>printer"]],
+    alt: "El navegador pasa por el middleware de sesión a la API, que aplica las guardas por rol y escribe en PostgreSQL a través de las transacciones de stock-core. La API trae la tasa del BCV de su sitio una vez por día (o usa la cargada a mano) y le manda las etiquetas a la impresora en TSPL, por USB o en un archivo.",
   },
   decisions: [
     {
@@ -313,7 +314,7 @@ const stockie: CaseStudy = {
   demoUrl: "https://stockie.envo-demo.tech/demo",
   sheet: {
     architecture:
-      "Next.js con proxy de sesión y API con guardas por rol; las transacciones de stock-core escriben en PostgreSQL y la tasa del BCV entra por su propia API.",
+      "Next.js con middleware de sesión y API con guardas por rol; las transacciones de stock-core escriben en PostgreSQL y la API trae la tasa del BCV de su sitio una vez por día.",
     stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Better Auth", "Zod", "WebUSB"],
     practices: [
       "Lógica de negocio concentrada en las transacciones de stock-core",
@@ -376,13 +377,13 @@ const clubZapateo: CaseStudy = {
   diagram: {
     preset: "free",
     nodes: [
-      { id: "buyer", label: "Comprador", at: [0.07, 0.3], atCompact: [0.3, 0.07] },
-      { id: "mp", label: "Mercado Pago", icon: "mercadopago", sub: "preferencia idempotente", at: [0.26, 0.3], atCompact: [0.3, 0.25] },
-      { id: "webhook", label: "Webhook", sub: "HMAC en tiempo constante", at: [0.46, 0.3], atCompact: [0.3, 0.43] },
-      { id: "emit", label: "Emisión", icon: "prisma", sub: "transacción Serializable", at: [0.66, 0.3], atCompact: [0.3, 0.61] },
-      { id: "mail", label: "Email con QR", icon: "resend", sub: "una entrada, un QR", at: [0.86, 0.3], atCompact: [0.78, 0.61] },
-      { id: "pg", label: "PostgreSQL en Neon", icon: "postgres", at: [0.66, 0.76], atCompact: [0.25, 0.82] },
-      { id: "admin", label: "Administración y puerta", sub: "concilia y controla", at: [0.38, 0.76], atCompact: [0.72, 0.82] },
+      { id: "buyer", label: "Comprador", at: [0.07, 0.3], atCompact: [0.3, 0.06] },
+      { id: "mp", label: "Mercado Pago", icon: "mercadopago", sub: "preferencia idempotente", at: [0.26, 0.3], atCompact: [0.3, 0.22] },
+      { id: "webhook", label: "Webhook", sub: "HMAC en tiempo constante", at: [0.46, 0.3], atCompact: [0.3, 0.38] },
+      { id: "emit", label: "Emisión", icon: "prisma", sub: "transacción Serializable", at: [0.66, 0.3], atCompact: [0.3, 0.54] },
+      { id: "mail", label: "Email con QR", icon: "resend", sub: "una entrada, un QR", at: [0.86, 0.3], atCompact: [0.72, 0.54] },
+      { id: "pg", label: "PostgreSQL en Neon", icon: "postgres", at: [0.66, 0.76], atCompact: [0.3, 0.72] },
+      { id: "admin", label: "Administración y puerta", sub: "concilia con Mercado Pago", at: [0.38, 0.76], atCompact: [0.5, 0.92] },
     ],
     edges: [
       { from: "buyer", to: "mp" },
@@ -391,9 +392,8 @@ const clubZapateo: CaseStudy = {
       { from: "emit", to: "pg" },
       { from: "emit", to: "mail" },
       { from: "admin", to: "pg" },
-      { from: "admin", to: "mp", curve: "elbow" },
     ],
-    shots: [["buyer>mp", "mp>webhook", "webhook>emit", ["emit>pg", "emit>mail"]], ["admin>pg", "admin>mp"]],
+    shots: [["buyer>mp", "mp>webhook", "webhook>emit", ["emit>pg", "emit>mail"]], ["admin>pg"]],
     alt: "El comprador paga en Mercado Pago, que avisa por un webhook verificado con HMAC. La entrada se emite en una transacción Serializable sobre PostgreSQL en Neon y Resend envía el email con el QR. La administración y la puerta leen la misma base, y la administración concilia contra Mercado Pago.",
   },
   decisions: [
