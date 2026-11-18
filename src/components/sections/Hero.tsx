@@ -12,11 +12,17 @@ import { BrowserFrame } from "@/components/Frame";
 // gris; el horizonte baja por debajo de la ventana y la colina sube hacia la derecha, donde queda el disco de pausa
 const fxPalette = JSON.stringify({ bg: "#2b3a45", accent: "#a3bf8c" });
 const fxParams = JSON.stringify({ blur: 0.4, brush: 0.7, slope: 14, side: 1, hillY: 0.1, horizon: 0.66, calm: 0.15, calmX: 0.2, calmY: 0.85 });
+// el h1: la entrada (motion.js) pone cada palabra de cada nodo de texto en su propia caja, y entre dos cajas el renglón
+// puede cortar. Con la coma en otro nodo (lo que deja React con {nombre}, …) o un espacio duro entre los apellidos (la
+// entrada lo parte como cualquier espacio), corta distinto que el texto quieto y la coma salta al terminar. Por eso la
+// coma va en el mismo texto que el apellido y los dos apellidos en un span sin corte, que vale igual en las dos formas.
+const nameStart = site.name.split(" ").slice(0, -2).join(" ");
+const nameEnd = site.name.split(" ").slice(-2).join(" ");
 
 export function Hero() {
   return <section className="hero hero--collage" data-enter aria-labelledby="hero-h"><div className="wrap"><div className="hero-text grid hero__grid">
     <div className="hero__text span-5">
-      <h1 id="hero-h">{site.name.replace(/ (\S+)$/, "\u00a0$1")}, Software Engineer</h1>
+      <h1 id="hero-h">{`${nameStart} `}<span className="hero__name-end">{`${nameEnd},`}</span>{" Software Engineer"}</h1>
       <p className="hero__lead">{site.tagline}</p>
       <div className="btn-row"><a className="btn btn--primary" href="#proyectos">Ver los proyectos</a><a className="btn btn--secondary" href={site.cv} download>Descargar el CV (PDF)</a></div>
       <p className="hero__proof">{currentFact}</p>
