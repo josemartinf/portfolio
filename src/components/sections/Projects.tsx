@@ -9,7 +9,9 @@ import { Tag } from "@/components/Tag";
    uno con su etiqueta (Cliente, Producto propio) sobre el nombre, en tres composiciones (brief-v2):
    Envo, el sistema: texto a la izquierda y el diagrama de un pedido a la derecha (lo que no se ve en una captura);
    Stockie, la pantalla: una fila corta de texto arriba y la captura a todo el ancho del bloque;
-   Club Zapateo, los dos lados: el texto al costado y la ventana del panel con el teléfono de la puerta sobre su esquina.
+   Club Zapateo, los dos lados: el texto al costado y la ventana del panel al lado del teléfono de la puerta (ninguno
+   tapa al otro). La ventana muestra solo una parte del dashboard (las cifras de entradas y recaudación y lo vendido
+   contra la capacidad), más grande, en vez de la pantalla entera con su letra chica.
    En la portada cada caso muestra sus hechos, sus partes en una línea, su estado y el link al caso; el enfoque y la
    ficha técnica completa viven en su página. La imagen también lleva al caso (fuera del orden del teclado: el link
    "Ver el caso" es el mismo destino). Los demás proyectos siguen en #proyectos-mas (ProjectCards). */
@@ -69,7 +71,6 @@ function SideText({ c }: { c: CaseStudy }) {
 export function Projects() {
   const envo = caseBySlug("envo"), stockie = caseBySlug("stockie"), zapateo = caseBySlug("club-zapateo");
   const door = zapateo.roles.flatMap((r) => r.shots).find((s) => s.frame === "phone")!;
-  const reconciliation = zapateo.roles.flatMap((r) => r.shots).find((s) => s.src.includes("reconciliation"))!;
   return <>
     <section className="section case case--envo" id="proyectos" aria-labelledby="proyectos-h" data-project="envo"><div className="wrap">
       <div className="section-head projects__head"><h2 id="proyectos-h">Proyectos</h2><p>Sistemas y sitios en uso, y uno que hice para mí.</p></div>
@@ -97,7 +98,10 @@ export function Projects() {
       <div className="grid case__grid">
         <SideText c={zapateo} />
         <div className="case__visual span-6 start-7"><VisualLink c={zapateo}><div className="case__pair">
-          <BrowserFrame shot={reconciliation} label="Club Zapateo · Conciliación" sizes="(max-width: 1023px) 92vw, 628px" zoom />
+          {/* de la captura de 1600×1000: las dos primeras columnas de cifras (eventos, entradas emitidas, pagos y
+              recaudación; x 0,195–0,59) y las barras de lo vendido contra la capacidad, hasta y 0,65, con un margen parejo
+              arriba y abajo. Así la captura se ve al 70 % de su tamaño en vez del 39 %: las cifras y los nombres se leen */}
+          <BrowserFrame shot={zapateo.heroShot} label="Club Zapateo · Panel" labelShort="Panel" sizes="(max-width: 639px) 92vw, 480px" focus={{ x: 0.18, y: 0.135, w: 0.42 }} crop={1.27} zoom />
           <PhoneFrame shot={door} />
         </div></VisualLink></div>
       </div>
