@@ -59,6 +59,9 @@ a.pcard__shot { display: block; border-radius: var(--r-md); }
 .hero__art > .ly-piece--main.ly-piece--main { top: var(--win-top); }
 .hero__art > .bframe.ly-piece--main .bframe__view { background: #f4f7f2; }
 .hero__art > .hero-note { left: var(--s-4); top: calc(var(--win-top) + var(--win-h) - var(--note-over)); bottom: auto; width: 300px; z-index: 2; }
+/* the words in the middle of the frame's height, not on its top line: on top they left the lower half of their column
+   empty beside the window (the kit's collage puts them at the top, layout.css) */
+@media (min-width: 1024px) { .hero--collage .hero__text { align-self: center; } }
 @media (max-width: 1023px) { .hero__art { --hero-in: var(--s-6); --after: 56px; } .hero__art > .hero-note { display: none; } }
 @media (max-width: 639px) { .hero__art { --hero-in: var(--s-4); } }
 .hero-note { display: grid; gap: 10px; padding: 16px 18px; border-radius: var(--r-md); background: #fff; color: #161616; font: 400 14px/1.4 var(--font-text); box-shadow: 0 0 0 1px rgb(0 0 0 / .06), 0 22px 48px -22px rgb(0 0 0 / .55); }
@@ -94,9 +97,13 @@ a.pcard__shot { display: block; border-radius: var(--r-md); }
 .case__top { align-items: start; }
 .case__top .section-head { margin-bottom: 0; }
 .case__wide { margin-top: var(--s-7); }
-/* Club Zapateo: the panel's window across its column, the door's phone over its lower right corner (inside it) */
-.case__pair { position: relative; }
-.case__pair > .pframe { position: absolute; right: var(--s-4); bottom: var(--s-4); width: 150px; }
+/* Club Zapateo: the panel's window and the door's phone side by side, about the same height, neither over the other
+   (the phone over the window's corner hid the panel's right column) */
+.case__pair { display: flex; align-items: center; gap: var(--s-5); }
+.case__pair > .bframe { flex: 1 1 0; min-width: 0; }
+.case__pair > .pframe { flex: none; width: 132px; }
+/* a small laptop (the column is 420px): a smaller phone, so the window keeps 300px */
+@media (min-width: 1024px) and (max-width: 1279px) { .case__pair { gap: var(--s-4); } .case__pair > .pframe { width: 104px; } }
 
 /* the tech sheet: one line a part on the home, every item on its own line on a case page */
 .sheet { display: grid; gap: var(--s-3); margin: 0; }
@@ -145,6 +152,9 @@ a.pcard__shot { display: block; border-radius: var(--r-md); }
 .pcard__head h3 { margin: 0; }
 .pcard__status { margin: 0; color: var(--p-ink); font-size: var(--t-small); line-height: 1.5; }
 .pcard__summary { margin: 0; font-size: var(--t-body); line-height: 1.5; max-width: 56ch; }
+/* a card's one sheet row (Stack): its label over the value, as on a phone; a label column of 104px left a hole
+   between a short word and its list */
+.pcard .sheet__row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
 .site__layers { display: grid; gap: 6px; }
 .site__layers li { position: relative; padding-left: 16px; font-size: var(--t-body); line-height: 1.45; color: #c9c9c9; }
 .site__layers li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 1px; background: var(--p-muted); }
@@ -163,9 +173,10 @@ a.pcard__shot { display: block; border-radius: var(--r-md); }
 .tl__study h3 { margin: 0 0 var(--s-2); }
 
 /* ---------------------------------------------------------------- stack: short columns by area, a small white tile per mark */
-.stack__groups { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--s-7) var(--gutter); }
-.stack__group { grid-column: auto / span 2; }
-.stack__group:is(:nth-child(1), :nth-child(4)) { grid-column: auto / span 3; }
+/* a laptop and wider: five equal columns, so the room between two areas is always the same (on the 12-column grid,
+   spans of 3-2-2-3-2 left gaps of 326 and 217px between areas of about the same width) */
+.stack__groups { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--s-7) var(--gutter); }
+@media (max-width: 1023px) { .stack__groups { grid-template-columns: repeat(12, minmax(0, 1fr)); } }
 .stack__label { margin: 0 0 var(--s-4); color: var(--p-muted); }
 .stack__list { display: grid; gap: var(--s-3); }
 .stack__item { display: flex; align-items: center; gap: var(--s-3); font-size: var(--t-body); line-height: 1.3; }
@@ -215,8 +226,9 @@ a.pcard__shot { display: block; border-radius: var(--r-md); }
   .tl__study { margin-top: var(--s-7); }
   /* Stockie's capture whole on a phone: the wide strip would be too small to read */
   .case--stockie .bframe--crop .bframe__view { aspect-ratio: 1.6; }
-  /* the door's phone below the window, not over it: on a phone the window takes the whole width */
-  .case__pair > .pframe { position: static; width: 132px; margin: var(--s-4) 0 0 auto; }
+  /* the door's phone below the window: on a phone the window takes the whole width */
+  .case__pair { display: block; }
+  .case__pair > .pframe { width: 132px; margin: var(--s-4) 0 0 auto; }
   /* Club Zapateo's card under a screen and a half: the door's phone a little smaller, its facts a little tighter */
   .case--zapateo .case__pair > .pframe { width: 104px; margin-top: var(--s-3); }
   .case--zapateo .case__facts li { padding: 4px 0; }
