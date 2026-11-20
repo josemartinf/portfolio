@@ -1,7 +1,8 @@
 /* Loaded after the design kit so the dealt palette and fonts win.
    :root exactly as `start.mjs css --page software --palette soot-pale-lime --type familjen --radius sharp` printed it. */
 :root {
-  --p-bg: #0f0f0f; --p-surface: #1a1a1a; --p-ink: #ffffff; --p-muted: #8f8f8f;
+  color-scheme: dark;   /* the browser's own surfaces (scrollbars, form controls) dark, as the page */
+  --p-bg: #0f0f0f; --p-surface: #1a1a1a; --p-ink: #ffffff; --p-muted: #a1a1a1;
   --p-accent: #dafa9c; --p-accent-ink: #0f0f0f; --p-action: #dafa9c; --p-action-ink: #0f0f0f;
   --p-inv-bg: #ffffff; --p-inv-surface: #ececec; --p-inv-ink: #0f0f0f; --p-inv-muted: #5f5f5f;
   --p-inv-accent: #0f0f0f; --p-inv-accent-ink: #ffffff; --p-inv-action: #0f0f0f; --p-inv-action-ink: #ffffff;
@@ -12,13 +13,27 @@
   --display-tracking: -0.03em;
   --display-tracking-xl: -0.04em;
 }
+/* The text ramp, three steps, one role each:
+   - --ink (white, 19:1): what the eye scans: headings, names, the nav, buttons, links, values;
+   - read (about 12:1): what it reads: leads, facts, summaries, descriptions, a decision's why;
+   - --muted (#a1a1a1, 7.4:1): what names a thing: labels, dates, the parts of a project.
+   With every line white, a heading and the paragraph under it weighed the same. The read step is mixed from each
+   ground's own ink and bg, so a lighter ground (the experience panel) keeps the same step. The lime stays for
+   action and the brand only. Club Zapateo's pinned chapters keep their own (moment.css: the step on view in ink). */
+.hero .hero__lead, .hero__proof, .section-head > p, .statement__line, .statement__proof dd,
+.case__facts li, .pcard__summary, .site__layers li, .tl__roles p:not(.tl__title), .tl__study p + p, .footer__lede,
+.case-lede, .case-role__text > p, .case-more__text p, .case-decisions p, .case-quality__list p,
+.sheet__list li {
+  color: color-mix(in oklab, var(--ink) 80%, var(--bg));
+}
+.sheet__list li b { color: var(--ink); }
 /* Page layout and project captures. The kit remains untouched. */
 /* Page CSS, only where the kit asks for it (inside a visual, lists the system has no class for). The kit stays untouched. */
 html { scroll-behavior: auto; }
 
 /* ---------------------------------------------------------------- captures: browser and phone frames */
 .bframe { position: relative; display: flex; flex-direction: column; min-width: 0; overflow: hidden; border: 1px solid rgb(255 255 255 / .14); border-radius: var(--r-md); background: #141414; box-shadow: 0 28px 60px -32px rgb(0 0 0 / .7); }
-.bframe__bar { flex: none; display: flex; align-items: center; gap: 12px; height: 32px; padding: 0 12px; background: #1d1d1d; border-bottom: 1px solid rgb(255 255 255 / .08); color: #a6a6a6; font: 400 13px/1 var(--font-text); white-space: nowrap; overflow: hidden; }
+.bframe__bar { flex: none; display: flex; align-items: center; gap: 12px; height: 32px; padding: 0 12px; background: #1d1d1d; border-bottom: 1px solid rgb(255 255 255 / .08); color: var(--p-muted); font: 400 13px/1 var(--font-text); white-space: nowrap; overflow: hidden; }
 .bframe__dots { display: inline-flex; gap: 6px; flex: none; }
 /* the window's title is drawn, not text: the bar is a picture of a browser */
 .bframe__label { flex: 1; min-width: 0; overflow: hidden; text-align: center; margin-right: 39px; }
@@ -121,7 +136,7 @@ a.pcard__shot { display: block; border-radius: var(--r-md); }
 .statement__body { display: grid; gap: var(--s-6); }
 .statement__proof { display: grid; gap: var(--s-6); margin: 0; }
 .statement__proof dt { font-weight: 500; font-size: var(--t-card); }
-.statement__proof dd { margin: 6px 0 0; color: var(--p-ink); line-height: 1.5; }
+.statement__proof dd { margin: 6px 0 0; line-height: 1.5; }
 .statement__line { margin: 0; max-width: 54ch; font-size: var(--t-lead); line-height: 1.5; }
 
 /* ---------------------------------------------------------------- projects: one section, a tag on every project */
@@ -130,8 +145,8 @@ a.pcard__shot { display: block; border-radius: var(--r-md); }
 .tag { display: inline-flex; align-items: center; justify-self: start; align-self: flex-start; gap: 6px; height: 24px; padding: 0 9px; border: 1px solid var(--line-strong, rgb(255 255 255 / .22)); border-radius: var(--r-sm); color: var(--p-ink); font: 500 var(--t-label)/1 var(--font-text); letter-spacing: .01em; white-space: nowrap; }
 .tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--p-accent); }
 .tag--product::before { background: var(--p-ink); }
-.tag--personal { color: #a6a6a6; }
-.tag--personal::before { background: #a6a6a6; }
+.tag--personal { color: var(--muted); }
+.tag--personal::before { background: var(--muted); }
 /* the section's h2 ("Proyectos") is the largest line of it; each case's name, an h3, a step under it */
 .projects__head { margin-bottom: var(--s-8); }
 .case__head { gap: var(--s-3); }
@@ -156,7 +171,7 @@ a.pcard__shot { display: block; border-radius: var(--r-md); }
    between a short word and its list */
 .pcard .sheet__row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
 .site__layers { display: grid; gap: 6px; }
-.site__layers li { position: relative; padding-left: 16px; font-size: var(--t-body); line-height: 1.45; color: #c9c9c9; }
+.site__layers li { position: relative; padding-left: 16px; font-size: var(--t-body); line-height: 1.45; }
 .site__layers li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 1px; background: var(--p-muted); }
 
 /* ---------------------------------------------------------------- experience: the timeline */
@@ -540,7 +555,7 @@ main.home .statement .mo-lt__type { font-size: clamp(48px, 6vw, 104px); }
 /* ---------------------------------------------------------------- the home's cases: the parts and the state, quiet */
 .case__meta { display: grid; gap: 6px; }
 .case__parts, .case__status { margin: 0; font-size: var(--t-small); line-height: 1.5; }
-.case__parts { color: #a6a6a6; }   /* body text, not a label: 7.9:1 on the page ground (the muted grey reads 5.9:1) */
+.case__parts { color: var(--muted); }   /* the muted step: 7.4:1 on the page ground */
 .case__status { color: var(--p-ink); }
 /* the case's picture leads to the case too (pointer only): a quiet lift on hover */
 .case__visual-link { display: block; height: 100%; color: inherit; text-decoration: none; border-radius: var(--r-lg); }
