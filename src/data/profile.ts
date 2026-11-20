@@ -1,7 +1,7 @@
 import type { Education, Job } from "./types";
 
 /** Frase del extracto de LinkedIn, para el dato duro del hero. */
-export const currentFact = "Software Engineer en Naranja X · 7 años en banca y fintech";
+export const currentFact: string = "Software Engineer en Naranja X · 7 años en banca y fintech";
 
 /** Del PDF de LinkedIn. Solo lo que dice ahí: nada interno de Naranja X. */
 export const jobs: Job[] = [

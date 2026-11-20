@@ -187,8 +187,9 @@ describe("case pages", () => {
       expect(hrefs.filter((h) => /liquid-type|iris-opens/.test(h ?? ""))).toHaveLength(0);
       cleanup();
     });
-    const layout = readFileSync("src/app/layout.tsx", "utf8");
+    // el documento de los dos idiomas (RootShell) no precarga los de la portada; la portada (HomePage) sí
+    const layout = readFileSync("src/components/RootShell.tsx", "utf8");
     expect(layout).not.toMatch(/(liquid-type|iris-opens)\/moment\.js/);
-    expect(readFileSync("src/app/page.tsx", "utf8")).toMatch(/liquid-type\/moment\.js[\s\S]*iris-opens\/moment\.js/);
+    expect(readFileSync("src/components/HomePage.tsx", "utf8")).toMatch(/liquid-type\/moment\.js[\s\S]*iris-opens\/moment\.js/);
   });
 });

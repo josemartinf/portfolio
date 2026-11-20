@@ -1,8 +1,10 @@
 /* eslint-disable @next/next/no-img-element */
 import type { CSSProperties, ReactNode } from "react";
 import type { CaseStudy, HeroSet, RoleView, Shot } from "@/data/types";
-import { cases } from "@/data/cases";
-import { site, whatsappHref } from "@/lib/site";
+import { cvHref, site, whatsappHref } from "@/lib/site";
+import { type Locale, localePath } from "@/i18n";
+import { content } from "@/i18n/content";
+import { ui } from "@/i18n/ui";
 import { BrowserFrame, PhoneFrame } from "@/components/Frame";
 import { Parts, StatusText, TechSheet } from "@/components/TechSheet";
 import { Logo, Nav } from "@/components/sections/Nav";
@@ -15,8 +17,6 @@ import { EmailCopy } from "@/components/EmailCopy";
    → #ficha (la ficha técnica completa) → footer.closing (contacto neutro y los otros dos casos).
    Momento repartido: counter-rolls en Envo (#calidad) y Stockie (#ficha); pinned-chapters en Club Zapateo (#pantallas).
    Toda captura va en su marco (BrowserFrame o PhoneFrame) y su nombre va al lado, nunca debajo. */
-
-const sectionNav: [string, string][] = [["Problema", "#problema"], ["Pantallas", "#pantallas"], ["Arquitectura", "#arquitectura"], ["Decisiones", "#decisiones"], ["Ficha", "#ficha"]];
 
 /** Lo que sale del código va en mono: cláusulas SQL, rutas, módulos y algoritmos. */
 const CODE = /(SELECT … FOR UPDATE|FOR UPDATE SKIP LOCKED|LISTEN\/NOTIFY|NOTIFY|npm test|\.mjs|\/pedido|stock-core|httpOnly|sameSite strict|argon2id|scrypt|HMAC|Serializable)/g;
@@ -70,23 +70,24 @@ const HERO_SIDE_CROP = 1.3;
 /** Con un teléfono como segunda pieza la principal es más baja, así el teléfono no tapa sus renglones. */
 const HERO_MAIN_CROP_LOW = 1.6;
 
-function Hero({ study }: { study: CaseStudy }) {
-  const roles = study.heroSets.map((s) => s.label.toLowerCase()).join(", ").replace(/, ([^,]+)$/, " y $1");
+function Hero({ study, locale }: { study: CaseStudy; locale: Locale }) {
+  const t = ui[locale].case;
+  const roles = study.heroSets.map((s) => s.label.toLowerCase()).join(", ").replace(/, ([^,]+)$/, ` ${t.and} $1`);
   return <section className="hero hero--triptych case-hero" data-enter aria-labelledby="hero-h"><div className="wrap"><div className="hero-text grid hero__grid">
     <div className="span-3 case-hero__text">
       <h1 id="hero-h">{study.name}</h1>
       <p className="hero__lead">{study.lead}</p>
       <p className="case-hero__status status"><StatusText text={study.status} urls={study.liveUrl ? [study.liveUrl] : []} /> · {study.heroFact}</p>
-      <ul className="case-hero__parts" aria-label="Partes del sistema">{study.parts.map((p) => <li key={p}>{p}</li>)}</ul>
+      <ul className="case-hero__parts" aria-label={t.parts}>{study.parts.map((p) => <li key={p}>{p}</li>)}</ul>
       {/* la demo es la prueba más fuerte: va primero y junto al título; sin demo, la arquitectura */}
       <div className="case-hero__cta">
         {study.demoUrl
-          ? <><a className="btn btn--primary" href={study.demoUrl} target="_blank" rel="noopener noreferrer">Abrir la demo</a><a className="btn btn--secondary" href="#arquitectura">Ver la arquitectura</a></>
-          : <a className="btn btn--primary" href="#arquitectura">Ver la arquitectura</a>}
+          ? <><a className="btn btn--primary" href={study.demoUrl} target="_blank" rel="noopener noreferrer">{t.openDemo}</a><a className="btn btn--secondary" href="#arquitectura">{t.seeArchitecture}</a></>
+          : <a className="btn btn--primary" href="#arquitectura">{t.seeArchitecture}</a>}
       </div>
-      <p className="case-hero__code">El código es privado; lo muestro en una llamada.</p>
+      <p className="case-hero__code">{t.code}</p>
     </div>
-    <div className="ly-collage span-8 start-5" role="img" aria-label={`Pantallas de ${study.name} por rol: ${roles}`}>
+    <div className="ly-collage span-8 start-5" role="img" aria-label={t.collage(study.name, roles)}>
       {study.heroSets.map((s, i) => <Set key={s.label} set={s} index={i} />)}
     </div>
   </div></div></section>;
@@ -94,9 +95,9 @@ function Hero({ study }: { study: CaseStudy }) {
 
 /* ---------------------------------------------------------------- #problema */
 
-function Problem({ study }: { study: CaseStudy }) {
+function Problem({ study, locale }: { study: CaseStudy; locale: Locale }) {
   return <section className="section case-problem" id="problema" aria-labelledby="problema-h"><div className="wrap">
-    <div className="section-head"><h2 id="problema-h">El problema</h2></div>
+    <div className="section-head"><h2 id="problema-h">{ui[locale].case.problem}</h2></div>
     <div className="grid case-split fill">
       <div className="span-5 case-split__text"><p className="case-lede">{withCode(study.problem)}</p></div>
       <div className="span-6 start-7 case-split__visual">
@@ -127,24 +128,24 @@ function Role({ role, h3 = true }: { role: RoleView; h3?: boolean }) {
   </div>;
 }
 
-function Screens({ study }: { study: CaseStudy }) {
+function Screens({ study, locale }: { study: CaseStudy; locale: Locale }) {
   const [first, second, ...rest] = study.roles;
   return <>
     <section className="section g2 case-screens" id="pantallas" aria-labelledby="pantallas-h"><div className="wrap">
       <div className="group">
-        <div className="section-head"><h2 id="pantallas-h">Pantallas por rol</h2><p>{study.screens}</p></div>
+        <div className="section-head"><h2 id="pantallas-h">{ui[locale].case.screens}</h2><p>{study.screens}</p></div>
         <Role role={first} />
       </div>
       <div className="group">{second && <Role role={second} />}</div>
     </div></section>
-    {rest.length > 0 && <MoreRoles roles={rest} />}
+    {rest.length > 0 && <MoreRoles roles={rest} locale={locale} />}
   </>;
 }
 
 /** Los roles que quedan (en Envo, el repartidor y el cliente): su texto y la captura de teléfono en un panel. */
-function MoreRoles({ roles }: { roles: RoleView[] }) {
+function MoreRoles({ roles, locale }: { roles: RoleView[]; locale: Locale }) {
   const phone = roles.flatMap((r) => r.shots).find((s) => s.frame === "phone");
-  const title = roles.map((r, i) => (i === 0 ? r.role : r.role.toLowerCase())).join(" y ");
+  const title = roles.map((r, i) => (i === 0 ? r.role : r.role.toLowerCase())).join(` ${ui[locale].case.and} `);
   return <section className="section case-more" id="roles" aria-labelledby="roles-h"><div className="wrap">
     <div className="section-head"><h2 id="roles-h">{title}</h2></div>
     <div className="grid case-split fill">
@@ -156,11 +157,11 @@ function MoreRoles({ roles }: { roles: RoleView[] }) {
 
 /** Club Zapateo: los tres lugares como capítulos fijos (pinned-chapters, copiado de assets/moments/_demo/in-page-service.html):
  *  la sección se queda en pantalla mientras se abre cada paso y el marco de la derecha cambia a su captura. */
-function Chapters({ study }: { study: CaseStudy }) {
+function Chapters({ study, locale }: { study: CaseStudy; locale: Locale }) {
   return <section className="section case-chapters" id="pantallas" style={{ "--h": 2 } as CSSProperties} data-moment="pinned-chapters" aria-labelledby="pantallas-h">
     <div className="wrap mo-pc__grid">
       <div className="mo-pc__text">
-        <div className="section-head"><h2 id="pantallas-h">Pantallas por rol</h2><p>{study.screens}</p></div>
+        <div className="section-head"><h2 id="pantallas-h">{ui[locale].case.screens}</h2><p>{study.screens}</p></div>
         <ol className="mo-pc__steps">{study.roles.map((r) => {
           const shot = r.shots[0];
           return <li className="mo-pc__step" key={r.role}>
@@ -181,11 +182,11 @@ function Chapters({ study }: { study: CaseStudy }) {
 
 /* ---------------------------------------------------------------- #arquitectura */
 
-function Architecture({ study }: { study: CaseStudy }) {
+function Architecture({ study, locale }: { study: CaseStudy; locale: Locale }) {
   const d = study.diagram;
   const spec = { layout: d.preset, alt: d.alt, ground: "glow dots", nodes: d.nodes, edges: d.edges, shots: d.shots };
   return <section className="section case-arch" id="arquitectura" aria-labelledby="arquitectura-h"><div className="wrap">
-    <div className="section-head"><h2 id="arquitectura-h">Arquitectura</h2><p>{withCode(study.sheet.architecture)}</p></div>
+    <div className="section-head"><h2 id="arquitectura-h">{ui[locale].case.architecture}</h2><p>{withCode(study.sheet.architecture)}</p></div>
     {/* una figura con su descripción, no una imagen muda: un lector de pantalla puede recorrer las partes del
         diagrama una por una (el kit pone role="img" solo si el elemento no trae su propio rol) */}
     <div className="frame frame--lit case-arch__panel fill"><div className="dg" role="figure" aria-label={d.alt} data-diagram={JSON.stringify(spec)} /></div>
@@ -194,9 +195,9 @@ function Architecture({ study }: { study: CaseStudy }) {
 
 /* ---------------------------------------------------------------- #decisiones */
 
-function Decisions({ study }: { study: CaseStudy }) {
+function Decisions({ study, locale }: { study: CaseStudy; locale: Locale }) {
   return <section className="section case-decide" id="decisiones" aria-labelledby="decisiones-h"><div className="wrap">
-    <div className="section-head"><h2 id="decisiones-h">Decisiones técnicas</h2><p>{study.decisionsLead}</p></div>
+    <div className="section-head"><h2 id="decisiones-h">{ui[locale].case.decisions}</h2><p>{study.decisionsLead}</p></div>
     <ul className="grid case-decisions">{study.decisions.map((d) => <li key={d.title} className="span-6">
       <h3>{d.title}</h3>
       <p>{withCode(d.why)}</p>
@@ -219,7 +220,7 @@ function Figures({ study }: { study: CaseStudy }) {
 
 /* ---------------------------------------------------------------- #calidad */
 
-function Quality({ study }: { study: CaseStudy }) {
+function Quality({ study, locale }: { study: CaseStudy; locale: Locale }) {
   if (study.quality.length === 0) return null;
   const figuresHere = study.figures?.in === "calidad";
   const rolls = figuresHere && study.moment === "counter-rolls";
@@ -229,7 +230,7 @@ function Quality({ study }: { study: CaseStudy }) {
   </div>;
   const list = <ul className="rows case-quality__list">{study.quality.map((q) => <li key={q}><p>{withCode(q)}</p></li>)}</ul>;
   return <section className="section case-quality" id="calidad" aria-labelledby="calidad-h"><div className="wrap">
-    <div className="section-head"><h2 id="calidad-h">Calidad y evidencia</h2>{study.qualityLead && <p>{study.qualityLead}</p>}</div>
+    <div className="section-head"><h2 id="calidad-h">{ui[locale].case.quality}</h2>{study.qualityLead && <p>{study.qualityLead}</p>}</div>
     <div className="fill case-body">
     {panel ? <div className="grid case-quality__grid">
       {/* Club Zapateo: la evidencia y su cifra suelta a la izquierda (nunca en una tarjeta, M3); a la derecha el CI que
@@ -255,7 +256,8 @@ function Quality({ study }: { study: CaseStudy }) {
 
 /* ---------------------------------------------------------------- #ficha */
 
-function Sheet({ study }: { study: CaseStudy }) {
+function Sheet({ study, locale }: { study: CaseStudy; locale: Locale }) {
+  const t = ui[locale].sheet;
   const focus = <ul className="sheet__list">{study.focus.map((f) => {
     const [topic, ...rest] = f.split(":");
     return <li key={f}><b>{topic.trim()}</b>{rest.length ? <>: {withCode(rest.join(":").trim())}</> : null}</li>;
@@ -266,12 +268,12 @@ function Sheet({ study }: { study: CaseStudy }) {
     {study.sheet.stack.map((t) => <li key={t} className="case-stack__tile">{ICONS[t] && <Icon id={ICONS[t]} size={32} />}<span>{t}</span></li>)}
   </ul>;
   return <section className="section case-sheet" id="ficha" aria-labelledby="ficha-h"><div className="wrap">
-    <div className="section-head"><h2 id="ficha-h">Ficha técnica</h2></div>
+    <div className="section-head"><h2 id="ficha-h">{ui[locale].case.sheet}</h2></div>
     <div className="case-body">
     <div className="grid case-sheet__grid">
-      <div className="span-5"><TechSheet sheet={study.sheet} only={["architecture", "practices"]} rows={[{ label: "Partes", content: <Parts parts={study.parts} /> }]} after={study.focus.length ? [{ label: "Enfoque", content: focus }] : []} /></div>
+      <div className="span-5"><TechSheet sheet={study.sheet} only={["architecture", "practices"]} rows={[{ label: t.parts, content: <Parts parts={study.parts} /> }]} after={study.focus.length ? [{ label: t.focus, content: focus }] : []} locale={locale} /></div>
       <div className="span-6 start-7">
-        <TechSheet sheet={study.sheet} only={["patterns"]} after={study.sheet.stack.length ? [{ label: "Stack", content: stack }] : []} className="case-sheet__right" />
+        <TechSheet sheet={study.sheet} only={["patterns"]} after={study.sheet.stack.length ? [{ label: t.stack, content: stack }] : []} className="case-sheet__right" locale={locale} />
       </div>
     </div>
     {study.figures?.in === "ficha" && <Figures study={study} />}
@@ -281,29 +283,30 @@ function Sheet({ study }: { study: CaseStudy }) {
 
 /* ---------------------------------------------------------------- cierre */
 
-function Close({ study }: { study: CaseStudy }) {
+function Close({ study, locale }: { study: CaseStudy; locale: Locale }) {
+  const t = ui[locale], { cases } = content(locale), to = (path: string) => localePath(locale, path);
   const i = cases.findIndex((c) => c.slug === study.slug);
   const next = cases[(i + 1) % cases.length];
   const other = cases.find((c) => c.slug !== study.slug && c.slug !== next.slug)!;
-  const external: [string, string][] = [["LinkedIn", site.linkedin], ["GitHub", site.github], ["WhatsApp", whatsappHref()]];
-  const home: [string, string][] = [["Volver a la portada", "/"], ["Proyectos", "/#proyectos"], ["Experiencia", "/#experiencia"], ["Stack", "/#stack"]];
+  const external: [string, string][] = [["LinkedIn", site.linkedin], ["GitHub", site.github], ["WhatsApp", whatsappHref(t.whatsappMessage)]];
+  const home: [string, string][] = [[t.contact.backHome, to("/")], [t.nav.projects, to("/#proyectos")], [t.nav.experience, to("/#experiencia")], [t.nav.stack, to("/#stack")]];
   return <footer className="footer closing closing--case" id="contacto" aria-labelledby="contacto-h"><div className="wrap">
     <div className="closing__cta close--type">
-      <div className="section-head"><h2 id="contacto-h">Contacto</h2><p>Si querés hablar de {study.name} o de cómo está hecho, por email es lo más directo.</p></div>
-      <EmailCopy />
-      <a className="btn btn--secondary" href={site.cv} download>Descargar el CV (PDF)</a>
+      <div className="section-head"><h2 id="contacto-h">{t.contact.title}</h2><p>{t.contact.caseLead(study.name)}</p></div>
+      <EmailCopy locale={locale} />
+      <a className="btn btn--secondary" href={cvHref(locale)} download>{t.cv}</a>
     </div>
     <div className="closing__links">
       <div className="grid">
-        <div className="span-4 stack-4"><Logo href="/" /><p className="footer__lede">Backend, integraciones y automatización con IA.</p></div>
-        <div className="span-2 start-7 footer__col"><h3>Casos</h3><ul>
-          <li><a href={`/${next.slug}`}>Siguiente caso: {next.name}</a></li>
-          <li><a href={`/${other.slug}`}>{other.name}</a></li>
+        <div className="span-4 stack-4"><Logo href={to("/")} /><p className="footer__lede">{t.footerLede}</p></div>
+        <div className="span-2 start-7 footer__col"><h3>{t.contact.cases}</h3><ul>
+          <li><a href={to(`/${next.slug}`)}>{t.contact.next(next.name)}</a></li>
+          <li><a href={to(`/${other.slug}`)}>{other.name}</a></li>
         </ul></div>
-        <div className="span-2 start-9 footer__col"><h3>Portada</h3><ul>{home.map(([l, h]) => <li key={h}><a href={h}>{l}</a></li>)}</ul></div>
-        <div className="span-2 start-11 footer__col"><h3>Contacto</h3><ul>{external.map(([l, h]) => <li key={l}><a href={h} target="_blank" rel="noopener noreferrer">{l}</a></li>)}</ul></div>
+        <div className="span-2 start-9 footer__col"><h3>{t.contact.home}</h3><ul>{home.map(([l, h]) => <li key={h}><a href={h}>{l}</a></li>)}</ul></div>
+        <div className="span-2 start-11 footer__col"><h3>{t.contact.contact}</h3><ul>{external.map(([l, h]) => <li key={l}><a href={h} target="_blank" rel="noopener noreferrer">{l}</a></li>)}</ul></div>
       </div>
-      <div className="footer__legal"><span>© 2026 {site.name} · <span className="footer__domain">{site.domain}</span></span><span>Los nombres y logos de productos son marcas de sus dueños.</span></div>
+      <div className="footer__legal"><span>© 2026 {site.name} · <span className="footer__domain">{site.domain}</span></span><span>{t.contact.legal}</span></div>
     </div>
   </div></footer>;
 }
@@ -316,19 +319,19 @@ function MomentPreload({ id }: { id: CaseStudy["moment"] }) {
   return <link rel="modulepreload" href={`/assets/moments/${id}/moment.js`} />;
 }
 
-export function CaseStudyPage({ study }: { study: CaseStudy }) {
+export function CaseStudyPage({ study, locale = "es" }: { study: CaseStudy; locale?: Locale }) {
   return <>
     <MomentPreload id={study.moment} />
-    <Nav links={sectionNav} logoHref="/" />
+    <Nav locale={locale} path={`/${study.slug}`} links={ui[locale].case.nav} logoHref={localePath(locale, "/")} />
     <main id="top" className={`case-page case-page--${study.slug}`}>
-      <Hero study={study} />
-      <Problem study={study} />
-      {study.moment === "pinned-chapters" ? <Chapters study={study} /> : <Screens study={study} />}
-      <Architecture study={study} />
-      <Decisions study={study} />
-      <Quality study={study} />
-      <Sheet study={study} />
+      <Hero study={study} locale={locale} />
+      <Problem study={study} locale={locale} />
+      {study.moment === "pinned-chapters" ? <Chapters study={study} locale={locale} /> : <Screens study={study} locale={locale} />}
+      <Architecture study={study} locale={locale} />
+      <Decisions study={study} locale={locale} />
+      <Quality study={study} locale={locale} />
+      <Sheet study={study} locale={locale} />
     </main>
-    <Close study={study} />
+    <Close study={study} locale={locale} />
   </>;
 }

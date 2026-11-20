@@ -105,7 +105,7 @@ describe("content", () => {
     });
   });
 
-  it("the CV the site links exists", () => expect(existsSync(`public${site.cv}`)).toBe(true));
+  it("the CVs the site links exist (Spanish and English)", () => { expect(existsSync(`public${site.cv}`)).toBe(true); expect(existsSync(`public${site.cvEn}`)).toBe(true); });
 
   it("envo and stockie tell every layer of the spec", () => {
     const envoCopy = JSON.stringify({ ...caseBySlug("envo"), sheet: undefined });

@@ -1,5 +1,7 @@
 import type { ReactNode } from "react";
 import type { TechSheet as Sheet } from "@/data/types";
+import type { Locale } from "@/i18n";
+import { ui } from "@/i18n/ui";
 
 type Part = "architecture" | "stack" | "practices" | "patterns";
 
@@ -18,13 +20,14 @@ function idents(text: string): ReactNode {
   return parts.length === 1 ? text : parts.map((t, i) => (i % 2 === 1 ? <code key={i}>{t}</code> : t));
 }
 export type SheetRow = { label: string; content: ReactNode; className?: string };
-export function TechSheet({ sheet, compact = false, rows = [], after = [], only, className }: { sheet: Sheet; compact?: boolean; rows?: SheetRow[]; after?: SheetRow[]; only?: Part[]; className?: string }) {
+export function TechSheet({ sheet, compact = false, rows = [], after = [], only, className, locale = "es" }: { sheet: Sheet; compact?: boolean; rows?: SheetRow[]; after?: SheetRow[]; only?: Part[]; className?: string; locale?: Locale }) {
+  const t = ui[locale].sheet;
   const short = compact ? sheet.short ?? {} : {};
   const parts: { key: Part; label: string; items: string[]; short?: string; mono?: boolean; sentence?: boolean }[] = [
-    { key: "architecture" as const, label: "Arquitectura", items: sheet.architecture.trim() ? [sheet.architecture] : [], short: short.architecture, sentence: true },
-    { key: "stack" as const, label: "Stack", items: sheet.stack, short: short.stack },
-    { key: "practices" as const, label: "Prácticas", items: sheet.practices, short: short.practices },
-    { key: "patterns" as const, label: "Patrones", items: sheet.patterns, short: short.patterns, mono: true },
+    { key: "architecture" as const, label: t.architecture, items: sheet.architecture.trim() ? [sheet.architecture] : [], short: short.architecture, sentence: true },
+    { key: "stack" as const, label: t.stack, items: sheet.stack, short: short.stack },
+    { key: "practices" as const, label: t.practices, items: sheet.practices, short: short.practices },
+    { key: "patterns" as const, label: t.patterns, items: sheet.patterns, short: short.patterns, mono: true },
   ].filter((p) => p.items.length > 0 && (!only || only.includes(p.key)));
   return <dl className={`sheet${compact ? " sheet--compact" : ""}${className ? ` ${className}` : ""}`}>
     {rows.map((r) => <div className="sheet__row" key={r.label}><dt className="t-label">{r.label}</dt><dd className={r.className}>{r.content}</dd></div>)}

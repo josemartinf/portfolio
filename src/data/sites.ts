@@ -4,7 +4,7 @@ export const sites: SiteProject[] = [
   {
     slug: "repuestos",
     name: "GlobalFia y MonJeep",
-    tag: "Cliente",
+    tag: "client",
     summary:
       "Dos casas de repuestos en Venezuela, una de Fiat y otra de Jeep, Dodge y Chrysler. Cada una tiene su sitio público y su sistema de stock, que después se convirtió en Stockie.",
     // La búsqueda de MonJeep es de texto en español (plurales, sin acentos) sobre nombre, marca y modelos, más números de
@@ -48,7 +48,7 @@ export const sites: SiteProject[] = [
   {
     slug: "moodi-home",
     name: "Moodi Home",
-    tag: "Cliente",
+    tag: "client",
     summary:
       "Tienda online de objetos de diseño. El cliente arma su carrito y el pedido llega listo por WhatsApp o por email.",
     layers: [
@@ -80,7 +80,7 @@ export const sites: SiteProject[] = [
   {
     slug: "aether-aerospace-care",
     name: "Aether Aerospace Care",
-    tag: "Cliente",
+    tag: "client",
     summary:
       "Sitio bilingüe, en español e inglés, para una empresa de detailing de aeronaves.",
     layers: [

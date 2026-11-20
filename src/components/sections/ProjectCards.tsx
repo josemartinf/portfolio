@@ -1,6 +1,7 @@
 import type { ProjectTag, Shot, TechSheet as Sheet } from "@/data/types";
-import { sites } from "@/data/sites";
-import { tools } from "@/data/tools";
+import { type Locale, localePath } from "@/i18n";
+import { content } from "@/i18n/content";
+import { ui } from "@/i18n/ui";
 import { BrowserFrame } from "@/components/Frame";
 import { StatusText, TechSheet } from "@/components/TechSheet";
 import { Tag } from "@/components/Tag";
@@ -15,10 +16,13 @@ const keep = (text: string) => text.split(/(\S+-\d\S*)/).map((t, i) => (i % 2 ==
 
 type Card = { slug: string; name: string; tag: ProjectTag; summary: string; layers: string[]; sheet: Sheet; shot?: Shot; liveUrl?: string; urls: string[]; status?: string; relatedCase?: string };
 
-const cards: Card[] = [
-  ...sites.map((s) => ({ ...s, urls: [s.liveUrl, ...(s.moreLinks ?? []).map((l) => l.url)] })),
-  ...tools.map((t) => ({ ...t, urls: [] })),
-];
+function cardsOf(locale: Locale): Card[] {
+  const { sites, tools } = content(locale);
+  return [
+    ...sites.map((s) => ({ ...s, urls: [s.liveUrl, ...(s.moreLinks ?? []).map((l) => l.url)] })),
+    ...tools.map((t) => ({ ...t, urls: [] })),
+  ];
+}
 
 function CardShot({ c }: { c: Card }) {
   if (!c.shot) return null;
@@ -28,23 +32,24 @@ function CardShot({ c }: { c: Card }) {
     : <div className="pcard__shot">{frame}</div>;
 }
 
-export function ProjectCards() {
+export function ProjectCards({ locale = "es" }: { locale?: Locale }) {
+  const t = ui[locale].projects;
   return <section className="section projects-more" id="proyectos-mas" aria-labelledby="proyectos-mas-h"><div className="wrap">
-    <h2 id="proyectos-mas-h" className="sr-only">Más proyectos</h2>
-    <ul className="pcards">{cards.map((c) => <li key={c.slug} className="pcard" data-project={c.slug}>
+    <h2 id="proyectos-mas-h" className="sr-only">{t.more}</h2>
+    <ul className="pcards">{cardsOf(locale).map((c) => <li key={c.slug} className="pcard" data-project={c.slug}>
       <CardShot c={c} />
       <div className="pcard__body">
         <div className="pcard__head">
-          <Tag tag={c.tag} />
+          <Tag tag={c.tag} locale={locale} />
           <h3>{keep(c.name)}</h3>
           {c.status && <p className="status pcard__status">
             <StatusText text={c.status} urls={c.urls} />
-            {c.relatedCase && <>. El sistema de stock hoy es <a href={`/${c.relatedCase}`}>Stockie</a></>}
+            {c.relatedCase && <>. {t.relatedCase} <a href={localePath(locale, `/${c.relatedCase}`)}>Stockie</a></>}
           </p>}
         </div>
         <p className="pcard__summary">{keep(c.summary)}</p>
         <ul className="site__layers">{c.layers.map((l) => <li key={l}>{l}</li>)}</ul>
-        <TechSheet sheet={c.sheet} compact only={["stack"]} />
+        <TechSheet sheet={c.sheet} compact only={["stack"]} locale={locale} />
       </div>
     </li>)}</ul>
   </div></section>;

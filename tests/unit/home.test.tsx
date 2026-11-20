@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { cleanup, render, screen } from "@testing-library/react";
-import Home from "@/app/page";
+import Home from "@/app/(es)/page";
 import { site } from "@/lib/site";
 import { HOME_JARGON } from "@/data/copy-guard";
 

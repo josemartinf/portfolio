@@ -10,6 +10,9 @@ const patterns = [...FORBIDDEN_COPY, ...FORBIDDEN_ORIGIN, ...SECRET_PATTERNS];
 function* pageFiles(dir) {
   for (const name of readdirSync(dir)) {
     const p = join(dir, name);
+    // out/assets es el kit tal cual (sus páginas de demostración traen su propio texto de ejemplo, en inglés): no es
+    // texto del sitio
+    if (p === join(root, "assets")) continue;
     if (statSync(p).isDirectory()) yield* pageFiles(p);
     else if (name.endsWith(".html") || name.endsWith(".txt")) yield p;
   }

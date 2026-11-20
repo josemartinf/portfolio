@@ -1,0 +1,10 @@
+import type { Metadata } from "next";
+import { CaseStudyPage } from "@/components/case/CaseStudyPage";
+import { content } from "@/i18n/content";
+import { caseMetadata } from "@/lib/metadata";
+
+const study = content("en").caseBySlug("club-zapateo");
+export const metadata: Metadata = caseMetadata(study, "en");
+export default function Page() {
+  return <CaseStudyPage study={study} locale="en" />;
+}

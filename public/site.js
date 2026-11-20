@@ -11,12 +11,44 @@ for (const btn of document.querySelectorAll("[data-copy]")) {
   btn.addEventListener("click", async () => {
     try {
       await navigator.clipboard.writeText(btn.dataset.copy);
-      btn.textContent = "Copiado";
-      if (status) status.textContent = "Email copiado";
+      btn.textContent = btn.dataset.copied || "Copiado";
+      if (status) status.textContent = btn.dataset.copiedStatus || "Email copiado";
     } catch {
-      btn.textContent = "No se pudo copiar";
+      btn.textContent = btn.dataset.copyFailed || "No se pudo copiar";
     }
     clearTimeout(timer);
     timer = setTimeout(() => { btn.textContent = label; if (status) status.textContent = ""; }, 2000);
   });
 }
+
+// El tema: el que el visitante eligió (guardado) o el de su sistema, que RootShell ya puso en <html data-theme> antes de
+// pintar. El botón de la barra nace oculto (sin script no puede cambiar nada) y dice a qué tema cambia. Mientras el
+// visitante no elija, la página sigue al sistema también si este cambia con la página abierta.
+const root = document.documentElement;
+const systemLight = matchMedia("(prefers-color-scheme: light)");
+const stored = () => { try { return localStorage.getItem("theme"); } catch { return null; } };
+const toggles = document.querySelectorAll("[data-theme-toggle]");
+
+function applyTheme(theme) {
+  root.dataset.theme = theme;
+  root.dataset.tone = theme;   // el tono de la página del kit (system.js lo calcula una sola vez, al cargar)
+  const bg = getComputedStyle(root).getPropertyValue("--p-bg").trim();
+  for (const meta of document.querySelectorAll('meta[name="theme-color"]')) meta.content = bg;
+  for (const btn of toggles) {
+    const toLight = theme === "dark";
+    btn.setAttribute("aria-label", toLight ? btn.dataset.toLightLabel : btn.dataset.toDarkLabel);
+    const text = btn.querySelector("[data-theme-text]");
+    if (text) text.textContent = toLight ? btn.dataset.toLight : btn.dataset.toDark;
+  }
+}
+
+applyTheme(root.dataset.theme === "light" || root.dataset.theme === "dark" ? root.dataset.theme : systemLight.matches ? "light" : "dark");
+for (const btn of toggles) {
+  btn.hidden = false;
+  btn.addEventListener("click", () => {
+    const next = root.dataset.theme === "light" ? "dark" : "light";
+    try { localStorage.setItem("theme", next); } catch { /* sin almacenamiento el tema vale para esta página */ }
+    applyTheme(next);
+  });
+}
+systemLight.addEventListener("change", (e) => { const s = stored(); if (s !== "light" && s !== "dark") applyTheme(e.matches ? "light" : "dark"); });

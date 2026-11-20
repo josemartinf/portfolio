@@ -1,0 +1,91 @@
+import type { Education, Job } from "../types";
+
+/* Espejo en inglés de ../profile.ts: las mismas empresas, fechas, cargos e íconos; solo cambia el texto. */
+
+/** Frase del extracto de LinkedIn, para el dato duro del hero. */
+export const currentFact = "Software Engineer at Naranja X · 7 years in banking and fintech";
+
+/** Del PDF de LinkedIn. Solo lo que dice ahí: nada interno de Naranja X. */
+export const jobs: Job[] = [
+  {
+    company: "Naranja X",
+    role: "Software Engineer SSR · AI Automation",
+    from: "2026-08",
+    to: null,
+    summary:
+      "I design and build AI agents and multi-agent systems with n8n and LangGraph, RAG pipelines, and integrations over REST APIs, webhooks and MCP. The services run on AWS EKS with PostgreSQL and Kafka (Amazon MSK), and I monitor them in production with Datadog.",
+  },
+  {
+    company: "Naranja X",
+    role: "QA Automation Engineer SSR",
+    from: "2022-02",
+    to: "2026-08",
+    summary:
+      "I built backend services with TypeScript, Node.js and NestJS on a hexagonal architecture, and asynchronous processes with Kafka (Amazon MSK), idempotency and the Outbox pattern, covered by unit, integration and end-to-end tests.",
+  },
+  {
+    company: "Ualá",
+    role: "Software Tester / QA Specialist",
+    from: "2021-04",
+    to: "2022-01",
+    summary:
+      "Functional, regression and API testing on critical product flows, and my first automation work with Cypress and BDD (Cucumber/Gherkin).",
+  },
+  {
+    company: "ECOSISTEMAS",
+    role: "Software Tester / QA Specialist for Banco Hipotecario",
+    from: "2020-09",
+    to: "2021-04",
+    summary:
+      "Functional, regression and service testing on banking flows, with data validation in SQL Server and defect tracking in Jira.",
+  },
+  {
+    company: "SIAHO.net",
+    role: "QA Specialist",
+    from: "2019-08",
+    to: "2020-07",
+    summary:
+      "My first QA role: functional and regression test cases, API testing with Postman and SoapUI, and data validation with SQL.",
+  },
+];
+
+export const education: Education = {
+  school: "Universidad Nororiental Gran Mariscal de Ayacucho (UGMA)",
+  degree: "Systems Engineering",
+  from: "2013",
+  to: "2017",
+};
+
+/** El stack por área, con los íconos reales de public/assets/icons. */
+export const stackGroups: { label: string; items: { name: string; icon: string }[] }[] = [
+  { label: "Languages and backend", items: [
+    { name: "TypeScript", icon: "/assets/icons/typescript.svg" },
+    { name: "Node.js", icon: "/assets/icons/nodejs.svg" },
+    { name: "NestJS", icon: "/assets/icons/nestjs.svg" },
+    { name: "Python", icon: "/assets/icons/python.svg" },
+    { name: "Next.js", icon: "/assets/icons/nextjs.svg" },
+  ] },
+  { label: "Data and messaging", items: [
+    { name: "PostgreSQL", icon: "/assets/icons/postgres.svg" },
+    { name: "Kafka", icon: "/assets/icons/kafka.svg" },
+    { name: "Prisma", icon: "/assets/icons/prisma.svg" },
+  ] },
+  { label: "AI and automation", items: [
+    { name: "LangGraph", icon: "/assets/icons/langgraph.svg" },
+    { name: "n8n", icon: "/assets/icons/n8n.svg" },
+  ] },
+  { label: "Infrastructure", items: [
+    { name: "AWS", icon: "/assets/icons/aws.svg" },
+    { name: "Kubernetes", icon: "/assets/icons/kubernetes.svg" },
+    { name: "Docker", icon: "/assets/icons/docker.svg" },
+    { name: "GitLab", icon: "/assets/icons/gitlab.svg" },
+    { name: "Datadog", icon: "/assets/icons/datadog.svg" },
+  ] },
+  { label: "Testing", items: [
+    { name: "Playwright", icon: "/assets/icons/playwright.svg" },
+    { name: "Vitest", icon: "/assets/icons/vitest.svg" },
+  ] },
+];
+
+/** Las mismas herramientas en una sola lista. */
+export const stackIcons = stackGroups.flatMap((g) => g.items);
