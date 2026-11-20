@@ -4,7 +4,7 @@ export const tools: ToolProject[] = [
   {
     slug: "rd550-mac",
     name: "Driver Redragon SS-550 para macOS",
-    tag: "Personal",
+    tag: "personal",
     summary:
       "Un driver para usar el stream deck Redragon SS-550 en Mac, con un panel web para configurar sus 15 teclas. Lo adapté del proyecto open source redragon-streamdeck-linux.",
     layers: [

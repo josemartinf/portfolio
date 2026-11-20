@@ -1,0 +1,169 @@
+import type { Locale } from "./index";
+
+/* Los textos de la interfaz (los que no son datos de un proyecto, un empleo o el stack: esos viven en src/data y su
+   espejo en inglés en src/data/en). El español es la forma; el inglés tiene que tener las mismas claves. Una frase con
+   un pedazo en negrita va como [antes, negrita, después]. */
+const es = {
+  meta: {
+    title: "José Martin Flores — Software Engineer",
+    description: "Software Engineer en Naranja X. Backend, integraciones y automatización con IA: Envo, Stockie y Club Zapateo contados por dentro, con su arquitectura y sus decisiones.",
+    caseTitle: (name: string) => `${name} — caso · José Martin Flores`,
+    knowsAbout: ["Backend", "TypeScript", "Node.js", "PostgreSQL", "Kafka", "Integraciones", "Automatización con IA"],
+  },
+  tagline: "Backend, integraciones y automatización con IA. Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
+  footerLede: "Backend, integraciones y automatización con IA.",
+  whatsappMessage: "Hola José, vi tu portafolio.",
+  nav: {
+    projects: "Proyectos", experience: "Experiencia", stack: "Stack", contact: "Contacto",
+    skip: "Ir al contenido", main: "Principal", menu: "Abrir el menú",
+    /** el link al otro idioma: lo que se ve en la barra, lo que se ve en el menú del teléfono y su nombre completo */
+    langShort: "EN", langLong: "English", langCode: "en",
+    themeToLight: "Modo claro", themeToDark: "Modo oscuro",
+    themeToLightLabel: "Cambiar a modo claro", themeToDarkLabel: "Cambiar a modo oscuro",
+  },
+  cv: "Descargar el CV (PDF)",
+  hero: {
+    seeProjects: "Ver los proyectos",
+    noteLabel: "Un pedido de Envo: entra, se guarda junto con su aviso y el repartidor lo recibe por Telegram",
+    noteOrder: "Pedido DEMO-0001", noteChip: "Avisado",
+    noteSteps: [["", "Entra", " el pedido"], ["", "Se guarda", " junto con su aviso"], ["El repartidor lo recibe por ", "Telegram", ""]] as [string, string, string][],
+  },
+  statement: {
+    title: "Del testing al backend",
+    line: "Empecé en QA en 2019 y hoy desarrollo en Naranja X. Antes de construir algo, defino qué pasa si un mensaje no llega, si un pago entra dos veces o si un servicio se cae.",
+    proof: [
+      ["Ningún aviso se pierde", "Si Telegram o WhatsApp se caen, Envo guarda el aviso y lo manda cuando el canal vuelve."],
+      ["Ningún cobro doble", "En Club Zapateo, si un pago se reintenta, no se cobra ni se emite una entrada dos veces."],
+      ["Controles cada noche", "Envo revisa que el stock, las reservas y la caja cuadren; si algo no cierra, abre una alerta y la cierra cuando vuelve a cuadrar."],
+      ["Probado contra la base real", "Las pruebas de Envo corren también contra PostgreSQL de verdad, no solo contra una copia en memoria."],
+    ] as [string, string][],
+  },
+  projects: {
+    title: "Proyectos",
+    lead: "Sistemas y sitios en uso, y uno que hice para mí.",
+    more: "Más proyectos",
+    seeCase: "Ver el caso", seeCaseOf: (name: string) => ` de ${name}`,
+    zapateoLabel: "Club Zapateo · Panel", zapateoLabelShort: "Panel",
+    relatedCase: "El sistema de stock hoy es",
+    envoFlow: {
+      alt: "Los pedidos entran por Telegram, WhatsApp o la página web, y Envo guarda cada pedido junto con su aviso. De ahí salen los avisos al repartidor y al cliente, que se reintentan si un canal está caído, y el panel de operación, que se actualiza solo.",
+      chat: "chat del cliente", orderPage: "Página de pedidos", fromWeb: "desde la web", core: "Pedidos y caja",
+      notices: "Avisos", noticesSub: "se reintentan si un canal se cae", panel: "Panel en vivo", panelSub: "se actualiza solo",
+    },
+  },
+  tags: { client: "Cliente", product: "Producto propio", personal: "Personal" },
+  experience: {
+    title: "Experiencia", lead: "De QA a Software Engineer, siempre en banca y fintech.", education: "Formación",
+    months: ["ene", "feb", "mar", "abr", "may", "jun", "jul", "ago", "sep", "oct", "nov", "dic"], present: "hoy",
+  },
+  stack: { title: "Stack", lead: "Lo que uso en Naranja X y en estos proyectos." },
+  contact: {
+    title: "Contacto",
+    lead: "Por email es lo más directo. También estoy en LinkedIn y GitHub.",
+    caseLead: (name: string) => `Si querés hablar de ${name} o de cómo está hecho, por email es lo más directo.`,
+    home: "Portada", contact: "Contacto", cases: "Casos", backHome: "Volver a la portada", next: (name: string) => `Siguiente caso: ${name}`,
+    legal: "Los nombres y logos de productos son marcas de sus dueños.",
+    copy: "Copiar el email", copied: "Copiado", copiedStatus: "Email copiado", copyFailed: "No se pudo copiar",
+  },
+  sheet: { architecture: "Arquitectura", stack: "Stack", practices: "Prácticas", patterns: "Patrones", parts: "Partes", focus: "Enfoque" },
+  case: {
+    nav: [["Problema", "#problema"], ["Pantallas", "#pantallas"], ["Arquitectura", "#arquitectura"], ["Decisiones", "#decisiones"], ["Ficha", "#ficha"]] as [string, string][],
+    and: "y",
+    parts: "Partes del sistema",
+    openDemo: "Abrir la demo", seeArchitecture: "Ver la arquitectura",
+    code: "El código es privado; lo muestro en una llamada.",
+    collage: (name: string, roles: string) => `Pantallas de ${name} por rol: ${roles}`,
+    problem: "El problema", screens: "Pantallas por rol", architecture: "Arquitectura", decisions: "Decisiones técnicas",
+    quality: "Calidad y evidencia", sheet: "Ficha técnica",
+  },
+  notFound: {
+    title: "No encontrada — José Martin Flores",
+    heading: "Página no encontrada",
+    text: "La dirección no existe o cambió. La portada tiene los tres casos: Envo, Stockie y Club Zapateo.",
+    back: "Volver a la portada",
+  },
+};
+
+export type Ui = typeof es;
+
+const en: Ui = {
+  meta: {
+    title: "José Martin Flores — Software Engineer",
+    description: "Software Engineer at Naranja X. Backend, integrations and AI automation: Envo, Stockie and Club Zapateo explained from the inside, with their architecture and their decisions.",
+    caseTitle: (name: string) => `${name} — case study · José Martin Flores`,
+    knowsAbout: ["Backend", "TypeScript", "Node.js", "PostgreSQL", "Kafka", "Integrations", "AI automation"],
+  },
+  tagline: "Backend, integrations and AI automation. I build order, inventory and payment systems that keep working when something fails.",
+  footerLede: "Backend, integrations and AI automation.",
+  whatsappMessage: "Hi José, I saw your portfolio.",
+  nav: {
+    projects: "Projects", experience: "Experience", stack: "Stack", contact: "Contact",
+    skip: "Skip to content", main: "Main", menu: "Open the menu",
+    langShort: "ES", langLong: "Español", langCode: "es",
+    themeToLight: "Light mode", themeToDark: "Dark mode",
+    themeToLightLabel: "Switch to light mode", themeToDarkLabel: "Switch to dark mode",
+  },
+  cv: "Download CV (PDF)",
+  hero: {
+    seeProjects: "See the projects",
+    noteLabel: "An Envo order: it comes in, it is saved together with its notification, and the courier gets it on Telegram",
+    noteOrder: "Order DEMO-0001", noteChip: "Notified",
+    noteSteps: [["The order ", "comes in", ""], ["", "Saved", " with its notification"], ["The courier gets it on ", "Telegram", ""]],
+  },
+  statement: {
+    title: "From testing to backend",
+    line: "I started in QA in 2019 and today I build software at Naranja X. Before building anything, I decide what happens if a message never arrives, if a payment comes in twice or if a service goes down.",
+    proof: [
+      ["No notification gets lost", "If Telegram or WhatsApp go down, Envo keeps the notification and sends it when the channel is back."],
+      ["No double charges", "In Club Zapateo, if a payment is retried, nobody is charged twice and no ticket is issued twice."],
+      ["Checks every night", "Envo checks that stock, reservations and cash add up; if something is off, it opens an alert and closes it once the numbers match again."],
+      ["Tested against the real database", "Envo's tests also run against a real PostgreSQL, not only against an in-memory copy."],
+    ],
+  },
+  projects: {
+    title: "Projects",
+    lead: "Systems and sites in use, and one I built for myself.",
+    more: "More projects",
+    seeCase: "See the case study", seeCaseOf: (name: string) => `: ${name}`,
+    zapateoLabel: "Club Zapateo · Dashboard", zapateoLabelShort: "Dashboard",
+    relatedCase: "Its inventory system is now",
+    envoFlow: {
+      alt: "Orders come in through Telegram, WhatsApp or the website, and Envo saves each order together with its notification. From there go the notifications to the courier and the customer, retried if a channel is down, and the operations panel, which updates on its own.",
+      chat: "customer chat", orderPage: "Order page", fromWeb: "from the web", core: "Orders and cash",
+      notices: "Notifications", noticesSub: "retried if a channel goes down", panel: "Live panel", panelSub: "updates on its own",
+    },
+  },
+  tags: { client: "Client", product: "Own product", personal: "Personal" },
+  experience: {
+    title: "Experience", lead: "From QA to Software Engineer, always in banking and fintech.", education: "Education",
+    months: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"], present: "present",
+  },
+  stack: { title: "Stack", lead: "What I use at Naranja X and in these projects." },
+  contact: {
+    title: "Contact",
+    lead: "Email is the most direct way. I'm also on LinkedIn and GitHub.",
+    caseLead: (name: string) => `If you'd like to talk about ${name} or how it's built, email is the most direct way.`,
+    home: "Home", contact: "Contact", cases: "Case studies", backHome: "Back to home", next: (name: string) => `Next case: ${name}`,
+    legal: "Product names and logos are trademarks of their owners.",
+    copy: "Copy email", copied: "Copied", copiedStatus: "Email copied", copyFailed: "Couldn't copy",
+  },
+  sheet: { architecture: "Architecture", stack: "Stack", practices: "Practices", patterns: "Patterns", parts: "Parts", focus: "Focus" },
+  case: {
+    nav: [["Problem", "#problema"], ["Screens", "#pantallas"], ["Architecture", "#arquitectura"], ["Decisions", "#decisiones"], ["Summary", "#ficha"]],
+    and: "and",
+    parts: "System parts",
+    openDemo: "Open the demo", seeArchitecture: "See the architecture",
+    code: "The code is private; I can walk you through it on a call.",
+    collage: (name: string, roles: string) => `${name} screens by role: ${roles}`,
+    problem: "The problem", screens: "Screens by role", architecture: "Architecture", decisions: "Technical decisions",
+    quality: "Quality and evidence", sheet: "Tech summary",
+  },
+  notFound: {
+    title: "Not found — José Martin Flores",
+    heading: "Page not found",
+    text: "This address doesn't exist or has changed. The home page has the three case studies: Envo, Stockie and Club Zapateo.",
+    back: "Back to home",
+  },
+};
+
+export const ui: Record<Locale, Ui> = { es, en };

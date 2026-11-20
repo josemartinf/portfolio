@@ -2,9 +2,14 @@ import { cases } from "./cases";
 import { sites } from "./sites";
 import { tools } from "./tools";
 import { currentFact, education, jobs, stackIcons } from "./profile";
+import { cases as casesEn } from "./en/cases";
+import { sites as sitesEn } from "./en/sites";
+import { tools as toolsEn } from "./en/tools";
+import { currentFact as currentFactEn, education as educationEn, jobs as jobsEn } from "./en/profile";
 import { site } from "../lib/site";
+import { ui } from "../i18n/ui";
 
-/** Frases de venta o de búsqueda laboral, y adjetivos sobre sí mismo. */
+/** Frases de venta o de búsqueda laboral, y adjetivos sobre sí mismo, en los dos idiomas. */
 export const FORBIDDEN_COPY: RegExp[] = [
   /contrat(a|á)me/i,
   /busco (trabajo|equipo|empresa)/i,
@@ -15,6 +20,15 @@ export const FORBIDDEN_COPY: RegExp[] = [
   // Con \b: "potenciar" sí, "idempotencia" no.
   /\bpotenci/i,
   /apasionad/i,
+  // las mismas en inglés
+  /hire me/i,
+  /looking for (a )?(job|work|team|company|role)/i,
+  /available for/i,
+  /your business/i,
+  /solutions/i,
+  /passionate/i,
+  /cutting[- ]edge/i,
+  /seamless/i,
 ];
 
 /**
@@ -42,7 +56,8 @@ export const SECRET_PATTERNS: RegExp[] = [
 export const HOME_JARGON =
   /tsvector|pg_trgm|trigger|FOR UPDATE|SKIP LOCKED|PGlite|outbox|worker|middleware|idempoten|Serializable|circuit breaker|dead letter|backoff|HIDAPI|libusb|\bLRU\b|reply-to|\bSSE\b|NOTIFY|\bCI\b|\blint\b|FIFO|TSPL|\baxe\b|\be2e\b|\bspecs?\b/i;
 
-/** Todo el texto de los módulos de datos y de `site`, concatenado. */
+/** Todo el texto de los módulos de datos (en los dos idiomas), de `site` y de la interfaz, concatenado. */
 export function allCopy(): string {
-  return JSON.stringify([cases, sites, tools, jobs, education, stackIcons, currentFact, site]);
+  return JSON.stringify([cases, sites, tools, jobs, education, stackIcons, currentFact, site,
+    casesEn, sitesEn, toolsEn, jobsEn, educationEn, currentFactEn, ui]);
 }

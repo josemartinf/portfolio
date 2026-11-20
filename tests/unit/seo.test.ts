@@ -3,13 +3,14 @@ import robots from "@/app/robots";
 import sitemap from "@/app/sitemap";
 
 describe("seo", () => {
-  it("the sitemap lists the home and the three cases on the production origin", () => {
+  it("the sitemap lists the home and the three cases in both languages on the production origin, each naming the other", () => {
+    const o = "https://www.joseflores.codes";
     expect(sitemap().map((e) => e.url)).toEqual([
-      "https://www.joseflores.codes",
-      "https://www.joseflores.codes/envo",
-      "https://www.joseflores.codes/stockie",
-      "https://www.joseflores.codes/club-zapateo",
+      o, `${o}/envo`, `${o}/stockie`, `${o}/club-zapateo`,
+      `${o}/en`, `${o}/en/envo`, `${o}/en/stockie`, `${o}/en/club-zapateo`,
     ]);
+    expect(sitemap()[1].alternates?.languages).toEqual({ es: `${o}/envo`, en: `${o}/en/envo` });
+    expect(sitemap()[4].alternates?.languages).toEqual({ es: o, en: `${o}/en` });
   });
 
   it("robots allows everything and points to the sitemap", () => {

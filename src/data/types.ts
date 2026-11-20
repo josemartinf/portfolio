@@ -1,7 +1,7 @@
 export type CaseSlug = "envo" | "stockie" | "club-zapateo";
 
 /** Qué es cada proyecto, en una palabra: va como etiqueta sobre su nombre en la portada. */
-export type ProjectTag = "Cliente" | "Producto propio" | "Personal";
+export type ProjectTag = "client" | "product" | "personal";
 
 /** Una captura. `title` es corto y va al lado de la captura, nunca debajo. */
 export interface Shot {

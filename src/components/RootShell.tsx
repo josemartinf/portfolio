@@ -1,10 +1,15 @@
-import type { Metadata, Viewport } from "next";
+/* eslint-disable @next/next/no-head-element, @next/next/no-css-tags, @next/next/no-sync-scripts -- la cáscara de los dos layouts raíz (el
+   <head>, las hojas y los scripts del kit, en su orden): las reglas la tratan como un componente cualquiera porque no vive en
+   app/layout.tsx */
 import type { ReactNode } from "react";
 import { Familjen_Grotesk, IBM_Plex_Mono } from "next/font/google";
-import { site } from "@/lib/site";
-import "./globals.css";
+import type { Locale } from "@/i18n";
+import "../app/globals.css";
 
-/* Las dos familias, servidas desde el propio sitio (next/font las baja en el build): ningún pedido a Google en cada
+/* El documento (html, head y body), el mismo para los dos idiomas: cada idioma tiene su layout raíz (src/app/(es) y
+   src/app/(en)), así el <html lang> de cada página dice su idioma desde el primer byte, y los dos usan esta cáscara.
+
+   Las dos familias, servidas desde el propio sitio (next/font las baja en el build): ningún pedido a Google en cada
    visita, y una fuente de respaldo con las medidas de la real, así el texto no se reacomoda cuando la fuente llega
    (con la hoja de Google y display=swap, el h1 y los párrafos cambiaban de ancho al cargar). site.css las nombra por
    sus variables. El español entra entero en el subconjunto latin. */
@@ -16,20 +21,16 @@ const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], var
    palette soot-pale-lime · type familjen · radius sharp · buttons arrow · ground sky ·
    effect painterly-landscape (marco del hero collage) · moments liquid-type + iris-opens (portada),
    counter-rolls (Envo, Stockie), pinned-chapters (Club Zapateo) · hero collage (portada), triptych (casos). */
-const title = "José Martin Flores — Software Engineer";
-const description = "Software Engineer en Naranja X. Backend, integraciones y automatización con IA: Envo, Stockie y Club Zapateo contados por dentro, con su arquitectura y sus decisiones.";
-export const metadata: Metadata = {
-  metadataBase: new URL(site.url), title, description,
-  alternates: { canonical: "/" },
-  openGraph: { type: "website", title, description, url: "/", images: [{ url: "/og.jpg", width: 1200, height: 630 }] },
-  twitter: { card: "summary_large_image", title, description, images: ["/og.jpg"] },
-  icons: { icon: "/icon.svg" },
-  other: { "page-type": "software", "site-kind": "software" },
-};
-export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#0f0f0f" };
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  return <html lang="es" className={`${familjen.variable} ${plexMono.variable}`} data-type="software" data-radius="sharp" data-buttons="arrow" data-ground="sky" data-motion="">
+
+/* El tema, antes de pintar nada: el que el visitante eligió (localStorage) o, si nunca eligió, el de su sistema. Va en
+   <html data-theme>, que site.css lee; sin script manda la preferencia del sistema (la media query de site.css). */
+const THEME = "try{var t=localStorage.getItem('theme')}catch(e){}if(t!=='light'&&t!=='dark')t=matchMedia('(prefers-color-scheme: light)').matches?'light':'dark';document.documentElement.dataset.theme=t;";
+const ENTER = "document.documentElement.classList.add('m-enter','mo-js');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700);setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)";
+
+export function RootShell({ locale, children }: { locale: Locale; children: ReactNode }) {
+  return <html lang={locale} className={`${familjen.variable} ${plexMono.variable}`} data-type="software" data-radius="sharp" data-buttons="arrow" data-ground="sky" data-motion="" suppressHydrationWarning>
     <head>
+      <script dangerouslySetInnerHTML={{ __html: THEME }} />
       <link rel="stylesheet" href="/assets/system.css" />
       <link rel="stylesheet" href="/assets/ui/cards.css" />
       <link rel="stylesheet" href="/assets/motion/motion.css" />
@@ -42,7 +43,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
       <link rel="stylesheet" href="/assets/moments/counter-rolls/moment.css" />
       <link rel="stylesheet" href="/assets/moments/pinned-chapters/moment.css" />
       <link rel="stylesheet" href="/site.css" />
-      <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('m-enter','mo-js');setTimeout(()=>document.documentElement.classList.add('m-enter-done'),700);setTimeout(()=>document.documentElement.classList.add('mo-safe'),2500)" }} />
+      <script dangerouslySetInnerHTML={{ __html: ENTER }} />
       <script src="/assets/backgrounds/backgrounds.js" />
       <link rel="modulepreload" href="/assets/moments/moments.js" />
       <link rel="modulepreload" href="/assets/moments/lib.js" />

@@ -42,7 +42,7 @@ const zapateoShots = {
 const envo: CaseStudy = {
   slug: "envo",
   name: "Envo",
-  tag: "Producto propio",
+  tag: "product",
   tagline:
     "Plataforma de pedidos y entregas con varios repartidores: un panel de operación, una Mini App de Telegram para el repartidor y una página de pedidos para el cliente.",
   lead: "Pedidos y entregas con varios repartidores, por Telegram y WhatsApp.",
@@ -204,7 +204,7 @@ const envo: CaseStudy = {
 const stockie: CaseStudy = {
   slug: "stockie",
   name: "Stockie",
-  tag: "Producto propio",
+  tag: "product",
   tagline:
     "Stock, depósitos y ventas para comercios de repuestos en Venezuela, con costo por lote FIFO y cobros en bolívares y dólares. Nació en MonJeep y GlobalFia, que lo usan.",
   lead: "Stock, depósitos y ventas para comercios de repuestos en Venezuela, en bolívares y dólares.",
@@ -338,7 +338,7 @@ const stockie: CaseStudy = {
 const clubZapateo: CaseStudy = {
   slug: "club-zapateo",
   name: "Club Zapateo",
-  tag: "Cliente",
+  tag: "client",
   tagline:
     "Venta de entradas en producción en clubzapateo.com, con panel de administración, conciliación con Mercado Pago y control de acceso en la puerta.",
   lead: "Venta de entradas con Mercado Pago y control de acceso en la puerta.",

@@ -3,6 +3,8 @@ export const site: {
   role: string;
   tagline: string;
   cv: string;
+  /** el CV en inglés, el que enlazan las páginas bajo /en (scripts/cv.mts genera los dos) */
+  cvEn: string;
   location: string;
   url: string;
   /** La marca: el dominio, escrito como firma en el pie y en el sello para clientes. */
@@ -16,6 +18,7 @@ export const site: {
   role: "Software Engineer · Backend, integraciones y automatización con IA",
   tagline: "Backend, integraciones y automatización con IA. Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
   cv: "/cv-jose-martin-flores.pdf",
+  cvEn: "/cv-jose-martin-flores-en.pdf",
   location: "Buenos Aires, Argentina",
   url: "https://www.joseflores.codes",
   domain: "joseflores.codes",
@@ -35,4 +38,9 @@ export function whatsappHref(message?: string): string {
 
 export function mailtoHref(subject?: string): string {
   return `mailto:${site.email}${subject === undefined ? "" : `?subject=${encodeURIComponent(subject)}`}`;
+}
+
+/** El CV del idioma de la página. */
+export function cvHref(locale: "es" | "en" = "es"): string {
+  return locale === "en" ? site.cvEn : site.cv;
 }
