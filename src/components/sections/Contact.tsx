@@ -6,7 +6,7 @@ import { Logo } from "./Nav";
    Contacto neutro: el email es el principal; LinkedIn, GitHub y WhatsApp van como links de texto. La dirección se ve
    escrita porque un mailto no hace nada en una computadora sin cliente de correo. */
 const external = [["LinkedIn", site.linkedin], ["GitHub", site.github], ["WhatsApp", whatsappHref()]];
-const home = [["Proyectos", "#proyectos"], ["Sitios", "#sitios"], ["Experiencia", "#experiencia"], ["Stack", "#stack"], ["Proyecto personal", "#herramientas"]];
+const home = [["Proyectos", "#proyectos"], ["Experiencia", "#experiencia"], ["Stack", "#stack"]];
 
 export function Contact() {
   return <footer className="footer closing closing--home" id="contacto" aria-labelledby="contacto-h"><div className="wrap">
@@ -17,11 +17,11 @@ export function Contact() {
     </div>
     <div className="closing__links">
       <div className="grid">
-        <div className="span-4 stack-4"><Logo mark={false} /><p className="footer__lede">Backend, integraciones y automatización con IA.</p></div>
+        <div className="span-4 stack-4"><Logo /><p className="footer__lede">Backend, integraciones y automatización con IA.</p></div>
         <div className="span-2 start-9 footer__col"><h3>Portada</h3><ul>{home.map(([l, h]) => <li key={h}><a href={h}>{l}</a></li>)}</ul></div>
         <div className="span-2 start-11 footer__col"><h3>Contacto</h3><ul>{external.map(([l, h]) => <li key={l}><a href={h} target="_blank" rel="noopener noreferrer">{l}</a></li>)}</ul></div>
       </div>
-      <div className="footer__legal"><span>© 2026 {site.name}</span><span>Los nombres y logos de productos son marcas de sus dueños.</span></div>
+      <div className="footer__legal"><span>© 2026 {site.name} · <span className="footer__domain">{site.domain}</span></span><span>Los nombres y logos de productos son marcas de sus dueños.</span></div>
     </div>
   </div></footer>;
 }

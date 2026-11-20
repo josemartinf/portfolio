@@ -3,7 +3,7 @@ import { stackGroups } from "@/data/profile";
 
 /* #stack: las herramientas por área, en columnas cortas: cada una con su ícono real (public/assets/icons) en una
    baldosa chica y su nombre al lado. Una lista de verdad para un lector de pantalla, nombrada por el rótulo de su área
-   (un rótulo chico, no un título: los h3 de la portada son los nombres de los sitios). */
+   (un rótulo chico, no un título: los h3 de la portada son los nombres de los proyectos). */
 export function Stack() {
   return <section className="section stack" id="stack" aria-labelledby="stack-h"><div className="wrap">
     <div className="section-head"><h2 id="stack-h">Stack</h2><p>Lo que uso en Naranja X y en estos proyectos.</p></div>
