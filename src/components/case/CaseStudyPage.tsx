@@ -286,7 +286,7 @@ function Close({ study }: { study: CaseStudy }) {
   const next = cases[(i + 1) % cases.length];
   const other = cases.find((c) => c.slug !== study.slug && c.slug !== next.slug)!;
   const external: [string, string][] = [["LinkedIn", site.linkedin], ["GitHub", site.github], ["WhatsApp", whatsappHref()]];
-  const home: [string, string][] = [["Volver a la portada", "/"], ["Proyectos", "/#proyectos"], ["Sitios", "/#sitios"], ["Experiencia", "/#experiencia"]];
+  const home: [string, string][] = [["Volver a la portada", "/"], ["Proyectos", "/#proyectos"], ["Experiencia", "/#experiencia"], ["Stack", "/#stack"]];
   return <footer className="footer closing closing--case" id="contacto" aria-labelledby="contacto-h"><div className="wrap">
     <div className="closing__cta close--type">
       <div className="section-head"><h2 id="contacto-h">Contacto</h2><p>Si querés hablar de {study.name} o de cómo está hecho, por email es lo más directo.</p></div>
@@ -295,7 +295,7 @@ function Close({ study }: { study: CaseStudy }) {
     </div>
     <div className="closing__links">
       <div className="grid">
-        <div className="span-4 stack-4"><Logo mark={false} href="/" /><p className="footer__lede">Backend, integraciones y automatización con IA.</p></div>
+        <div className="span-4 stack-4"><Logo href="/" /><p className="footer__lede">Backend, integraciones y automatización con IA.</p></div>
         <div className="span-2 start-7 footer__col"><h3>Casos</h3><ul>
           <li><a href={`/${next.slug}`}>Siguiente caso: {next.name}</a></li>
           <li><a href={`/${other.slug}`}>{other.name}</a></li>
@@ -303,7 +303,7 @@ function Close({ study }: { study: CaseStudy }) {
         <div className="span-2 start-9 footer__col"><h3>Portada</h3><ul>{home.map(([l, h]) => <li key={h}><a href={h}>{l}</a></li>)}</ul></div>
         <div className="span-2 start-11 footer__col"><h3>Contacto</h3><ul>{external.map(([l, h]) => <li key={l}><a href={h} target="_blank" rel="noopener noreferrer">{l}</a></li>)}</ul></div>
       </div>
-      <div className="footer__legal"><span>© 2026 {site.name}</span><span>Los nombres y logos de productos son marcas de sus dueños.</span></div>
+      <div className="footer__legal"><span>© 2026 {site.name} · <span className="footer__domain">{site.domain}</span></span><span>Los nombres y logos de productos son marcas de sus dueños.</span></div>
     </div>
   </div></footer>;
 }

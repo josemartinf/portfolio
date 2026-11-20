@@ -42,14 +42,15 @@ const zapateoShots = {
 const envo: CaseStudy = {
   slug: "envo",
   name: "Envo",
+  tag: "Producto propio",
   tagline:
     "Plataforma de pedidos y entregas con varios repartidores: un panel de operación, una Mini App de Telegram para el repartidor y una página de pedidos para el cliente.",
   lead: "Pedidos y entregas con varios repartidores, por Telegram y WhatsApp.",
   moment: "counter-rolls",
   homeFacts: [
-    "Ningún aviso se pierde aunque Telegram o WhatsApp estén caídos: outbox transaccional, circuit breaker y dead letter",
-    "2938 tests, con integración contra PGlite y PostgreSQL real y 84 specs e2e con chequeos de accesibilidad (axe)",
-    "150 rutas de API, 64 tablas y 86 migraciones SQL sin ORM",
+    "Ningún aviso se pierde, aunque Telegram o WhatsApp estén caídos: se guarda y se manda cuando el canal vuelve",
+    "Cobros en pesos, dólares y euros, y la caja de cada repartidor separada por moneda",
+    "2938 pruebas automáticas, con chequeos de accesibilidad",
   ],
   problem:
     "Una operación de entregas con varios repartidores recibe pedidos por Telegram y WhatsApp, cobra en pesos, dólares y euros, y avisa a cada parte en cada paso del pedido. Si un aviso se pierde, el pedido queda trabado; si un cobro se registra dos veces, la caja no cierra. Construí Envo para que ninguna de las dos cosas pase aunque un canal esté caído.",
@@ -160,7 +161,7 @@ const envo: CaseStudy = {
       { value: "86", label: "migraciones SQL, sin ORM" },
     ],
   },
-  parts: ["Panel web de operación", "API", "Worker de la outbox", "Mini App de Telegram", "Página de pedidos"],
+  parts: ["Panel de operación", "App del repartidor en Telegram", "Página de pedidos"],
   focus: [
     "Alta disponibilidad: outbox transaccional y circuit breaker",
     "Autenticación: TOTP, reautenticación y permisos granulares",
@@ -203,14 +204,15 @@ const envo: CaseStudy = {
 const stockie: CaseStudy = {
   slug: "stockie",
   name: "Stockie",
+  tag: "Producto propio",
   tagline:
     "Stock, depósitos y ventas para comercios de repuestos en Venezuela, con costo por lote FIFO y cobros en bolívares y dólares. Nació en MonJeep y GlobalFia, que lo usan.",
   lead: "Stock, depósitos y ventas para comercios de repuestos en Venezuela, en bolívares y dólares.",
   moment: "counter-rolls",
   homeFacts: [
-    "Margen real por venta: cada línea sabe de qué lote salió y a qué proveedor se compró (costo FIFO)",
-    "Dos vendedores no pueden vender la última unidad a la vez: el stock se bloquea antes de descontar (SELECT … FOR UPDATE)",
-    "Cada venta guarda el monto en dólares, en bolívares y la tasa oficial del día (BCV)",
+    "Margen real de cada venta: sabe de qué compra salió cada producto y a cuánto se pagó",
+    "Nunca vende lo que no hay: si dos vendedores van por la última unidad, la vende uno solo",
+    "Cada venta queda en dólares y en bolívares, con la tasa oficial del día",
   ],
   problem:
     "Un comercio de repuestos en Venezuela vende en mostrador, por WhatsApp y a crédito, cobra con Pago Móvil, POS, efectivo, Zelle o USDT, y le debe a proveedores en dólares y en bolívares. Con una tasa que cambia todos los días, saber cuánto stock queda y cuánto costó lo vendido exige que cada movimiento guarde su lote, su costo y su tasa. Stockie nació adentro de MonJeep y GlobalFia para resolver eso.",
@@ -305,7 +307,7 @@ const stockie: CaseStudy = {
       { value: "31", label: "modelos" },
     ],
   },
-  parts: ["Panel web", "API con guardas por rol", "Etiquetas TSPL"],
+  parts: ["Panel de administración", "Punto de venta", "Impresión de etiquetas"],
   focus: ["Base de datos: costo FIFO por lote y stock bloqueado con SELECT … FOR UPDATE"],
   status: "En uso en MonJeep y GlobalFia · demo en stockie.envo-demo.tech",
   heroFact: "26 pantallas",
@@ -336,14 +338,15 @@ const stockie: CaseStudy = {
 const clubZapateo: CaseStudy = {
   slug: "club-zapateo",
   name: "Club Zapateo",
+  tag: "Cliente",
   tagline:
     "Venta de entradas en producción en clubzapateo.com, con panel de administración, conciliación con Mercado Pago y control de acceso en la puerta.",
   lead: "Venta de entradas con Mercado Pago y control de acceso en la puerta.",
   moment: "pinned-chapters",
   homeFacts: [
-    "Nunca se vende por encima de la capacidad ni se emite una entrada de más: transacción Serializable e idempotente",
-    "Si Mercado Pago no avisa un pago, la conciliación lo detecta y lo corrige",
-    "252 tests con Vitest y CI con lint, tipos, cobertura y build",
+    "Nunca vende más entradas que la capacidad, aunque muchas compras lleguen juntas",
+    "Todo el que paga recibe su entrada, aunque el aviso de Mercado Pago no llegue: el panel encuentra esos pagos y emite lo que falta",
+    "252 pruebas automáticas que corren solas en cada cambio del código",
   ],
   problem:
     "Club Zapateo vende entradas con Mercado Pago y las controla en la puerta con un QR. Si el aviso de un pago no llega, alguien pagó y no tiene entrada. Si dos compras llegan juntas, se puede vender por encima de la capacidad. Si un QR sirve en otro evento, la puerta deja pasar a quien no corresponde.",
@@ -429,7 +432,7 @@ const clubZapateo: CaseStudy = {
     ],
   },
   figures: { in: "calidad", items: [{ value: "252", label: "tests con Vitest" }] },
-  parts: ["Sitio público", "Checkout con Mercado Pago", "Panel de administración", "App de puerta"],
+  parts: ["Venta online con Mercado Pago", "Panel de administración", "Control de acceso con QR"],
   focus: ["Pagos: webhook verificado con HMAC y conciliación", "Concurrencia: emisión Serializable e idempotente"],
   status: "En producción en clubzapateo.com",
   heroFact: "252 tests",

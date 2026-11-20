@@ -3,33 +3,35 @@ import type { CaseStudy } from "@/data/types";
 import { caseBySlug } from "@/data/cases";
 import { BrowserFrame, PhoneFrame } from "@/components/Frame";
 import { Parts, StatusText } from "@/components/TechSheet";
+import { Tag } from "@/components/Tag";
 
-/* #proyectos: los tres casos en tres composiciones (brief-v2):
+/* #proyectos: la única sección de proyectos de la portada. Abre con su título y sigue con los tres casos destacados, cada
+   uno con su etiqueta (Cliente, Producto propio) sobre el nombre, en tres composiciones (brief-v2):
    Envo, el sistema: texto a la izquierda y el diagrama de un pedido a la derecha (lo que no se ve en una captura);
    Stockie, la pantalla: una fila corta de texto arriba y la captura a todo el ancho del bloque;
    Club Zapateo, los dos lados: el texto al costado y la ventana del panel con el teléfono de la puerta sobre su esquina.
    En la portada cada caso muestra sus hechos, sus partes en una línea, su estado y el link al caso; el enfoque y la
    ficha técnica completa viven en su página. La imagen también lleva al caso (fuera del orden del teclado: el link
-   "Ver el caso" es el mismo destino). */
+   "Ver el caso" es el mismo destino). Los demás proyectos siguen en #proyectos-mas (ProjectCards). */
 
-/** El recorrido de un pedido en Envo, como lo hace su código: los mensajes de Telegram y WhatsApp entran por n8n
- *  (/api/v1/internal/n8n/inbox) y la página de pedidos va directo a la API (/api/v1/customer/orders). El pedido y su
- *  aviso quedan en PostgreSQL en la misma transacción; de ahí salen los avisos (un solo worker vacía la outbox hacia
- *  n8n, que los manda por Telegram o WhatsApp) y el panel en vivo (NOTIFY y SSE). Es el mismo recorrido que dibuja la
- *  arquitectura de /envo, en corto. Sin `done`: en la portada el diagrama queda quieto y su anillo de estado nunca se llenaría. */
+/** El recorrido de un pedido en Envo, contado para quien no es técnico: los pedidos entran por Telegram, WhatsApp o la
+ *  página web; Envo guarda cada pedido junto con su aviso, y de ahí salen los avisos (que se reintentan si un canal se
+ *  cae) y el panel en vivo. Los íconos siguen siendo las piezas reales (n8n, PostgreSQL, Next.js). El recorrido con sus
+ *  mecanismos (n8n, la outbox, NOTIFY y SSE) es el de la arquitectura de /envo. Sin `done`: en la portada el diagrama
+ *  queda quieto y su anillo de estado nunca se llenaría. */
 const envoFlow = {
   layout: "bowtie",
   curve: "curve",
-  alt: "Los pedidos entran por Telegram o WhatsApp a través de n8n, o desde la página de pedidos directo a la API de Next.js, que guarda el pedido y su aviso en PostgreSQL en la misma transacción. De ahí salen los avisos, que un worker toma de la outbox y manda por n8n, y el panel se actualiza en vivo con NOTIFY y SSE.",
+  alt: "Los pedidos entran por Telegram, WhatsApp o la página web, y Envo guarda cada pedido junto con su aviso. De ahí salen los avisos al repartidor y al cliente, que se reintentan si un canal está caído, y el panel de operación, que se actualiza solo.",
   sources: [
-    { label: "Telegram", icon: "telegram", sub: "por n8n", cap: true },
-    { label: "WhatsApp", icon: "whatsapp", sub: "por n8n", cap: true },
-    { label: "Página de pedidos", icon: "ui:shopping-bag", sub: "directo a la API", cap: true },
+    { label: "Telegram", icon: "telegram", sub: "chat del cliente", cap: true },
+    { label: "WhatsApp", icon: "whatsapp", sub: "chat del cliente", cap: true },
+    { label: "Página de pedidos", icon: "ui:shopping-bag", sub: "desde la web", cap: true },
   ],
-  core: { label: "API y PostgreSQL", icon: "postgres" },
+  core: { label: "Pedidos y caja", icon: "postgres" },
   targets: [
-    { label: "Avisos", icon: "n8n", sub: "outbox, worker y n8n", cap: true },
-    { label: "Panel en vivo", icon: "nextjs", sub: "NOTIFY y SSE", cap: true },
+    { label: "Avisos", icon: "n8n", sub: "se reintentan si un canal se cae", cap: true },
+    { label: "Panel en vivo", icon: "nextjs", sub: "se actualiza solo", cap: true },
   ],
 };
 
@@ -50,8 +52,9 @@ function CaseLink({ c }: { c: CaseStudy }) {
 function VisualLink({ c, children }: { c: CaseStudy; children: ReactNode }) {
   return <a className="case__visual-link" href={`/${c.slug}`} tabIndex={-1} aria-hidden="true">{children}</a>;
 }
-function Head({ c, id }: { c: CaseStudy; id: string }) {
-  return <div className="section-head"><h2 id={`${id}-h`}>{c.name}</h2><p>{c.lead}</p></div>;
+/** El nombre del caso es un h3: el h2 de la sección es "Proyectos". La etiqueta va arriba del nombre. */
+function Head({ c }: { c: CaseStudy }) {
+  return <div className="section-head case__head"><Tag tag={c.tag} /><h3 id={`${c.slug}-h`} className="case__name">{c.name}</h3><p>{c.lead}</p></div>;
 }
 
 /** Texto al costado (Envo y Club Zapateo): hechos, partes, estado y el link. */
@@ -69,7 +72,8 @@ export function Projects() {
   const reconciliation = zapateo.roles.flatMap((r) => r.shots).find((s) => s.src.includes("reconciliation"))!;
   return <>
     <section className="section case case--envo" id="proyectos" aria-labelledby="proyectos-h" data-project="envo"><div className="wrap">
-      <Head c={envo} id="proyectos" />
+      <div className="section-head projects__head"><h2 id="proyectos-h">Proyectos</h2><p>Sistemas y sitios en uso, y uno que hice para mí.</p></div>
+      <Head c={envo} />
       <div className="grid case__grid">
         <SideText c={envo} />
         <div className="case__visual span-6 start-7"><VisualLink c={envo}><div className="frame frame--lit case__diagram"><div className="dg" data-dg-still="" data-diagram={JSON.stringify(envoFlow)} /></div></VisualLink></div>
@@ -78,7 +82,7 @@ export function Projects() {
 
     <section className="section case case--stockie" id="stockie" aria-labelledby="stockie-h" data-project="stockie"><div className="wrap">
       <div className="grid case__top">
-        <div className="span-5"><Head c={stockie} id="stockie" /></div>
+        <div className="span-5"><Head c={stockie} /></div>
         <div className="span-6 start-7 case__text"><Facts c={stockie} /><Meta c={stockie} /><CaseLink c={stockie} /></div>
       </div>
       <div className="case__wide">
@@ -89,7 +93,7 @@ export function Projects() {
     </div></section>
 
     <section className="section case case--zapateo" id="club-zapateo" aria-labelledby="club-zapateo-h" data-project="club-zapateo"><div className="wrap">
-      <Head c={zapateo} id="club-zapateo" />
+      <Head c={zapateo} />
       <div className="grid case__grid">
         <SideText c={zapateo} />
         <div className="case__visual span-6 start-7"><VisualLink c={zapateo}><div className="case__pair">

@@ -23,7 +23,7 @@ test("tres links Ver el caso, el primero lleva a /envo", async ({ page }) => {
 
 test("los links de los sitios van a URLs https", async ({ page }) => {
   await page.goto("/");
-  const hrefs = await page.locator("#sitios a[target=_blank], #sitios-mas a[target=_blank]").evaluateAll((els) => els.map((el) => el.getAttribute("href")));
+  const hrefs = await page.locator("#proyectos-mas a[target=_blank]").evaluateAll((els) => els.map((el) => el.getAttribute("href")));
   expect(hrefs.length).toBeGreaterThan(0);
   for (const href of hrefs) expect(href).toMatch(/^https:\/\//);
 });

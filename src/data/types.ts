@@ -1,5 +1,8 @@
 export type CaseSlug = "envo" | "stockie" | "club-zapateo";
 
+/** Qué es cada proyecto, en una palabra: va como etiqueta sobre su nombre en la portada. */
+export type ProjectTag = "Cliente" | "Producto propio" | "Personal";
+
 /** Una captura. `title` es corto y va al lado de la captura, nunca debajo. */
 export interface Shot {
   src: string;
@@ -82,11 +85,13 @@ export interface Figure {
 export interface CaseStudy {
   slug: CaseSlug;
   name: string;
+  tag: ProjectTag;
   tagline: string;
   /** Una línea corta: qué es y para quién (la portada y el encabezado del caso). */
   lead: string;
   /** El momento repartido para su página (brief-v2): las cifras que ruedan o los capítulos fijos en las pantallas. */
   moment: "counter-rolls" | "pinned-chapters";
+  /** Los tres hechos de la portada: el resultado en lenguaje de negocio, sin nombres de mecanismos (HOME_JARGON). */
   homeFacts: [string, string, string];
   problem: string;
   heroShot: Shot;
@@ -123,6 +128,7 @@ export interface CaseStudy {
 export interface SiteProject {
   slug: string;
   name: string;
+  tag: ProjectTag;
   summary: string;
   layers: string[];
   sheet: TechSheet;
@@ -142,6 +148,7 @@ export interface SiteProject {
 export interface ToolProject {
   slug: string;
   name: string;
+  tag: ProjectTag;
   summary: string;
   layers: string[];
   sheet: TechSheet;

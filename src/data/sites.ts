@@ -4,14 +4,15 @@ export const sites: SiteProject[] = [
   {
     slug: "repuestos",
     name: "GlobalFia y MonJeep",
+    tag: "Cliente",
     summary:
-      "Dos comercios de repuestos, uno de Fiat y otro de Jeep, Dodge y Chrysler. Cada uno tiene una landing pública y un sistema de stock interno en su subdominio «stock», que después se convirtió en Stockie.",
+      "Dos casas de repuestos en Venezuela, una de Fiat y otra de Jeep, Dodge y Chrysler. Cada una tiene su sitio público y su sistema de stock, que después se convirtió en Stockie.",
+    // La búsqueda de MonJeep es de texto en español (plurales, sin acentos) sobre nombre, marca y modelos, más números de
+    // pieza parciales: no es semántica ni corrige errores de tipeo (monjeep/lib/productos/producto-search.ts).
     layers: [
-      "Landing de GlobalFia: un cotizador que arma el mensaje de WhatsApp con modelo, año y repuesto",
-      "Landing de MonJeep: formulario de contacto validado que envía por Resend",
-      "Sistema de stock interno en el subdominio «stock» de cada sitio, aislado por middleware",
-      "En MonJeep, búsqueda indexada con tsvector y pg_trgm, mantenida por triggers",
-      "En MonJeep, Cashea como medio de pago con liquidación semanal, y marcas de producto para filtrar el catálogo",
+      "GlobalFia: un cotizador que arma el pedido por WhatsApp con modelo, año y repuesto",
+      "MonJeep: un buscador por nombre, marca o modelo de auto desde un solo campo, sin importar acentos ni plurales",
+      "MonJeep: pago en cuotas con Cashea y catálogo filtrable por marca",
     ],
     parts: ["Landing de GlobalFia", "Landing de MonJeep", "Sistema de stock"],
     focus: [
@@ -47,13 +48,13 @@ export const sites: SiteProject[] = [
   {
     slug: "moodi-home",
     name: "Moodi Home",
+    tag: "Cliente",
     summary:
-      "Tienda de objetos de diseño. El checkout arma el pedido y lo envía por WhatsApp, o por email si no hay un número configurado. No tiene pagos online.",
+      "Tienda online de objetos de diseño. El cliente arma su carrito y el pedido llega listo por WhatsApp o por email.",
     layers: [
-      "Catálogo con categorías",
-      "Ficha con galería y variantes de color y tamaño",
-      "Carrito persistente",
-      "Checkout que arma el pedido y lo envía por WhatsApp o por email",
+      "Catálogo por categorías y fichas con galería",
+      "Variantes de color y tamaño en cada producto",
+      "Un carrito que se guarda entre visitas",
     ],
     parts: ["Catálogo", "Ficha de producto", "Carrito", "Checkout por WhatsApp o email"],
     focus: ["UX/UI: galería, variantes de color y tamaño, y carrito persistente"],
@@ -79,13 +80,13 @@ export const sites: SiteProject[] = [
   {
     slug: "aether-aerospace-care",
     name: "Aether Aerospace Care",
+    tag: "Cliente",
     summary:
-      "Landing bilingüe, en español e inglés, para detailing de aeronaves. El formulario se valida en el servidor y envía el lead por Resend.",
+      "Sitio bilingüe, en español e inglés, para una empresa de detailing de aeronaves.",
     layers: [
-      "Landing bilingüe ES/EN",
-      "Formulario validado en el servidor que envía el lead por Resend, con reply-to al cliente",
-      "Confirmación bilingüe al cliente, que no bloquea la respuesta",
-      "Plantillas de email hechas a mano",
+      "Las consultas del formulario llegan por email al equipo, listas para responderle al cliente",
+      "Una confirmación automática y bilingüe para el cliente",
+      "Emails con diseño propio",
     ],
     parts: ["Landing bilingüe", "Formulario validado", "Emails por Resend"],
     focus: ["Formularios: validación en el servidor y una confirmación al cliente que no bloquea la respuesta"],

@@ -6,7 +6,8 @@ import { BrowserFrame } from "@/components/Frame";
 /* hero collage (repartido): el texto en span-5; a la derecha el marco con el efecto painterly-landscape
    (system.js lo monta con assets/effects/fx.js), una ventana de Envo con su bloque "Salud del sistema" (lo que
    comprueba solo: la API, la base, el worker, los avisos y Telegram), que sale por el borde derecho del marco,
-   y una sola tarjeta bajo su esquina inferior izquierda que repite el viaje de un aviso: API → outbox → Telegram.
+   y una sola tarjeta bajo su esquina inferior izquierda que repite el viaje de un pedido, en palabras de negocio:
+   entra, se guarda junto con su aviso y el repartidor lo recibe por Telegram.
    El botón lleno del hero es "Ver los proyectos"; el secundario descarga el CV (el email está en el cierre). */
 // el fondo: un atardecer en pizarra con colinas salvia, enfocado lo justo para leerse como paisaje y no como una mancha
 // gris; el horizonte baja por debajo de la ventana y la colina sube hacia la derecha, donde queda el disco de pausa
@@ -29,11 +30,11 @@ export function Hero() {
     </div>
     <div className="hero__art span-6 start-7" data-fx="painterly-landscape" data-fx-seed="4867" data-fx-palette={fxPalette} data-fx-params={fxParams}>
       <BrowserFrame shot={envoHealthShot} label="Envo · Salud del sistema" className="ly-piece ly-piece--main" sizes="(max-width: 639px) 360px, 600px" eager />
-      <div className="ly-piece ly-piece--note hero-note" role="img" aria-label="Un aviso de Envo que pasa por la API, la outbox y llega por Telegram" data-ly-steps="700">
+      <div className="ly-piece ly-piece--note hero-note" role="img" aria-label="Un pedido de Envo: entra, se guarda junto con su aviso y el repartidor lo recibe por Telegram" data-ly-steps="700">
         <div className="hero-note__row" aria-hidden="true"><b>Pedido DEMO-0001</b><span className="hero-note__chip" data-step data-step-at="4">Avisado</span></div>
-        <p className="hero-note__line" aria-hidden="true" data-step><i>1</i><span><b>API</b> guarda el pedido y su aviso</span></p>
-        <p className="hero-note__line" aria-hidden="true" data-step><i>2</i><span><b>Outbox</b>: el worker lo reclama</span></p>
-        <p className="hero-note__line" aria-hidden="true" data-step><i>3</i><span><b>Telegram</b> avisa al repartidor</span></p>
+        <p className="hero-note__line" aria-hidden="true" data-step><i>1</i><span><b>Entra</b> el pedido</span></p>
+        <p className="hero-note__line" aria-hidden="true" data-step><i>2</i><span><b>Se guarda</b> junto con su aviso</span></p>
+        <p className="hero-note__line" aria-hidden="true" data-step><i>3</i><span>El repartidor lo recibe por <b>Telegram</b></span></p>
       </div>
     </div>
   </div></div></section>;

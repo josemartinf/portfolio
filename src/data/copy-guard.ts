@@ -34,6 +34,14 @@ export const SECRET_PATTERNS: RegExp[] = [
   /postgres(ql)?:\/\/[^ "]*:[^ "]*@/,
 ];
 
+/**
+ * Nombres de mecanismos que no van en la portada: ahí se cuenta el resultado en lenguaje de negocio, y el cómo vive en
+ * la página de cada caso (y en Experiencia y Stack, que son el CV). Los nombres de tecnologías (Next.js, PostgreSQL)
+ * sí van, en la línea de stack de cada proyecto.
+ */
+export const HOME_JARGON =
+  /tsvector|pg_trgm|trigger|FOR UPDATE|SKIP LOCKED|PGlite|outbox|worker|middleware|idempoten|Serializable|circuit breaker|dead letter|backoff|HIDAPI|libusb|\bLRU\b|reply-to|\bSSE\b|NOTIFY|\bCI\b|\blint\b|FIFO|TSPL|\baxe\b|\be2e\b|\bspecs?\b/i;
+
 /** Todo el texto de los módulos de datos y de `site`, concatenado. */
 export function allCopy(): string {
   return JSON.stringify([cases, sites, tools, jobs, education, stackIcons, currentFact, site]);

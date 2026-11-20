@@ -32,7 +32,7 @@ html { scroll-behavior: auto; }
 .pframe { position: relative; padding: 6px; border-radius: 26px; background: #1d1d1d; border: 1px solid rgb(255 255 255 / .16); box-shadow: 0 28px 60px -28px rgb(0 0 0 / .8); }
 .pframe__screen { overflow: hidden; border-radius: 20px; background: #000; }
 .pframe__screen img { display: block; width: 100%; height: auto; }
-a.site__shot { display: block; border-radius: var(--r-md); }
+a.pcard__shot { display: block; border-radius: var(--r-md); }
 
 /* ---------------------------------------------------------------- hero collage: the Envo window and the note */
 /* the h1's last two names and their comma never part: the entrance (motion.js) sets each word in a box of its own,
@@ -117,37 +117,37 @@ a.site__shot { display: block; border-radius: var(--r-md); }
 .statement__proof dd { margin: 6px 0 0; color: var(--p-ink); line-height: 1.5; }
 .statement__line { margin: 0; max-width: 54ch; font-size: var(--t-lead); line-height: 1.5; }
 
-/* ---------------------------------------------------------------- sites */
-.site { align-items: start; }
-.site__text { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
-.site__name h3 { margin: 0; }
-.site__status { margin: 4px 0 0; color: var(--p-ink); font-size: var(--t-body); line-height: 1.5; }
-.site__layers { display: grid; gap: 4px; }
-.site__layers li { font-size: var(--t-body); line-height: 1.45; }
-/* GlobalFia and MonJeep: its lines a step apart, the row near the foot of its screen */
-.site--lead .site__text { gap: var(--s-5); }
-/* Moodi and Aether, one after the other with a real gap (128px, 96 on a phone), so neither site's name reads as the
-   other's caption. Each window shows the site's first screen (2:1 of the 16:10 capture, its foot trimmed). At 1280 and
-   wider the two sit side by side on the page's columns (1-5 and 8-12, from line to line), the window over its lines,
-   so the section stays one screen */
-.sites--more > .wrap { display: flex; flex-direction: column; gap: var(--s-10); justify-content: flex-start; }
-@media (max-width: 639px) { .sites--more > .wrap { gap: var(--s-9); } }
-@media (min-width: 1280px) {
-  main > .section.sites--more > .wrap { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: stretch; align-content: start; }
-  .sites--more .site { grid-template-columns: minmax(0, 1fr); row-gap: var(--s-6); align-content: start; }
-  .sites--more .site { grid-row: 1; }
-  .sites--more .site:first-of-type { grid-column: 1 / span 5; }
-  .sites--more .site:last-of-type { grid-column: 8 / span 5; }
-  .sites--more .site > .site__shot { grid-column: 1; grid-row: 1; width: 100%; }
-  .sites--more .site > .site__col { grid-column: 1; grid-row: 2; }
-}
-/* a tablet: the windows eight columns wide, so the two sites and their gap stay under a screen and a half */
-@media (min-width: 640px) and (max-width: 1023px) { .sites--more .site > .site__shot { max-width: calc((100% - 11 * var(--gutter)) / 12 * 8 + 7 * var(--gutter)); } }
-/* it continues the list of #sitios (no heading of its own on screen): it opens closer to it than a new section would,
-   so the two read as one list and the air between them stays near the page's gap */
-@media (min-width: 1024px) { main > .section.sites--more { padding-top: var(--s-8); } }
-.sites--more .site .bframe__view { aspect-ratio: 2 / 1; }
-.sites--more .bframe__view img { height: 100%; object-fit: cover; object-position: 50% 0%; }
+/* ---------------------------------------------------------------- projects: one section, a tag on every project */
+/* what a project is (Cliente, Producto propio, Personal): a small outlined label over its name, in the text's face, so
+   it reads as a fact about the project and not as a button; the personal one quieter */
+.tag { display: inline-flex; align-items: center; justify-self: start; align-self: flex-start; gap: 6px; height: 24px; padding: 0 9px; border: 1px solid var(--line-strong, rgb(255 255 255 / .22)); border-radius: var(--r-sm); color: var(--p-ink); font: 500 var(--t-label)/1 var(--font-text); letter-spacing: .01em; white-space: nowrap; }
+.tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--p-accent); }
+.tag--product::before { background: var(--p-ink); }
+.tag--personal { color: #a6a6a6; }
+.tag--personal::before { background: #a6a6a6; }
+/* the section's h2 ("Proyectos") is the largest line of it; each case's name, an h3, a step under it */
+.projects__head { margin-bottom: var(--s-8); }
+.case__head { gap: var(--s-3); }
+.case__head > p { margin-top: var(--s-1); }
+.case__name { font-size: clamp(28px, 1.1vw + 20px, 38px); line-height: 1.1; letter-spacing: var(--display-tracking); font-weight: var(--display-weight); }
+
+/* the other projects: a grid of cards under the cases (two across from 960px), each the site's first screen (2:1 of
+   the 16:10 capture), then its tag, name and state, the summary, three lines and the stack. No box around a card:
+   the page draws no cards for the cases either, so the window is what holds each one together */
+.pcards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-9) calc(var(--gutter) * 3); }
+@media (min-width: 960px) { .pcards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (min-width: 640px) and (max-width: 959px) { .pcard { max-width: 560px; } }
+.pcard { display: flex; flex-direction: column; gap: var(--s-5); min-width: 0; }
+.pcard .bframe__view { aspect-ratio: 2 / 1; }
+.pcard .bframe__view img { height: 100%; object-fit: cover; object-position: 50% 0%; }
+.pcard__body { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
+.pcard__head { display: flex; flex-direction: column; gap: var(--s-3); }
+.pcard__head h3 { margin: 0; }
+.pcard__status { margin: 0; color: var(--p-ink); font-size: var(--t-small); line-height: 1.5; }
+.pcard__summary { margin: 0; font-size: var(--t-body); line-height: 1.5; max-width: 56ch; }
+.site__layers { display: grid; gap: 6px; }
+.site__layers li { position: relative; padding-left: 16px; font-size: var(--t-body); line-height: 1.45; color: #c9c9c9; }
+.site__layers li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 1px; background: var(--p-muted); }
 
 /* ---------------------------------------------------------------- experience: the timeline */
 .experience .section-head { margin-bottom: var(--s-6); }
@@ -175,10 +175,6 @@ a.site__shot { display: block; border-radius: var(--r-md); }
 @media (min-width: 640px) and (max-width: 1023px) { .stack__group.stack__group { grid-column: auto / span 4; } }
 @media (max-width: 639px) { .stack__groups { row-gap: var(--s-6); } .stack__group.stack__group { grid-column: auto / span 6; } }
 
-/* ---------------------------------------------------------------- tools */
-.tools__grid { align-items: start; }
-.tools__text { display: flex; flex-direction: column; gap: var(--s-5); }
-
 /* ---------------------------------------------------------------- the close: the line under the h2, the button its own width */
 .closing__cta .section-head p { margin: 0; }
 .closing__cta.close--type > .btn { align-self: flex-start; width: auto; }
@@ -192,23 +188,12 @@ a.site__shot { display: block; border-radius: var(--r-md); }
 @media (max-width: 1023px) {
   .closing--case .closing__cta > .btn { height: 56px; }
   .statement__proof { margin-top: var(--s-7); }
-  .case__grid, .tools__grid, .statement__grid { align-content: start; }
+  .case__grid, .statement__grid { align-content: start; }
   .case__visual { margin-top: var(--s-5); }
   .case--envo .case__grid { align-items: start; }
-  .case__visual > .bframe, .tools__grid .bframe, .case__pair { max-width: 560px; }
+  .case__visual > .bframe, .case__pair { max-width: 560px; }
 }
 @media (min-width: 640px) and (max-width: 1023px) {
-  /* the sites on a tablet: the name, the layers and the sheet, then the window across the column, large enough to read */
-  .site { grid-template-columns: minmax(0, 1fr); grid-template-areas: "name" "layers" "sheet" "shot"; row-gap: var(--s-4); }
-  .site > .site__col, .site .site__text { display: contents; }
-  .site .site__name { grid-area: name; }
-  .site .site__layers { grid-area: layers; }
-  .site .site__text > .sheet { grid-area: sheet; }
-  .site > .site__shot { grid-area: shot; align-self: start; width: 100%; }
-  /* across the column the window shows the site's first screen, its foot trimmed (16:9 of the 16:10 capture), so a
-     screen holds a site and its window */
-  .site .bframe__view { aspect-ratio: 16 / 9; }
-  .site .bframe__view img { height: 100%; object-fit: cover; object-position: 50% 0%; }
   /* a tablet: what holds about a screen is one screen grown to it (min-height, system.css), not two with a hole */
   .experience { --h: 1; }
   main > .section > .wrap > .fill { flex: 1 0 auto; min-height: auto; }
@@ -216,13 +201,13 @@ a.site__shot { display: block; border-radius: var(--r-md); }
 /* a short laptop screen (1024x768 holds 576px): tighter lists, a smaller wall */
 @media (min-width: 1024px) and (max-height: 800px) {
   .case__facts li { padding: 6px 0; }
-  .case__text, .site__text, .tools__text { gap: var(--s-3); }
+  .case__text, .pcard__body { gap: var(--s-3); }
   .sheet { gap: var(--s-2); }
 }
 @media (max-width: 639px) {
   /* one screen grown to what it holds (min-height one screen): a section that holds a screen and a bit never becomes
      two screens with a hole under it; the timeline, past a screen and a half, is two */
-  .case, .tools, .statement { --hm: 1; }
+  .case, .statement { --hm: 1; }
   .experience { --hm: 2; }
   /* a .fill grows to its screen but never shrinks under what it holds (a narrow phone, 320px, runs the words longer) */
   main > .section > .wrap > .fill { flex: 1 0 auto; min-height: auto; }
@@ -526,12 +511,13 @@ main.home > .section:not(.hero), footer.closing.closing--home {
 }
 main.home > .section:not(.hero) > .wrap, footer.closing.closing--home > .wrap { height: auto; flex: none; }
 main.home > .section:not(.hero) > .wrap > .fill { flex: none; min-height: auto; }
-/* the more sites continue the list of #sitios: one list gap between them (64 + 64px), as between Moodi and Aether */
-main.home > .section.sites--more { padding-top: var(--s-8); }
+/* the other projects continue the list of #proyectos (no heading of their own on screen): they open closer to Club
+   Zapateo than a new section would, so the cases and the cards read as one list */
+main.home > .section.projects-more { padding-top: var(--s-6); }
 footer.closing.closing--home { padding-bottom: var(--s-7); }
 @media (max-width: 639px) {
   main.home > .section:not(.hero), footer.closing.closing--home { padding: var(--s-8) 0 var(--s-7); }
-  main.home > .section.sites--more { padding-top: var(--s-6); }
+  main.home > .section.projects-more { padding-top: var(--s-5); }
   footer.closing.closing--home { padding-bottom: var(--s-6); }
 }
 
@@ -561,10 +547,15 @@ main.home .statement .mo-lt__type { font-size: clamp(48px, 6vw, 104px); }
 .closing__cta > .btn--secondary { align-self: flex-start; }
 .closing__cta > .btn.btn--secondary, .case__link.btn.btn--secondary { padding-left: 0; }   /* over the kit's arrow look (html[data-buttons] .btn--secondary) */
 
-/* ---------------------------------------------------------------- the personal project's label over its heading */
-.section-head > .eyebrow { order: -1; margin: 0; color: var(--p-muted); font-size: var(--t-label); line-height: 1.4; }
-
 /* ---------------------------------------------------------------- the footer's links: a 24px target at least */
 .footer__col ul a { display: inline-block; padding-block: 3px; }
 /* a phone: the close's secondary (the CV) stays a text link on the left line, not a button across the column */
 @media (max-width: 639px) { .closing__cta.close--type > .btn.btn--secondary { align-self: flex-start; width: auto; } }
+
+/* ---------------------------------------------------------------- the brand: the JF mark (public/brand), one everywhere */
+.nav__logo img.brand-mark { width: 26px; height: 26px; border-radius: var(--r-sm); }
+@media (max-width: 639px) { .nav__logo img.brand-mark { width: 30px; height: 30px; } }
+.footer .nav__logo { gap: var(--s-3); }
+.footer .nav__logo img.brand-mark { width: 28px; height: 28px; }
+.footer__domain { font-family: var(--font-mono); letter-spacing: 0; }
+.nowrap { white-space: nowrap; }

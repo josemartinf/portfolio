@@ -1,6 +1,6 @@
 # Portafolio — José Martin Flores
 
-Sitio personal de José Martin Flores, Software Engineer. Tiene una portada y tres páginas de caso: Envo, Stockie y Club Zapateo, con su arquitectura y sus decisiones.
+Sitio personal de José Martin Flores, Software Engineer. Tiene una portada con todos los proyectos en una sola sección (cada uno con su etiqueta: Cliente, Producto propio o Personal) y tres páginas de caso: Envo, Stockie y Club Zapateo, con su arquitectura y sus decisiones. La portada cuenta resultados en lenguaje de negocio; el detalle técnico vive en cada caso, y `HOME_JARGON` (`src/data/copy-guard.ts`) lo vigila en los tests.
 
 Publicado en https://www.joseflores.codes.
 
@@ -26,3 +26,13 @@ npx playwright test  # pruebas e2e
 ## Capturas
 
 `scripts/capture.mjs` genera las capturas de `public/projects/` desde instancias con datos demo. Las credenciales se leen de variables de entorno; sus nombres están en el comentario del principio del script.
+
+## Marca
+
+El monograma JF está en `public/brand/jf-mark.svg` (el mismo que `src/app/icon.svg`, el favicon). Para el pie de un sitio de cliente, **siempre con su permiso**, hay dos sellos: `hecho-por-joseflores-oscuro.svg` para fondos oscuros y `hecho-por-joseflores-claro.svg` para fondos claros.
+
+```html
+<a href="https://www.joseflores.codes" target="_blank" rel="noopener">
+  <img src="https://www.joseflores.codes/brand/hecho-por-joseflores-oscuro.svg" alt="Hecho por joseflores.codes" width="228" height="32" loading="lazy">
+</a>
+```
