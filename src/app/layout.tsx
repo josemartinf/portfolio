@@ -1,7 +1,16 @@
 import type { Metadata, Viewport } from "next";
 import type { ReactNode } from "react";
+import { Familjen_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import { site } from "@/lib/site";
 import "./globals.css";
+
+/* Las dos familias, servidas desde el propio sitio (next/font las baja en el build): ningún pedido a Google en cada
+   visita, y una fuente de respaldo con las medidas de la real, así el texto no se reacomoda cuando la fuente llega
+   (con la hoja de Google y display=swap, el h1 y los párrafos cambiaban de ancho al cargar). site.css las nombra por
+   sus variables. El español entra entero en el subconjunto latin. */
+const familjen = Familjen_Grotesk({ subsets: ["latin"], variable: "--font-familjen", display: "swap" });
+// la mono sin precarga: va en pocos lugares (el dominio del footer, los números de la nota del hero, el código de los casos)
+const plexMono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500"], variable: "--font-plex-mono", display: "swap", preload: false });
 
 /* Kit design-taste-frontend repartido como software (brief-v2.md, línea 2):
    palette soot-pale-lime · type familjen · radius sharp · buttons arrow · ground sky ·
@@ -19,13 +28,8 @@ export const metadata: Metadata = {
 };
 export const viewport: Viewport = { width: "device-width", initialScale: 1, viewportFit: "cover", themeColor: "#0f0f0f" };
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
-  return <html lang="es" data-type="software" data-radius="sharp" data-buttons="arrow" data-ground="sky" data-motion="">
+  return <html lang="es" className={`${familjen.variable} ${plexMono.variable}`} data-type="software" data-radius="sharp" data-buttons="arrow" data-ground="sky" data-motion="">
     <head>
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
-      {/* El layout raíz del App Router cubre todas las páginas; la regla piensa en pages/_document. */}
-      {/* eslint-disable-next-line @next/next/no-page-custom-font */}
-      <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&family=IBM+Plex+Mono:wght@400;500&display=swap" />
       <link rel="stylesheet" href="/assets/system.css" />
       <link rel="stylesheet" href="/assets/ui/cards.css" />
       <link rel="stylesheet" href="/assets/motion/motion.css" />

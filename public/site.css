@@ -6,9 +6,10 @@
   --p-accent: #dafa9c; --p-accent-ink: #0f0f0f; --p-action: #dafa9c; --p-action-ink: #0f0f0f;
   --p-inv-bg: #ffffff; --p-inv-surface: #ececec; --p-inv-ink: #0f0f0f; --p-inv-muted: #5f5f5f;
   --p-inv-accent: #0f0f0f; --p-inv-accent-ink: #ffffff; --p-inv-action: #0f0f0f; --p-inv-action-ink: #ffffff;
-  --font-display: "Familjen Grotesk", system-ui, sans-serif;
-  --font-text: "Familjen Grotesk", system-ui, sans-serif;
-  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  /* the families come from next/font (layout.tsx), self-hosted with a fallback matched to their metrics */
+  --font-display: var(--font-familjen, "Familjen Grotesk"), system-ui, sans-serif;
+  --font-text: var(--font-familjen, "Familjen Grotesk"), system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono, "IBM Plex Mono"), ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
   --display-weight: 400;
   --display-tracking: -0.03em;
   --display-tracking-xl: -0.04em;
@@ -27,6 +28,12 @@
   color: color-mix(in oklab, var(--ink) 80%, var(--bg));
 }
 .sheet__list li b { color: var(--ink); }
+/* the reading measure and the breaks: a role's description held to 65ch (it ran 84 characters a line at 1440), and
+   list lines broken like paragraphs, so none ends on a lone word; the footer's line, a sentence on two lines, a
+   little more leading than a heading's */
+.tl__roles p:not(.tl__title) { max-width: 65ch; }
+.case__facts li, .site__layers li, .statement__proof dd, .sheet dd, .sheet__list li { text-wrap: pretty; }
+.footer__lede { line-height: 1.35; }
 /* Page layout and project captures. The kit remains untouched. */
 /* Page CSS, only where the kit asks for it (inside a visual, lists the system has no class for). The kit stays untouched. */
 html { scroll-behavior: auto; }
@@ -550,7 +557,9 @@ footer.closing.closing--home { padding-bottom: var(--s-7); }
 
 /* the statement, now right under the hero: its type a little smaller than a hero, so the hero's name stays the
    page's largest line */
-main.home .statement .mo-lt__type { font-size: clamp(48px, 6vw, 104px); }
+/* (it read 6vw: 86px against the name's 64px at 1440, 48 against 40 on a phone, the page's largest line; now about
+   36px at 390, 49 at 1024, 58 at 1440, never past 60, always a step under the h1) */
+main.home .statement .mo-lt__type { font-size: clamp(34px, 2.1vw + 27.8px, 60px); }
 
 /* ---------------------------------------------------------------- the home's cases: the parts and the state, quiet */
 .case__meta { display: grid; gap: 6px; }
