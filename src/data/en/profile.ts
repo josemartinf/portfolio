@@ -9,7 +9,7 @@ export const currentFact = "Software Engineer at Naranja X · 7 years in banking
 export const jobs: Job[] = [
   {
     company: "Naranja X",
-    role: "Software Engineer SSR · AI Automation",
+    role: "Software Engineer · AI Automation",
     from: "2026-08",
     to: null,
     summary:
@@ -17,11 +17,11 @@ export const jobs: Job[] = [
   },
   {
     company: "Naranja X",
-    role: "QA Automation Engineer SSR",
+    role: "QA Automation Engineer",
     from: "2022-02",
     to: "2026-08",
     summary:
-      "I built backend services with TypeScript, Node.js and NestJS on a hexagonal architecture, and asynchronous processes with Kafka (Amazon MSK), idempotency and the Outbox pattern, covered by unit, integration and end-to-end tests.",
+      "I built backend services with TypeScript, Node.js and NestJS using hexagonal architecture, and asynchronous processing with Kafka (Amazon MSK), idempotency and the Outbox pattern, covered by unit, integration and end-to-end tests.",
   },
   {
     company: "Ualá",
@@ -29,7 +29,7 @@ export const jobs: Job[] = [
     from: "2021-04",
     to: "2022-01",
     summary:
-      "Functional, regression and API testing on critical product flows, and my first automation work with Cypress and BDD (Cucumber/Gherkin).",
+      "Functional, regression and API testing on critical product flows, and my first test automation with Cypress and BDD (Cucumber/Gherkin).",
   },
   {
     company: "ECOSISTEMAS",

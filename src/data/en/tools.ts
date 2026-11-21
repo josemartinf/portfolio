@@ -7,21 +7,21 @@ export const tools: ToolProject[] = [
     name: "Redragon SS-550 driver for macOS",
     tag: "personal",
     summary:
-      "A driver for using the Redragon SS-550 stream deck on a Mac, with a web panel to configure its 15 keys. I adapted it from the open source project redragon-streamdeck-linux.",
+      "A driver for using the Redragon SS-550 stream deck on a Mac, with a web panel to configure its 15 keys. I adapted it from the open-source project redragon-streamdeck-linux.",
     layers: [
       "Keys that control Spotify, Discord, OBS and Claude Code",
-      "Shows live whether the Meet microphone or camera is on",
+      "Shows in real time whether the microphone or camera is on in Meet",
       "The panel went from loading in 1.5 s to 0.9 s",
     ],
     sheet: {
-      architecture: "A Node process on macOS that talks to the device over HIDAPI and serves the web panel and the REST API; it starts with a LaunchAgent.",
+      architecture: "A Node process on macOS that talks to the device over HIDAPI and serves the web panel and the REST API; a LaunchAgent starts it.",
       stack: ["Node.js", "TypeScript", "Express", "HIDAPI (node-hid)", "CoreAudio", "LaunchAgent"],
-      practices: ["Tests with node:test", "Typecheck", "PR-based workflow"],
+      practices: ["Tests with node:test", "Type checking", "PR-based workflow"],
       patterns: [],
       short: {
         architecture: "A Node process with HIDAPI, the web panel and the REST API",
         stack: "Node.js, TypeScript, Express, node-hid, CoreAudio",
-        practices: "node:test, typecheck and PR-based workflow",
+        practices: "node:test, type checking and PR-based workflow",
       },
     },
     shot: {

@@ -42,10 +42,10 @@ describe("i18n", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("José Martin Flores");
     expect(document.querySelector("#proyectos-h")).toHaveTextContent("Projects");
     expect([...document.querySelectorAll(".nav__link")].map((a) => a.textContent)).toEqual(["Projects", "Experience", "Stack"]);
-    expect(screen.getAllByRole("link", { name: /See the case study/ }).map((a) => a.getAttribute("href"))).toEqual(["/en/envo", "/en/stockie", "/en/club-zapateo"]);
+    expect(screen.getAllByRole("link", { name: /Read the case study/ }).map((a) => a.getAttribute("href"))).toEqual(["/en/envo", "/en/stockie", "/en/club-zapateo"]);
     expect(document.querySelector(".hero .btn--secondary")).toHaveAttribute("href", site.cvEn);
     expect(document.querySelector("#contacto a[download]")).toHaveAttribute("href", site.cvEn);
-    expect([...document.querySelectorAll(".tag")].map((t) => t.textContent)).toEqual(expect.arrayContaining(["Client", "Own product", "Personal"]));
+    expect([...document.querySelectorAll(".tag")].map((t) => t.textContent)).toEqual(expect.arrayContaining(["Client", "Product", "Personal"]));
     expect(document.querySelector(".tl__date")?.textContent).toMatch(/present$/);
     // Stockie, desde la tarjeta de GlobalFia y MonJeep, en inglés
     expect(document.querySelector("[data-project='repuestos'] a[href='/en/stockie']")).not.toBeNull();
@@ -54,9 +54,9 @@ describe("i18n", () => {
       expect(document.querySelector(sel)?.textContent ?? "", sel).not.toMatch(HOME_JARGON);
     }
     // la entrada editorial, en inglés
-    expect([...document.querySelectorAll(".hero__metas dt")].map((d) => d.textContent)).toEqual(["Now", "I build", "Since", "Write to me"]);
+    expect([...document.querySelectorAll(".hero__metas dt")].map((d) => d.textContent)).toEqual(["Now", "I build", "Since", "Get in touch"]);
     expect(document.querySelector(".hero__metas dd")).toHaveTextContent(/^Software Engineer at Naranja X$/);
-    expect(document.querySelector(".hero__band figcaption")).toHaveTextContent("Envo · operations panel");
+    expect(document.querySelector(".hero__band figcaption")).toHaveTextContent("Envo · operations dashboard");
     expect(document.querySelector(".hero__band a")).toHaveAttribute("href", "/en/envo");
     const ld = JSON.parse(document.querySelector('script[type="application/ld+json"]')!.innerHTML);
     expect(ld.url).toBe(`${site.url}/en`);

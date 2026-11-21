@@ -150,7 +150,7 @@ const envo: CaseStudy = {
     "Integración contra PGlite y contra PostgreSQL real, con contratos compartidos entre los dos motores.",
     "Las specs e2e incluyen chequeos de accesibilidad con axe.",
     "TypeScript estricto, también sobre los .mjs del worker.",
-    "API documentada en OpenAPI, con 73 rutas.",
+    "OpenAPI documenta 73 de las 150 rutas de la API.",
   ],
   figures: {
     in: "calidad",
@@ -163,7 +163,7 @@ const envo: CaseStudy = {
   },
   parts: ["Panel de operación", "App del repartidor en Telegram", "Página de pedidos"],
   focus: [
-    "Alta disponibilidad: outbox transaccional y circuit breaker",
+    "Confiabilidad: outbox transaccional y circuit breaker",
     "Autenticación: TOTP, reautenticación y permisos granulares",
     "Base de datos: 64 tablas y 86 migraciones SQL con checksum",
   ],
@@ -233,7 +233,7 @@ const stockie: CaseStudy = {
     {
       role: "Administración",
       summary:
-        "Productos con dos precios más uno manual, historial de precios, modelos compatibles y búsqueda por SKU con acentos; solo el administrador puede vender bajo costo, y queda auditado. Depósitos, ingreso de mercadería con etiquetas TSPL por WebUSB o USB, escáner de códigos con la cámara, transferencias y ajustes. Proveedores con deudas en dólares y bolívares, pagos parciales y pedido sugerido por stock mínimo; créditos para aprobar, cobrar y anular; devoluciones, donde los defectuosos quedan fuera de stock; anulaciones con límite diario; stock fiscal, reportes y usuarios.",
+        "Productos con dos precios más uno manual, historial de precios, modelos compatibles y búsqueda por SKU sin importar los acentos; solo el administrador puede vender bajo costo, y queda auditado. Depósitos, ingreso de mercadería con etiquetas TSPL por WebUSB o USB, escáner de códigos con la cámara, transferencias y ajustes. Proveedores con deudas en dólares y bolívares, pagos parciales y pedido sugerido por stock mínimo; créditos para aprobar, cobrar y anular; devoluciones, donde los defectuosos quedan fuera de stock; anulaciones con límite diario; stock fiscal, reportes y usuarios.",
       shots: [stockieShots.intake, stockieShots.fiscal, stockieShots.suppliers, stockieShots.credits, stockieShots.reports],
     },
     {
@@ -263,7 +263,7 @@ const stockie: CaseStudy = {
       { from: "api", to: "printer" },
     ],
     shots: [["nav>mw", "mw>api", "api>core", "core>pg"], ["bcv>api"], ["api>printer"]],
-    alt: "El navegador pasa por el middleware de sesión a la API, que aplica las guardas por rol y escribe en PostgreSQL a través de las transacciones de stock-core. La API trae la tasa del BCV de su sitio una vez por día (o usa la cargada a mano) y le manda las etiquetas a la impresora en TSPL, por USB o en un archivo.",
+    alt: "El navegador pasa por el middleware de sesión a la API, que aplica las guardas por rol y escribe en PostgreSQL a través de las transacciones de stock-core. La API trae la tasa del sitio del BCV una vez por día (o usa la cargada a mano) y le manda las etiquetas a la impresora en TSPL, por USB o en un archivo.",
   },
   decisions: [
     {
@@ -276,7 +276,7 @@ const stockie: CaseStudy = {
     },
     {
       title: "Una sola conversión a USD",
-      why: "Cliente y servidor usan la misma función de conversión a USD, con tolerancia de redondeo, así el total que ve el vendedor es el que valida la API. Cada venta guarda el monto en dólares, en bolívares y la tasa BCV del día.",
+      why: "Cliente y servidor usan la misma función de conversión a USD, con tolerancia de redondeo, así el total que ve el vendedor es el que valida la API. Cada venta guarda el monto en dólares y en bolívares, con la tasa BCV del día.",
     },
     {
       title: "Tasa BCV diaria, con carga manual",
@@ -316,7 +316,7 @@ const stockie: CaseStudy = {
   demoUrl: "https://stockie.envo-demo.tech/demo",
   sheet: {
     architecture:
-      "Next.js con middleware de sesión y API con guardas por rol; las transacciones de stock-core escriben en PostgreSQL y la API trae la tasa del BCV de su sitio una vez por día.",
+      "Next.js con middleware de sesión y API con guardas por rol; las transacciones de stock-core escriben en PostgreSQL y la API trae la tasa del sitio del BCV una vez por día.",
     stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Better Auth", "Zod", "WebUSB"],
     practices: [
       "Lógica de negocio concentrada en las transacciones de stock-core",
