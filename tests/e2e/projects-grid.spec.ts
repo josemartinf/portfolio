@@ -21,3 +21,15 @@ test("tile hover is still with reduced motion", async ({ page }, info) => {
   await tile.hover();
   await expect(tile.locator(".bframe").first()).toHaveCSS("transform", "none");
 });
+
+// los encabezados de sección con la línea editorial (como "Proyectos"), en la portada y en los casos; el statement con
+// su línea arriba, al ancho del contenido
+test("section heads carry the editorial rule", async ({ page }, info) => {
+  test.skip(info.project.name !== "desktop");
+  for (const [path, sel] of [["/", "#experiencia .section-head"], ["/", "#stack .section-head"], ["/envo", "#problema .section-head"], ["/", "#como-trabajo > .wrap"]] as const) {
+    await page.goto(path);
+    const el = page.locator(sel).first();
+    const prop = sel.startsWith("#como-trabajo") ? "border-top-width" : "border-bottom-width";
+    await expect(el, `${path} ${sel}`).toHaveCSS(prop, "1px");
+  }
+});
