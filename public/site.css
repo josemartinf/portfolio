@@ -139,6 +139,8 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
 .hero__claim { margin: 0; max-width: 30ch; color: var(--ink); font-size: clamp(19px, .9vw + 11px, 24px); line-height: 1.32; letter-spacing: -.012em; text-wrap: pretty; }
 /* the CV beside the filled button: a text link, underlined, on the button's height */
 .hero--editorial .btn.btn--secondary { background: none; border: 0; border-bottom: 1.5px solid currentColor; border-radius: 0; padding-inline: 0; }
+/* "Ver los proyectos" goes down the page: its arrow (the kit's glyph) points down, and its hover nudge goes down too */
+.hero--editorial .btn--primary[href="#proyectos"]::after { rotate: 90deg; }
 /* the facts row: a hairline over four short columns, each a mono label and its fact */
 .hero__metas { margin: 0; padding-top: 14px; border-top: 1px solid var(--ink); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-5) var(--gutter); }
 .hero__metas dt, .hero__band-label { font: 400 12px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
@@ -180,9 +182,10 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
   .hero__metas { order: -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero__side { max-width: 520px; }
 }
-/* a phone: the name on three lines, a quarter of the width tall; the CV a text link of its own width under the button */
+/* a phone: the name on three lines (José / Martin / Flores) at any width under 640, a quarter of the width tall up to
+   105px, the size it has at 640 (16.4vw), so nothing jumps there; the CV a text link of its own width under the button */
 @media (max-width: 639px) {
-  .hero--editorial .hero__name { font-size: clamp(76px, 25vw, 120px); }
+  .hero--editorial .hero__name { font-size: clamp(76px, 25vw, 105px); max-width: 3.6em; }
   .hero__metas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero--editorial .btn-row .btn.btn--secondary { align-self: flex-start; width: auto; }
   .hero__band { margin-top: var(--s-6); }
@@ -210,13 +213,9 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
 .statement__line { margin: 0; max-width: 54ch; font-size: var(--t-lead); line-height: 1.5; }
 
 /* ---------------------------------------------------------------- projects: one section, a tag on every project */
-/* what a project is (Cliente, Producto propio, Personal): a small outlined label over its name, in the text's face, so
-   it reads as a fact about the project and not as a button; the personal one quieter */
-.tag { display: inline-flex; align-items: center; justify-self: start; align-self: flex-start; gap: 6px; height: 24px; padding: 0 9px; border: 1px solid var(--line-strong, rgb(255 255 255 / .22)); border-radius: var(--r-sm); color: var(--p-ink); font: 500 var(--t-label)/1 var(--font-text); letter-spacing: .01em; white-space: nowrap; }
-.tag::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--signal); }
-.tag--product::before { background: var(--p-ink); }
-.tag--personal { color: var(--muted); }
-.tag--personal::before { background: var(--muted); }
+/* what a project is (Cliente, Producto propio, Personal): a word in its tile's mono top line, after the number, in that
+   line's face (spec 2026-11-20: no dot, no border) */
+.tag { font: inherit; letter-spacing: inherit; color: inherit; white-space: nowrap; }
 /* the section's head: "Proyectos" large, with its count, and the line beside it, over a hairline in ink */
 .projects__head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-5) var(--gutter); margin-bottom: var(--s-6); padding-bottom: var(--s-5); border-bottom: 1px solid var(--p-ink); }
 .projects__head h2 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(56px, 8.9vw, 128px); line-height: .86; letter-spacing: -.06em; }
@@ -233,8 +232,6 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
 .ptile--m { grid-column: auto / span 5; }
 .ptile__top { display: flex; align-items: center; gap: .6em; margin: 0; padding: 24px 28px; font: 400 12px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .ptile__n { color: var(--p-ink); }
-.ptile__top .tag { height: auto; padding: 0; border: 0; border-radius: 0; font: inherit; letter-spacing: inherit; color: inherit; }
-.ptile__top .tag::before { display: none; }
 .ptile__media { position: relative; height: 300px; overflow: hidden; padding: 6px 0 0 28px; }   /* 6px over the window: room for its 4px lift */
 .ptile--s .ptile__media { height: 220px; }
 .ptile__media-link { display: block; height: 100%; color: inherit; text-decoration: none; }
@@ -243,7 +240,8 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
 .ptile__phone { position: absolute; top: 24px; right: 28px; width: 120px; }
 .ptile__body { flex: 1; display: flex; flex-direction: column; gap: var(--s-4); padding: 0 28px 26px; }
 .ptile__body h3 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(32px, 3.3vw, 48px); line-height: 1; letter-spacing: -.045em; text-wrap: balance; }
-.ptile--s .ptile__body h3 { font-size: clamp(26px, 2.4vw, 34px); }
+/* the sites and the tool: their name a step under the cases' (GlobalFia too, in a medium tile) */
+.ptile:not(.ptile--case) .ptile__body h3 { font-size: clamp(26px, 2.4vw, 34px); }
 .ptile__lead { margin: 0; max-width: 56ch; font-size: var(--t-body); line-height: 1.5; color: color-mix(in oklab, var(--ink) 80%, var(--bg)); text-wrap: pretty; }
 .ptile__facts { list-style: none; margin: 0; padding: 0; }
 .ptile__facts li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.45; text-wrap: pretty; }
@@ -642,13 +640,14 @@ main.home .statement > .wrap { border-top: 1px solid var(--p-ink); padding-top: 
    Every section's head over a hairline in ink, its h2 a step under "Proyectos" (40 at a phone, 64 from 1440). From a
    laptop, a head that runs the content's width sets its h2 on the left seven columns and its line on the right five,
    down on the h2's last line; a head inside a column (a case's pinned chapters, a role group, the close) stays
-   stacked, with the same hairline and scale. */
-.section-head { padding-bottom: 20px; border-bottom: 1px solid var(--p-ink); }
-.section-head h2 { font-size: clamp(40px, 4.4vw, 64px); line-height: 1; letter-spacing: -.045em; }
+   stacked, with the same hairline and scale. The 404 keeps the kit's plain head (scoped to the home, the case pages
+   and their closes). */
+:is(main.home, main.case-page, footer.closing) .section-head { padding-bottom: 20px; border-bottom: 1px solid var(--p-ink); }
+:is(main.home, main.case-page, footer.closing) .section-head h2 { font-size: clamp(40px, 4.4vw, 64px); line-height: 1; letter-spacing: -.045em; }
 @media (min-width: 1024px) {
-  .wrap > .section-head { max-width: none; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: end; }
-  .wrap > .section-head > :first-child { grid-column: 1 / 8; }
-  .wrap > .section-head > p { grid-column: 8 / -1; }
+  :is(main.home, main.case-page) .wrap > .section-head { max-width: none; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); align-items: end; }
+  :is(main.home, main.case-page) .wrap > .section-head > :first-child { grid-column: 1 / 8; }
+  :is(main.home, main.case-page) .wrap > .section-head > p { grid-column: 8 / -1; }
 }
 /* the small labels (a job's dates, a sheet's row, a stack area): the hero's mono label */
 .tl__date, .t-label, .stack__label { font: 400 12px/1.3 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--p-muted); }

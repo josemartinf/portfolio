@@ -26,9 +26,9 @@ const es = {
     seeProjects: "Ver los proyectos",
     /** la frase junto al apellido (la primera oración de `tagline` ya está en "Hago") */
     claim: "Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
-    /** la fila de datos: el rótulo chico y su dato ("Hoy" sale de currentFact) */
+    /** la fila de datos: el rótulo chico y su dato ("Hoy": el rol, sin el seniority, y la empresa de jobs[0]) */
     metas: {
-      now: "Hoy", build: "Hago", buildValue: "Backend, integraciones y automatización con IA",
+      now: "Hoy", nowValue: (company: string) => `Software Engineer en ${company}`, build: "Hago", buildValue: "Backend, integraciones y automatización con IA",
       since: "Desde", sinceValue: "2019, siempre en banca y fintech", write: "Escribime", email: "Email",
     },
     /** el rótulo de la captura de Envo que asoma al pie de la entrada */
@@ -107,7 +107,7 @@ const en: Ui = {
     seeProjects: "See the projects",
     claim: "I build order, inventory and payment systems that keep working when something fails.",
     metas: {
-      now: "Now", build: "I build", buildValue: "Backend, integrations and AI automation",
+      now: "Now", nowValue: (company: string) => `Software Engineer at ${company}`, build: "I build", buildValue: "Backend, integrations and AI automation",
       since: "Since", sinceValue: "2019, always in banking and fintech", write: "Write to me", email: "Email",
     },
     bandLabel: "Envo · operations panel",

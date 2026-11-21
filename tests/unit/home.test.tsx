@@ -61,6 +61,8 @@ describe("home", () => {
     expect(bandLink).toHaveAttribute("tabindex", "-1");
     expect(bandLink).toHaveAttribute("aria-hidden", "true");
     expect(band.querySelector("img")!.getAttribute("src")).toBe("/projects/envo-panel.webp");
+    // la captura entra como imagen (se asienta), no como un paso de texto
+    expect(band).toHaveAttribute("data-enter-media");
     expect(hero.querySelector("[data-fx], .hero-note, .hero__proof")).toBeNull();
   });
 
