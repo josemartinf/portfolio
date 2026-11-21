@@ -28,6 +28,9 @@ const SIZES: Tile["size"][] = ["l", "m", "l", "m", "s", "s", "s"];
  *  nunca empieza con un punto). */
 const stackLine = (sheet: TechSheet) => (sheet.short?.stack?.split(", ") ?? sheet.stack).join("\u00a0· ");
 
+/** Un nombre con guion y número ("SS-550") no se corta en el guion: va en un span sin cortes. */
+const keep = (text: string) => text.split(/(\S+-\d\S*)/).map((t, i) => (i % 2 === 1 ? <span key={i} className="nowrap">{t}</span> : t));
+
 function tilesOf(locale: Locale): Tile[] {
   const { cases, envoHealthShot, sites, tools } = content(locale);
   const all: Omit<Tile, "n" | "size">[] = [
@@ -70,8 +73,8 @@ export function Projects({ locale = "es" }: { locale?: Locale }) {
       <p className="ptile__top"><span className="ptile__n">{p.n}</span> · <Tag tag={p.tag} locale={locale} /></p>
       <Media t={p} />
       <div className="ptile__body">
-        <h3 id={`${p.slug}-h`}>{p.name}</h3>
-        <p className="ptile__lead">{p.lead}</p>
+        <h3 id={`${p.slug}-h`}>{keep(p.name)}</h3>
+        <p className="ptile__lead">{keep(p.lead)}</p>
         {p.facts && <ul className="ptile__facts">{p.facts.map((f) => <li key={f}>{f}</li>)}</ul>}
         {p.status && <p className="status ptile__status">
           <StatusText text={p.status} urls={p.urls} />
