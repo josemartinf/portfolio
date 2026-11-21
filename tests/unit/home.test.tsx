@@ -97,6 +97,8 @@ describe("home", () => {
     const rd = document.querySelector("[data-project='rd550-mac']")!;
     expect(rd.querySelector("a.ptile__media-link, .status")).toBeNull();
     expect(rd.querySelector(".ptile__stack")).not.toBeNull();
+    // un nombre con guion y número ("SS-550") no se corta en el guion
+    expect(rd.querySelector("h3 .nowrap")).toHaveTextContent("SS-550");
     expect(document.querySelector("[data-project='repuestos'] a[href='/stockie']")).not.toBeNull();
     expect(screen.getByText(/En uso en MonJeep y GlobalFia/)).toBeInTheDocument();
     // Ruling D: la demo pública de Envo, como link externo a /demo (nunca /admin ni /login).
