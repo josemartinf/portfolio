@@ -125,7 +125,11 @@ html { scroll-behavior: auto; }
    the band starts, so the hero grows past the kit's one screen by the band. In the DOM the h1 comes first (reading
    starts at the name); on a phone the order is the DOM's: name, claim and actions, facts, band. */
 main > .hero.hero--editorial { height: auto; min-height: 0; padding-bottom: 0; }
-.hero--editorial > .wrap.hero__grid { height: auto; display: block; }
+/* the kit has a hero--editorial of its own (layout.css: three lines of type with pills, the h1 with margin-block auto
+   and 32px of padding-block) and its section rows (system.css: the .wrap a flex column with a 48px gap); this one
+   is a different composition, so those are undone here on purpose, with the specificity they need */
+main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; }
+.hero--editorial h1.hero__name { padding-block: 0; }
 .hero__top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: var(--s-6); }
 .hero__top > * { grid-column: 1 / -1; min-width: 0; }
 .hero--editorial .hero__name { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(76px, 16.4vw, 236px); line-height: .84; letter-spacing: -.065em; text-wrap: wrap; }
@@ -138,7 +142,7 @@ main > .hero.hero--editorial { height: auto; min-height: 0; padding-bottom: 0; }
 /* the facts row: a hairline over four short columns, each a mono label and its fact */
 .hero__metas { margin: 0; padding-top: 14px; border-top: 1px solid var(--ink); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-5) var(--gutter); }
 .hero__metas dt, .hero__band-label { font: 400 12px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.hero__metas dd { margin: 8px 0 0; color: var(--ink); font-size: 15px; line-height: 1.4; overflow-wrap: break-word; }
+.hero__metas dd { margin: 8px 0 0; color: var(--ink); font-size: 15px; line-height: 1.4; overflow-wrap: break-word; text-wrap: balance; }
 .hero__links { display: flex; flex-wrap: wrap; gap: 0 .45em; }
 .hero__links a { color: var(--ink); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--ink) 35%, transparent); text-underline-offset: 3px; }
 .hero__links a:hover { text-decoration-color: currentColor; }
@@ -150,16 +154,24 @@ main > .hero.hero--editorial { height: auto; min-height: 0; padding-bottom: 0; }
 .hero__band-link:hover .bframe { border-color: color-mix(in oklab, var(--ink) 35%, transparent); }
 /* a laptop: the facts on top, the words down to the band. The claim and the actions sit beside "Flores" from 1280,
    where they are shorter than its line; at 1024-1279 they ran taller and climbed into "Martin", so there they go under
-   the name, on its left line */
+   the name, on one row */
 @media (min-width: 1024px) {
-  .hero__top { min-height: calc(100svh - var(--nav) - var(--hgap) - 160px - var(--s-6)); grid-template-rows: auto minmax(0, 1fr) auto; row-gap: 0; }
+  main > .hero.hero--editorial { padding-top: calc(var(--nav) + var(--photo, 0px) + var(--s-6)); }
+  .hero__top { min-height: calc(100svh - var(--nav) - var(--s-6) - 160px - var(--s-6)); grid-template-rows: auto minmax(0, 1fr) auto; row-gap: 0; }
   .hero__metas { grid-row: 1; }
-  .hero__name { grid-row: 2; align-self: end; margin-top: var(--s-8); }
+  .hero--editorial .hero__name { grid-row: 2; align-self: end; margin-top: var(--s-6); }
   .hero__side { grid-row: 3; margin-top: var(--s-6); max-width: 560px; }
   .hero__band { margin-top: var(--s-6); }
 }
+/* a small laptop: the claim and the actions on one row under the name (stacked, they pushed the band under the fold
+   of a 1024x768 screen) */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .hero__side { flex-direction: row; align-items: flex-end; justify-content: space-between; gap: var(--gutter); max-width: none; margin-top: var(--s-6); }
+  .hero__side .btn-row { flex: none; }
+  .hero__band { margin-top: var(--s-5); }
+}
 @media (min-width: 1280px) {
-  .hero__name { grid-row: 2 / 4; }
+  .hero--editorial .hero__name { grid-row: 2 / 4; }
   .hero__side { grid-row: 3; grid-column: 8 / -1; align-self: end; margin-top: 0; max-width: none; }
 }
 @media (min-width: 640px) and (max-width: 1023px) {

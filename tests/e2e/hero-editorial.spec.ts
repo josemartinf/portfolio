@@ -23,7 +23,9 @@ test("hero name fits at 700px", async ({ page }, info) => {
 });
 
 // la frase y los botones nunca se montan sobre las letras del nombre (a 1024 la frase, más alta que el renglón de
-// "Flores", subía hasta "Martin"); se mide la caja de las letras de cada renglón, no la del span (que es de bloque)
+// "Flores", subía hasta "Martin"). Las letras de cada renglón: a lo ancho, lo que ocupa el texto (el span es de
+// bloque, corre todo el ancho); a lo alto, la caja del renglón (interlineado .84, la altura de las letras; el área de
+// contenido del texto baja ~0,2em más, el lugar de los descendentes, que el nombre no tiene salvo la J de la izquierda)
 for (const width of [1024, 1280, 1440]) {
   test(`hero side never overlaps the name at ${width}`, async ({ page }, info) => {
     test.skip(info.project.name !== "desktop");
@@ -34,11 +36,25 @@ for (const width of [1024, 1280, 1440]) {
         const side = document.querySelector(".hero__side")!.getBoundingClientRect();
         return [...document.querySelectorAll(".hero__line")].some((line) => {
           const r = document.createRange(); r.selectNodeContents(line);
-          const t = r.getBoundingClientRect();
-          return t.left < side.right && side.left < t.right && t.top < side.bottom && side.top < t.bottom;
+          const x = r.getBoundingClientRect(), y = line.getBoundingClientRect();
+          return x.left < side.right && side.left < x.right && y.top < side.bottom && side.top < y.bottom;
         });
       });
       expect(hit, path).toBe(false);
+    }
+  });
+}
+
+// la captura de Envo asoma al pie de la primera pantalla de una laptop (el rótulo y la barra de la ventana, por lo
+// menos): a 1024x768 la frase y los botones apilados bajo el nombre la empujaban 38 px debajo del pie
+for (const [width, height] of [[1024, 768], [1280, 800], [1440, 900]]) {
+  test(`the Envo band peeks above the fold at ${width}x${height}`, async ({ page }, info) => {
+    test.skip(info.project.name !== "desktop");
+    await page.setViewportSize({ width, height });
+    for (const path of ["/", "/en"]) {
+      await page.goto(path);
+      const top = await page.locator(".hero__band").evaluate((e) => e.getBoundingClientRect().top);
+      expect(top, path).toBeLessThanOrEqual(height - 60);
     }
   });
 }
