@@ -7,31 +7,31 @@ export const sites: SiteProject[] = [
     name: "GlobalFia and MonJeep",
     tag: "client",
     summary:
-      "Two auto parts stores in Venezuela, one for Fiat and one for Jeep, Dodge and Chrysler. Each has its public site and its stock system, which later became Stockie.",
+      "Two auto parts stores in Venezuela, one for Fiat and one for Jeep, Dodge and Chrysler. Each has its own public site and inventory system, which later became Stockie.",
     // La búsqueda de MonJeep es de texto en español (plurales, sin acentos) sobre nombre, marca y modelos, más números de
     // pieza parciales: no es semántica ni corrige errores de tipeo (monjeep/lib/productos/producto-search.ts).
     layers: [
-      "GlobalFia: a quote builder that puts together the WhatsApp order with model, year and part",
-      "MonJeep: one search box for name, brand or car model, regardless of accents and plurals",
+      "GlobalFia: a quote builder that puts together the WhatsApp order from the model, year and part",
+      "MonJeep: a single search box for name, brand or car model that ignores accents and plurals",
       "MonJeep: installment payments with Cashea and a catalog you can filter by brand",
     ],
-    parts: ["GlobalFia landing page", "MonJeep landing page", "Stock system"],
+    parts: ["GlobalFia landing page", "MonJeep landing page", "Inventory system"],
     focus: [
       "Database: search with tsvector and pg_trgm, kept up to date by triggers",
       "Access control: role guards on pages and API",
     ],
     status: "Live: globalfia.store and monjeep.store",
     sheet: {
-      architecture: "Landing page and stock system in a single app, split by subdomain.",
+      architecture: "Landing page and inventory system in a single app, split by subdomain.",
       stack: ["Next.js", "TypeScript", "Prisma", "PostgreSQL", "Better Auth", "Resend"],
       practices: [
-        "Business logic kept in transactions",
-        "Role guards on pages and API",
+        "Business logic centralized in transactions",
+        "Role guards on pages and in the API",
         "Prisma migrations",
       ],
       patterns: [],
       short: {
-        architecture: "Landing page and stock in one app, split by subdomain",
+        architecture: "Landing page and inventory in one app, split by subdomain",
         stack: "Next.js, TypeScript, Prisma, PostgreSQL, Resend",
         practices: "Transactions, role guards, migrations",
       },
@@ -40,7 +40,7 @@ export const sites: SiteProject[] = [
     moreLinks: [{ name: "MonJeep", url: "https://www.monjeep.store" }],
     shot: {
       src: "/projects/repuestos-globalfia.webp",
-      alt: "GlobalFia's landing page, Fiat parts, with the WhatsApp quote builder",
+      alt: "GlobalFia's landing page for Fiat parts, with the WhatsApp quote builder",
       frame: "browser",
       title: "GlobalFia landing page",
     },
@@ -51,11 +51,11 @@ export const sites: SiteProject[] = [
     name: "Moodi Home",
     tag: "client",
     summary:
-      "An online store for design objects. Customers fill their cart and the order arrives ready over WhatsApp or email.",
+      "An online store for design objects. Customers build their cart, and the finished order reaches the store over WhatsApp or email.",
     layers: [
       "Catalog by category and product pages with a gallery",
       "Color and size variants on every product",
-      "A cart that is kept between visits",
+      "A cart that's saved between visits",
     ],
     parts: ["Catalog", "Product page", "Cart", "Checkout via WhatsApp or email"],
     focus: ["UX/UI: gallery, color and size variants, and a persistent cart"],
@@ -85,9 +85,9 @@ export const sites: SiteProject[] = [
     summary:
       "A bilingual site, in Spanish and English, for an aircraft detailing company.",
     layers: [
-      "Inquiries from the form reach the team by email, ready to answer the client",
+      "Form inquiries reach the team by email, so they can reply straight to the client",
       "An automatic, bilingual confirmation for the client",
-      "Emails with their own design",
+      "Custom-designed emails",
     ],
     parts: ["Bilingual landing page", "Validated form", "Emails via Resend"],
     focus: ["Forms: server-side validation and a client confirmation that doesn't block the response"],
@@ -105,7 +105,7 @@ export const sites: SiteProject[] = [
     liveUrl: "https://aether-aerospace.com",
     shot: {
       src: "/projects/aether-aerospace-care.webp",
-      alt: "Aether Aerospace Care's home page, aircraft detailing",
+      alt: "Aether Aerospace Care's home page, for an aircraft detailing company",
       frame: "browser",
       title: "Bilingual landing page",
     },

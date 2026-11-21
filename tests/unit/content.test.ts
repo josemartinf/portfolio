@@ -116,7 +116,7 @@ describe("content", () => {
     expect(stockie.figures?.in).toBe("calidad");
     expect(stockie.figures?.items.map((f) => `${f.value} ${f.label}`)).toEqual(["16 tests de integración contra PostgreSQL real", "12 tests unitarios de la búsqueda", "59 rutas de API", "31 modelos"]);
     expect(stockie.quality.join(" ")).toContain("SELECT … FOR UPDATE");
-    ["dos precios más uno manual", "historial de precios", "modelos compatibles", "búsqueda por SKU con acentos", "defectuosos quedan fuera de stock", "límite diario", "WebUSB o USB"].forEach((f) => expect(stockieCopy).toContain(f));
+    ["dos precios más uno manual", "historial de precios", "modelos compatibles", "búsqueda por SKU sin importar los acentos", "defectuosos quedan fuera de stock", "límite diario", "WebUSB o USB"].forEach((f) => expect(stockieCopy).toContain(f));
   });
 
   it("every case has 2-4 hero sets and its diagram's edges and pulses name real nodes", () =>

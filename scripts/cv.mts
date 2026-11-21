@@ -16,7 +16,7 @@ const T = {
     h: { profile: "Perfil", experience: "Experiencia", projects: "Proyectos", sites: "Sitios en producción", personal: "Proyecto personal", stack: "Stack", education: "Formación" },
   },
   en: {
-    role: "Software Engineer · Backend, integrations and AI automation", profile: "I started in QA and today I build backend, integrations and AI automation. I design every system starting from how it can fail: retries, idempotency, alerts and tests.",
+    role: "Software Engineer · Backend, integrations and AI automation", profile: "I started in QA and today I build backend, integrations and AI automation. I design every system around how it could fail: retries, idempotency, alerts and tests.",
     h: { profile: "Profile", experience: "Experience", projects: "Projects", sites: "Sites in production", personal: "Personal project", stack: "Stack", education: "Education" },
   },
 };
