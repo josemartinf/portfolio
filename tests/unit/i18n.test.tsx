@@ -48,9 +48,9 @@ describe("i18n", () => {
     expect([...document.querySelectorAll(".tag")].map((t) => t.textContent)).toEqual(expect.arrayContaining(["Client", "Own product", "Personal"]));
     expect(document.querySelector(".tl__date")?.textContent).toMatch(/present$/);
     // Stockie, desde la tarjeta de GlobalFia y MonJeep, en inglés
-    expect(document.querySelector(".pcard a[href='/en/stockie']")).not.toBeNull();
+    expect(document.querySelector("[data-project='repuestos'] a[href='/en/stockie']")).not.toBeNull();
     // la portada en inglés tampoco nombra mecanismos
-    for (const sel of [".hero", "#como-trabajo", "#proyectos", "#stockie", "#club-zapateo", "#proyectos-mas"]) {
+    for (const sel of [".hero", "#como-trabajo", "#proyectos"]) {
       expect(document.querySelector(sel)?.textContent ?? "", sel).not.toMatch(HOME_JARGON);
     }
     // la entrada editorial, en inglés

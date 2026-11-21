@@ -45,13 +45,13 @@ test.describe("idiomas", () => {
   test("la portada en inglés vive en /en, con su lang, y su link lleva a la española", async ({ page }) => {
     await page.goto("/en");
     await expect(page.locator("html")).toHaveAttribute("lang", "en");
-    await expect(page.locator("#proyectos-h")).toHaveText("Projects");
+    await expect(page.locator("#proyectos-h")).toHaveAccessibleName("Projects");   // el nombre, sin el "(07)" decorativo (aria-hidden)
     const toggle = page.locator(".nav__toggle");
     if (await toggle.isVisible()) await toggle.click();
     await page.locator(".nav__lang").click();
     await expect(page).toHaveURL(/\/$/);
     await expect(page.locator("html")).toHaveAttribute("lang", "es");
-    await expect(page.locator("#proyectos-h")).toHaveText("Proyectos");
+    await expect(page.locator("#proyectos-h")).toHaveAccessibleName("Proyectos");
   });
 
   test("una página de caso lleva a la misma página en el otro idioma", async ({ page }) => {

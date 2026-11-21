@@ -3,6 +3,7 @@ import { cleanup, render, screen } from "@testing-library/react";
 import Home from "@/app/(es)/page";
 import { site } from "@/lib/site";
 import { HOME_JARGON } from "@/data/copy-guard";
+import { caseBySlug } from "@/data/cases";
 
 describe("home", () => {
   afterEach(cleanup);
@@ -12,7 +13,7 @@ describe("home", () => {
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("José Martin Flores");
     expect(screen.getAllByRole("link", { name: /Ver el caso/ }).map((a) => a.getAttribute("href"))).toEqual(["/envo", "/stockie", "/club-zapateo"]);
     expect(document.querySelector("#servicios")).toBeNull();
-    ["#proyectos", "#proyectos-mas", "#experiencia", "#stack", "#contacto"].forEach((id) => expect(document.querySelector(id)).not.toBeNull());
+    ["#proyectos", "#experiencia", "#stack", "#contacto"].forEach((id) => expect(document.querySelector(id)).not.toBeNull());
     // Revisión 2026-11-20: una sola sección de proyectos; ya no hay "Sitios" ni "Proyecto personal" sueltos.
     ["#sitios", "#sitios-mas", "#herramientas"].forEach((id) => expect(document.querySelector(id)).toBeNull());
     expect(document.querySelector("#proyectos-h")).toHaveTextContent("Proyectos");
@@ -30,9 +31,6 @@ describe("home", () => {
     // el statement va justo después del hero, antes de los casos
     const order = [...document.querySelectorAll("main > section")].map((s) => s.id);
     expect(order.slice(1, 3)).toEqual(["como-trabajo", "proyectos"]);
-    // los demás proyectos siguen a los casos, antes de la experiencia; el proyecto personal ya no queda después del stack
-    expect(order.indexOf("proyectos-mas")).toBe(order.indexOf("club-zapateo") + 1);
-    expect(order.indexOf("proyectos-mas")).toBeLessThan(order.indexOf("experiencia"));
     expect(order.at(-1)).toBe("stack");
     // los datos de la persona para los buscadores
     const ld = JSON.parse(document.querySelector('script[type="application/ld+json"]')!.innerHTML);
@@ -66,42 +64,48 @@ describe("home", () => {
     expect(hero.querySelector("[data-fx], .hero-note, .hero__proof")).toBeNull();
   });
 
-  it("shows the parts and status of every case, the status of every site, and no empty tech-sheet part", () => {
+  // Revisión 2026-11-20 (portada editorial): los siete proyectos en una sola grilla de bloques numerados; los tres casos
+  // con sus tres hechos, su estado y "Ver el caso"; los sitios con su estado y su línea de stack. Las partes, el
+  // diagrama de Envo y las viñetas de los sitios salieron de la portada (siguen en las páginas de caso).
+  it("lays the seven projects out as numbered tiles", () => {
     render(<Home />);
-    const parts = (slug: string) => (document.querySelector(`[data-project='${slug}'] .parts`)?.textContent ?? "").split(" · ").filter(Boolean);
-    expect(parts("envo")).toContain("App del repartidor en Telegram");
-    expect(parts("club-zapateo")).toContain("Control de acceso con QR");
-    ["envo", "stockie", "club-zapateo"].forEach((slug) => expect(parts(slug).length).toBeGreaterThan(0));
-    ["envo", "stockie", "club-zapateo", "repuestos", "moodi-home", "aether-aerospace-care"].forEach((slug) => {
-      expect(document.querySelector(`[data-project='${slug}'] .status`)?.textContent?.trim()).toBeTruthy();
-    });
+    const order = [...document.querySelectorAll("main > section")].map((s) => s.id);
+    expect(order.slice(1)).toEqual(["como-trabajo", "proyectos", "experiencia", "stack"]);
+    ["#stockie", "#club-zapateo", "#proyectos-mas"].forEach((id) => expect(document.querySelector(id)).toBeNull());
+    const tiles = [...document.querySelectorAll("#proyectos li.ptile")];
+    expect(tiles.map((t) => t.getAttribute("data-project"))).toEqual(["envo", "stockie", "club-zapateo", "repuestos", "moodi-home", "aether-aerospace-care", "rd550-mac"]);
+    expect(tiles.map((t) => t.querySelector(".ptile__n")!.textContent)).toEqual(["01", "02", "03", "04", "05", "06", "07"]);
+    expect(document.querySelector("#proyectos-h .projects__count")).toHaveTextContent("(07)");
+    for (const slug of ["envo", "stockie", "club-zapateo"] as const) {
+      const t = document.querySelector(`[data-project='${slug}']`)!;
+      expect([...t.querySelectorAll(".ptile__facts li")].map((li) => li.textContent)).toEqual(caseBySlug(slug).homeFacts);
+      expect(t.querySelector(".status")!.textContent!.trim()).toBeTruthy();
+      const media = t.querySelector("a.ptile__media-link")!;
+      expect(media).toHaveAttribute("href", `/${slug}`);
+      expect(media).toHaveAttribute("tabindex", "-1");
+      expect(media).toHaveAttribute("aria-hidden", "true");
+      expect(t.querySelector(".parts")).toBeNull();
+    }
+    for (const slug of ["repuestos", "moodi-home", "aether-aerospace-care"]) {
+      const t = document.querySelector(`[data-project='${slug}']`)!;
+      expect(t.querySelector(".status")!.textContent!.trim()).toBeTruthy();
+      // los puntos medios pegados a la palabra de antes: un renglón nunca empieza con "·"
+      expect(t.querySelector(".ptile__stack")!.textContent).toMatch(/\u00a0· /);
+      expect(t.querySelector(".ptile__stack")!.textContent).not.toMatch(/ ·/);
+      expect(t.querySelector("a.ptile__media-link")).toHaveAttribute("target", "_blank");
+    }
+    const rd = document.querySelector("[data-project='rd550-mac']")!;
+    expect(rd.querySelector("a.ptile__media-link, .status")).toBeNull();
+    expect(rd.querySelector(".ptile__stack")).not.toBeNull();
+    expect(document.querySelector("[data-project='repuestos'] a[href='/stockie']")).not.toBeNull();
     expect(screen.getByText(/En uso en MonJeep y GlobalFia/)).toBeInTheDocument();
-    expect(document.querySelector("[data-project='club-zapateo'] .status")).toHaveTextContent("En producción en clubzapateo.com");
     // Ruling D: la demo pública de Envo, como link externo a /demo (nunca /admin ni /login).
-    const envoStatus = document.querySelector("[data-project='envo'] .status")!;
-    expect(envoStatus).toHaveTextContent("Demo en línea en envo-demo.tech");
-    expect(envoStatus.querySelector("a")).toHaveAttribute("href", "https://envo-demo.tech/demo");
-    expect(envoStatus.querySelector("a")).toHaveAttribute("rel", expect.stringContaining("noopener"));
+    expect(document.querySelector("[data-project='envo'] .status a")).toHaveAttribute("href", "https://envo-demo.tech/demo");
+    expect(document.querySelector("[data-project='envo'] .status a")).toHaveAttribute("rel", expect.stringContaining("noopener"));
     expect(document.querySelector("a[href*='envo-demo.tech/admin'], a[href*='envo-demo.tech/login']")).toBeNull();
-    // Revisión 2026-11-18: el enfoque vive en la ficha de cada caso; la portada no repite "Partes" ni "Enfoque" como filas.
-    expect(document.querySelector("[data-project] .focus")).toBeNull();
-    ["#proyectos", "#proyectos-mas"].forEach((id) => expect(document.querySelector(id)!.textContent).not.toMatch(/Enfoque|Partes/));
-    // la imagen de cada caso también lleva al caso, fuera del orden del teclado
-    ["envo", "stockie", "club-zapateo"].forEach((slug) => {
-      const a = document.querySelector(`[data-project='${slug}'] a.case__visual-link`)!;
-      expect(a).toHaveAttribute("href", `/${slug}`);
-      expect(a).toHaveAttribute("tabindex", "-1");
-      expect(a).toHaveAttribute("aria-hidden", "true");
-    });
-    // I3: la ficha completa vive en el caso; en la portada no se repiten Arquitectura, Prácticas ni Patrones.
-    expect(document.querySelector("#proyectos").textContent).not.toMatch(/Arquitectura|Prácticas|Patrones/);
-    expect(document.querySelector("#proyectos-mas").textContent).not.toMatch(/Arquitectura|Prácticas|Patrones/);
+    expect(document.querySelector("#proyectos")!.textContent).not.toMatch(/Arquitectura|Prácticas|Patrones|Enfoque|Partes/);
     // R2: el statement no le atribuye CI a Envo.
-    expect(document.querySelector("#como-trabajo").textContent).not.toMatch(/2938|Envo[^.]*CI/);
-    // Moodi Home no tiene prácticas ni patrones: su ficha no muestra esos rótulos vacíos.
-    const moodi = document.querySelector("[data-project='moodi-home']")!;
-    expect(moodi.textContent).not.toMatch(/Prácticas|Patrones/);
-    document.querySelectorAll(".sheet dd").forEach((dd) => expect(dd.textContent!.trim().length).toBeGreaterThan(0));
+    expect(document.querySelector("#como-trabajo")!.textContent).not.toMatch(/2938|Envo[^.]*CI/);
   });
 
   it("tags every project: the cases, the client sites and the personal one", () => {
@@ -112,12 +116,12 @@ describe("home", () => {
     ["club-zapateo", "repuestos", "moodi-home", "aether-aerospace-care"].forEach((slug) => expect(tag(slug), slug).toBe("Cliente"));
     expect(tag("rd550-mac")).toBe("Personal");
     // el driver va en la grilla con los demás, no en una sección propia
-    expect(document.querySelector("#proyectos-mas [data-project='rd550-mac']")).not.toBeNull();
+    expect(document.querySelector("#proyectos [data-project='rd550-mac']")).not.toBeNull();
   });
 
   it("talks results, not mechanisms, in the hero, the statement and the projects", () => {
     render(<Home />);
-    [".hero", "#como-trabajo", "#proyectos", "#proyectos-mas"].forEach((sel) => {
+    [".hero", "#como-trabajo", "#proyectos"].forEach((sel) => {
       const el = document.querySelector(sel);
       expect(el, sel).not.toBeNull();
       // el texto visible y también lo que lee un lector de pantalla (alt y aria-label)

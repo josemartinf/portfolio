@@ -86,7 +86,7 @@
    ground's own ink and bg, so a lighter ground (the experience panel) keeps the same step. The lime stays for
    action and the brand only. Club Zapateo's pinned chapters keep their own (moment.css: the step on view in ink). */
 .section-head > p, .statement__line, .statement__proof dd,
-.case__facts li, .pcard__summary, .site__layers li, .tl__roles p:not(.tl__title), .tl__study p + p, .footer__lede,
+.tl__roles p:not(.tl__title), .tl__study p + p, .footer__lede,
 .case-lede, .case-role__text > p, .case-more__text p, .case-decisions p, .case-quality__list p,
 .sheet__list li {
   color: color-mix(in oklab, var(--ink) 80%, var(--bg));
@@ -96,7 +96,7 @@
    list lines broken like paragraphs, so none ends on a lone word; the footer's line, a sentence on two lines, a
    little more leading than a heading's */
 .tl__roles p:not(.tl__title) { max-width: 65ch; }
-.case__facts li, .site__layers li, .statement__proof dd, .sheet dd, .sheet__list li { text-wrap: pretty; }
+.statement__proof dd, .sheet dd, .sheet__list li { text-wrap: pretty; }
 .footer__lede { line-height: 1.35; }
 /* Page layout and project captures. The kit remains untouched. */
 /* Page CSS, only where the kit asks for it (inside a visual, lists the system has no class for). The kit stays untouched. */
@@ -118,7 +118,6 @@ html { scroll-behavior: auto; }
 .pframe { position: relative; padding: 6px; border-radius: 26px; background: #1d1d1d; border: 1px solid rgb(255 255 255 / .16); box-shadow: var(--phone-shadow); }
 .pframe__screen { overflow: hidden; border-radius: 20px; background: #000; }
 .pframe__screen img { display: block; width: 100%; height: auto; }
-a.pcard__shot { display: block; border-radius: var(--r-md); }
 
 /* ---------------------------------------------------------------- hero editorial (spec 2026-11-20-portada-editorial) */
 /* The name is the page's largest line by far. On a laptop the facts row runs on top, the claim and the two actions sit
@@ -175,39 +174,8 @@ main > .hero.hero--editorial { height: auto; min-height: 0; padding-bottom: 0; }
   .hero__band { margin-top: var(--s-6); }
 }
 
-/* ---------------------------------------------------------------- the three cases: three compositions */
-.case__grid { align-items: start; }
-.case__text { display: flex; flex-direction: column; gap: var(--s-5); min-width: 0; }
-.case__visual { min-width: 0; }
-.case__facts, .site__layers, .tl, .sheet__list, .stack__list { list-style: none; margin: 0; padding: 0; }
-.case__facts li { padding: 10px 0; border-bottom: 1px solid var(--line); font-size: var(--t-body); line-height: 1.5; }
-.case__facts li:first-child { padding-top: 0; }
-.case__link { align-self: flex-start; }
-/* Envo: the diagram's panel runs the height of the words beside it */
-.case--envo .case__grid { align-items: stretch; }
-.case--envo .case__visual { display: flex; }
-.case__diagram { flex: 1; display: flex; align-items: center; min-height: 400px; height: 100%; box-sizing: border-box; padding: var(--s-6) var(--s-5); overflow: hidden; border-radius: var(--r-lg); --frag: #ffffff; }
-.case__diagram > .dg { flex: 1; }
-/* the diagram's compact tier (a phone, a small laptop): the tile's square is drawn on its icon, not on the node that
-   also holds the name, so a name under its square ("Panel en vivo", one line) is never a line run out of a box */
-.case__diagram .dg[data-tier="c"] .dg-node--tile, .case__diagram .dg[data-tier="c"] .dg-node--tile.is-hit { background: none; border-color: transparent; box-shadow: none; }
-.case__diagram .dg[data-tier="c"] .dg-node--tile > .dg-ic { box-sizing: border-box; width: 36px; height: 36px; padding: 9px; border-radius: calc(var(--dg-r) + 2px); background: var(--dg-node); border: 1px solid var(--dg-border); box-shadow: var(--dg-shadow); transition: box-shadow 900ms var(--dg-ease), border-color 900ms var(--dg-ease); }
-.case__diagram .dg[data-tier="c"] .dg-node--tile.is-hit > .dg-ic { border-color: color-mix(in oklab, var(--dg-accent) 55%, var(--dg-border)); box-shadow: 0 0 0 3px color-mix(in oklab, var(--dg-accent) 14%, transparent), var(--dg-shadow); transition-duration: 160ms; }
-.case__diagram .dg[data-tier="c"] .dg-node--tile > .dg-cap { max-width: none; white-space: nowrap; }
-
-/* Stockie: a short row of words (the facts, the parts, the state and the link beside the heading), then the capture
-   across the block */
-.case__top { align-items: start; }
-.case__top .section-head { margin-bottom: 0; }
-.case__wide { margin-top: var(--s-7); }
-/* Club Zapateo: the panel's window and the door's phone side by side, about the same height, neither over the other
-   (the phone over the window's corner hid the panel's right column) */
-.case__pair { display: flex; align-items: center; gap: var(--s-5); }
-.case__pair > .bframe { flex: 1 1 0; min-width: 0; }
-.case__pair > .pframe { flex: none; width: 132px; }
-/* a small laptop (the column is 420px): a smaller phone, so the window keeps 300px */
-@media (min-width: 1024px) and (max-width: 1279px) { .case__pair { gap: var(--s-4); } .case__pair > .pframe { width: 104px; } }
-
+/* ---------------------------------------------------------------- the tech sheet (case pages) */
+.tl, .sheet__list, .stack__list { list-style: none; margin: 0; padding: 0; }
 /* the tech sheet: one line a part on the home, every item on its own line on a case page */
 .sheet { display: grid; gap: var(--s-3); margin: 0; }
 .sheet__row { display: grid; grid-template-columns: 104px minmax(0, 1fr); gap: var(--s-4); align-items: baseline; }
@@ -235,32 +203,64 @@ main > .hero.hero--editorial { height: auto; min-height: 0; padding-bottom: 0; }
 .tag--product::before { background: var(--p-ink); }
 .tag--personal { color: var(--muted); }
 .tag--personal::before { background: var(--muted); }
-/* the section's h2 ("Proyectos") is the largest line of it; each case's name, an h3, a step under it */
-.projects__head { margin-bottom: var(--s-8); }
-.case__head { gap: var(--s-3); }
-.case__head > p { margin-top: var(--s-1); }
-.case__name { font-size: clamp(28px, 1.1vw + 20px, 38px); line-height: 1.1; letter-spacing: var(--display-tracking); font-weight: var(--display-weight); }
+/* the section's head: "Proyectos" large, with its count, and the line beside it, over a hairline in ink */
+.projects__head { display: flex; align-items: flex-end; justify-content: space-between; gap: var(--s-5) var(--gutter); margin-bottom: var(--s-6); padding-bottom: var(--s-5); border-bottom: 1px solid var(--p-ink); }
+.projects__head h2 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(56px, 8.9vw, 128px); line-height: .86; letter-spacing: -.06em; }
+.projects__count { margin-left: .18em; font: 400 .17em/0 var(--font-mono); letter-spacing: .02em; color: var(--p-muted); vertical-align: super; }
+.projects__head > p { margin: 0; max-width: 30ch; font-size: var(--t-lead); line-height: 1.4; }
 
-/* the other projects: a grid of cards under the cases (two across from 960px), each the site's first screen (2:1 of
-   the 16:10 capture), then its tag, name and state, the summary, three lines and the stack. No box around a card:
-   the page draws no cards for the cases either, so the window is what holds each one together */
-.pcards { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s-9) calc(var(--gutter) * 3); }
-@media (min-width: 960px) { .pcards { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
-@media (min-width: 640px) and (max-width: 959px) { .pcard { max-width: 560px; } }
-.pcard { display: flex; flex-direction: column; gap: var(--s-5); min-width: 0; }
-.pcard .bframe__view { aspect-ratio: 2 / 1; }
-.pcard .bframe__view img { height: 100%; object-fit: cover; object-position: 50% 0%; }
-.pcard__body { display: flex; flex-direction: column; gap: var(--s-4); min-width: 0; }
-.pcard__head { display: flex; flex-direction: column; gap: var(--s-3); }
-.pcard__head h3 { margin: 0; }
-.pcard__status { margin: 0; color: var(--p-ink); font-size: var(--t-small); line-height: 1.5; }
-.pcard__summary { margin: 0; font-size: var(--t-body); line-height: 1.5; max-width: 56ch; }
-/* a card's one sheet row (Stack): its label over the value, as on a phone; a label column of 104px left a hole
-   between a short word and its list */
-.pcard .sheet__row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
-.site__layers { display: grid; gap: 6px; }
-.site__layers li { position: relative; padding-left: 16px; font-size: var(--t-body); line-height: 1.45; }
-.site__layers li::before { content: ""; position: absolute; left: 0; top: .62em; width: 6px; height: 1px; background: var(--p-muted); }
+/* the seven projects (spec 2026-11-20-portada-editorial): straight blocks on the 12 columns, the three cases larger
+   (7/5, 7/5), the sites and the tool after (4/4/4). Each block: its number and tag in mono, the capture running out of
+   its right edge and fading into the block before the words (no word ever sits on a picture), then the name and the
+   rest */
+.pgrid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+.ptile { grid-column: auto / span 4; display: flex; flex-direction: column; min-width: 0; overflow: hidden; background: var(--p-surface); border: 1px solid var(--line); border-radius: 0; transition: border-color 200ms ease; }
+.ptile--l { grid-column: auto / span 7; }
+.ptile--m { grid-column: auto / span 5; }
+.ptile__top { display: flex; align-items: center; gap: .6em; margin: 0; padding: 24px 28px; font: 400 12px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.ptile__n { color: var(--p-ink); }
+.ptile__top .tag { height: auto; padding: 0; border: 0; border-radius: 0; font: inherit; letter-spacing: inherit; color: inherit; }
+.ptile__media { position: relative; height: 300px; overflow: hidden; padding-left: 28px; }
+.ptile--s .ptile__media { height: 220px; }
+.ptile__media-link { display: block; height: 100%; color: inherit; text-decoration: none; }
+.ptile__media .bframe { width: 115%; box-shadow: none; }
+.ptile__media::after { content: ""; position: absolute; inset: 0; background: linear-gradient(transparent 55%, var(--p-surface)); pointer-events: none; }
+.ptile__phone { position: absolute; top: 24px; right: 28px; width: 120px; }
+.ptile__body { flex: 1; display: flex; flex-direction: column; gap: var(--s-4); padding: 0 28px 26px; }
+.ptile__body h3 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(32px, 3.3vw, 48px); line-height: 1; letter-spacing: -.045em; text-wrap: balance; }
+.ptile--s .ptile__body h3 { font-size: clamp(26px, 2.4vw, 34px); }
+.ptile__lead { margin: 0; max-width: 56ch; font-size: var(--t-body); line-height: 1.5; color: color-mix(in oklab, var(--ink) 80%, var(--bg)); text-wrap: pretty; }
+.ptile__facts { list-style: none; margin: 0; padding: 0; }
+.ptile__facts li { padding: 10px 0; border-top: 1px solid var(--line); font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ptile__status { margin: 0; font-size: var(--t-small); line-height: 1.5; color: var(--p-ink); }
+.ptile__stack { margin: 0; font: 400 13px/1.5 var(--font-mono); color: var(--p-muted); }
+.ptile__link { align-self: flex-start; margin-top: auto; }
+@media (hover: hover) {
+  .ptile:hover { border-color: color-mix(in oklab, var(--p-ink) 30%, transparent); }
+  .ptile .bframe { transition: transform 300ms cubic-bezier(.2, .7, .2, 1); }
+  .ptile:hover .bframe { transform: translateY(-4px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ptile .bframe { transition: none; }
+  .ptile:hover .bframe { transform: none; }
+}
+/* a tablet: the cases across the row, the sites two by two and the tool across */
+@media (min-width: 640px) and (max-width: 1023px) {
+  .ptile--l, .ptile--m { grid-column: 1 / -1; }
+  .ptile--s { grid-column: auto / span 6; }
+  .ptile--s:last-child { grid-column: 1 / -1; }
+}
+/* a phone: one column; the head's line under the h2 */
+@media (max-width: 639px) {
+  .projects__head { flex-direction: column; align-items: flex-start; }
+  .ptile, .ptile--l, .ptile--m { grid-column: 1 / -1; }
+  .ptile__top { padding: 20px 20px; }
+  .ptile__media { height: 240px; padding-left: 20px; }
+  .ptile--s .ptile__media { height: 200px; }
+  .ptile__phone { top: 20px; right: 20px; width: 96px; }
+  .ptile__body { padding: 0 20px 22px; }
+}
+
 
 /* ---------------------------------------------------------------- experience: the timeline */
 .experience .section-head { margin-bottom: var(--s-6); }
@@ -303,10 +303,7 @@ main > .hero.hero--editorial { height: auto; min-height: 0; padding-bottom: 0; }
 @media (max-width: 1023px) {
   .closing--case .closing__cta > .btn { height: 56px; }
   .statement__proof { margin-top: var(--s-7); }
-  .case__grid, .statement__grid { align-content: start; }
-  .case__visual { margin-top: var(--s-5); }
-  .case--envo .case__grid { align-items: start; }
-  .case__visual > .bframe, .case__pair { max-width: 560px; }
+  .statement__grid { align-content: start; }
 }
 @media (min-width: 640px) and (max-width: 1023px) {
   /* a tablet: what holds about a screen is one screen grown to it (min-height, system.css), not two with a hole */
@@ -315,28 +312,16 @@ main > .hero.hero--editorial { height: auto; min-height: 0; padding-bottom: 0; }
 }
 /* a short laptop screen (1024x768 holds 576px): tighter lists, a smaller wall */
 @media (min-width: 1024px) and (max-height: 800px) {
-  .case__facts li { padding: 6px 0; }
-  .case__text, .pcard__body { gap: var(--s-3); }
   .sheet { gap: var(--s-2); }
 }
 @media (max-width: 639px) {
   /* one screen grown to what it holds (min-height one screen): a section that holds a screen and a bit never becomes
      two screens with a hole under it; the timeline, past a screen and a half, is two */
-  .case, .statement { --hm: 1; }
+  .statement { --hm: 1; }
   .experience { --hm: 2; }
   /* a .fill grows to its screen but never shrinks under what it holds (a narrow phone, 320px, runs the words longer) */
   main > .section > .wrap > .fill { flex: 1 0 auto; min-height: auto; }
-  .case--envo .case__diagram { flex: 1 1 auto; height: 430px; }
   .tl__study { margin-top: var(--s-7); }
-  /* Stockie's capture whole on a phone: the wide strip would be too small to read */
-  .case--stockie .bframe--crop .bframe__view { aspect-ratio: 1.6; }
-  /* the door's phone below the window: on a phone the window takes the whole width */
-  .case__pair { display: block; }
-  .case__pair > .pframe { width: 132px; margin: var(--s-4) 0 0 auto; }
-  /* Club Zapateo's card under a screen and a half: the door's phone a little smaller, its facts a little tighter */
-  .case--zapateo .case__pair > .pframe { width: 104px; margin-top: var(--s-3); }
-  .case--zapateo .case__facts li { padding: 4px 0; }
-  .case--zapateo .case__visual { margin-top: var(--s-4); }
   .sheet__row { grid-template-columns: minmax(0, 1fr); gap: 2px; }
   .nav .nav__name { display: none; }
 }
@@ -627,13 +612,9 @@ main.home > .section:not(.hero), footer.closing.closing--home {
 }
 main.home > .section:not(.hero) > .wrap, footer.closing.closing--home > .wrap { height: auto; flex: none; }
 main.home > .section:not(.hero) > .wrap > .fill { flex: none; min-height: auto; }
-/* the other projects continue the list of #proyectos (no heading of their own on screen): they open closer to Club
-   Zapateo than a new section would, so the cases and the cards read as one list */
-main.home > .section.projects-more { padding-top: var(--s-6); }
 footer.closing.closing--home { padding-bottom: var(--s-7); }
 @media (max-width: 639px) {
   main.home > .section:not(.hero), footer.closing.closing--home { padding: var(--s-8) 0 var(--s-7); }
-  main.home > .section.projects-more { padding-top: var(--s-5); }
   footer.closing.closing--home { padding-bottom: var(--s-6); }
 }
 
@@ -642,17 +623,6 @@ footer.closing.closing--home { padding-bottom: var(--s-7); }
 /* (it read 6vw: 86px against the name's 64px at 1440, 48 against 40 on a phone, the page's largest line; now about
    36px at 390, 49 at 1024, 58 at 1440, never past 60, always a step under the h1) */
 main.home .statement .mo-lt__type { font-size: clamp(34px, 2.1vw + 27.8px, 60px); }
-
-/* ---------------------------------------------------------------- the home's cases: the parts and the state, quiet */
-.case__meta { display: grid; gap: 6px; }
-.case__parts, .case__status { margin: 0; font-size: var(--t-small); line-height: 1.5; }
-.case__parts { color: var(--muted); }   /* the muted step: 7.4:1 on the page ground */
-.case__status { color: var(--p-ink); }
-/* the case's picture leads to the case too (pointer only): a quiet lift on hover */
-.case__visual-link { display: block; height: 100%; color: inherit; text-decoration: none; border-radius: var(--r-lg); }
-.case--envo .case__visual-link { display: flex; flex: 1 1 auto; min-width: 0; }
-.case__visual-link:hover .case__diagram, .case__visual-link:hover .bframe { box-shadow: 0 0 0 1px color-mix(in oklab, var(--p-ink) 22%, transparent), var(--frame-shadow); }
-.case__visual-link .case__diagram, .case__visual-link .bframe { transition: box-shadow 200ms ease; }
 
 /* ---------------------------------------------------------------- the email, written, with its copy button */
 .email-copy { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s-3) var(--s-5); margin: 0; }
@@ -663,7 +633,7 @@ main.home .statement .mo-lt__type { font-size: clamp(34px, 2.1vw + 27.8px, 60px)
 /* a secondary that opens its own line (not after a primary): its text on the column's left line, and its box too
    (no left padding, nothing outside the container lines) */
 .closing__cta > .btn--secondary { align-self: flex-start; }
-.closing__cta > .btn.btn--secondary, .case__link.btn.btn--secondary { padding-left: 0; }   /* over the kit's arrow look (html[data-buttons] .btn--secondary) */
+.closing__cta > .btn.btn--secondary, .ptile__link.btn.btn--secondary { padding-left: 0; }   /* over the kit's arrow look (html[data-buttons] .btn--secondary) */
 
 /* ---------------------------------------------------------------- the footer's links: a 24px target at least */
 .footer__col ul a { display: inline-block; padding-block: 3px; }

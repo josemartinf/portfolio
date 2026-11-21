@@ -47,15 +47,8 @@ const es = {
   projects: {
     title: "Proyectos",
     lead: "Sistemas y sitios en uso, y uno que hice para mí.",
-    more: "Más proyectos",
     seeCase: "Ver el caso", seeCaseOf: (name: string) => ` de ${name}`,
-    zapateoLabel: "Club Zapateo · Panel", zapateoLabelShort: "Panel",
     relatedCase: "El sistema de stock hoy es",
-    envoFlow: {
-      alt: "Los pedidos entran por Telegram, WhatsApp o la página web, y Envo guarda cada pedido junto con su aviso. De ahí salen los avisos al repartidor y al cliente, que se reintentan si un canal está caído, y el panel de operación, que se actualiza solo.",
-      chat: "chat del cliente", orderPage: "Página de pedidos", fromWeb: "desde la web", core: "Pedidos y caja",
-      notices: "Avisos", noticesSub: "se reintentan si un canal se cae", panel: "Panel en vivo", panelSub: "se actualiza solo",
-    },
   },
   tags: { client: "Cliente", product: "Producto propio", personal: "Personal" },
   experience: {
@@ -132,15 +125,8 @@ const en: Ui = {
   projects: {
     title: "Projects",
     lead: "Systems and sites in use, and one I built for myself.",
-    more: "More projects",
     seeCase: "See the case study", seeCaseOf: (name: string) => `: ${name}`,
-    zapateoLabel: "Club Zapateo · Dashboard", zapateoLabelShort: "Dashboard",
     relatedCase: "Its inventory system is now",
-    envoFlow: {
-      alt: "Orders come in through Telegram, WhatsApp or the website, and Envo saves each order together with its notification. From there go the notifications to the courier and the customer, retried if a channel is down, and the operations panel, which updates on its own.",
-      chat: "customer chat", orderPage: "Order page", fromWeb: "from the web", core: "Orders and cash",
-      notices: "Notifications", noticesSub: "retried if a channel goes down", panel: "Live panel", panelSub: "updates on its own",
-    },
   },
   tags: { client: "Client", product: "Own product", personal: "Personal" },
   experience: {
