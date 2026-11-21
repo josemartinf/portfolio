@@ -85,7 +85,7 @@
    With every line white, a heading and the paragraph under it weighed the same. The read step is mixed from each
    ground's own ink and bg, so a lighter ground (the experience panel) keeps the same step. The lime stays for
    action and the brand only. Club Zapateo's pinned chapters keep their own (moment.css: the step on view in ink). */
-.hero .hero__lead, .hero__proof, .section-head > p, .statement__line, .statement__proof dd,
+.section-head > p, .statement__line, .statement__proof dd,
 .case__facts li, .pcard__summary, .site__layers li, .tl__roles p:not(.tl__title), .tl__study p + p, .footer__lede,
 .case-lede, .case-role__text > p, .case-more__text p, .case-decisions p, .case-quality__list p,
 .sheet__list li {
@@ -120,43 +120,60 @@ html { scroll-behavior: auto; }
 .pframe__screen img { display: block; width: 100%; height: auto; }
 a.pcard__shot { display: block; border-radius: var(--r-md); }
 
-/* ---------------------------------------------------------------- hero collage: the Envo window and the note */
-/* the h1's last two names and their comma never part: the entrance (motion.js) sets each word in a box of its own,
-   so a no-break space would not hold them, and this keeps the lines the same while it runs and once it ends */
-.hero__name-end { white-space: nowrap; }
-
-.hero--collage h1 { text-wrap: balance; hyphens: manual; -webkit-hyphens: manual; }
-/* the Envo window holds one block of its Alerts screen ("Salud del sistema", 1600x850: scripts/capture.mjs
-   envo-health) at full width: it starts --hero-in from the frame's left and runs --ly-cut out through its right
-   edge (layout.css), where the cut falls in the page ground the capture keeps past the block, never through it.
-   The window and what goes under it sit together in the middle of the frame, never closer than --hero-in to its
-   top: on a wide screen the note, which lies over the window's empty foot (under the block's last row, 34 of the
-   capture's 700 px) and over the ground at its lower-left corner, never over a line of the window; on a narrower
-   one (no note) a 56px band for the pause disc, which stays on the ground at the frame's lower-right corner.
-   The custom properties are read by the pieces, so 100% and cqw are the frame's. */
-.hero__art {
-  container-type: inline-size; --hero-in: var(--s-8);
-  --win-w: calc(100cqw - var(--hero-in) + var(--ly-cut));
-  --win-h: calc(32px + var(--win-w) * 850 / 1600);
-  --note-over: calc(var(--win-w) * .03);
-  --after: calc(152px - var(--note-over));
-  --win-top: max(var(--hero-in), calc((100% - var(--win-h) - var(--after)) / 2));
+/* ---------------------------------------------------------------- hero editorial (spec 2026-11-20-portada-editorial) */
+/* The name is the page's largest line by far. On a laptop the facts row runs on top, the claim and the two actions sit
+   beside the last name, and the Envo panel peeks at the fold: the words fill the screen down to 160px above it, where
+   the band starts, so the hero grows past the kit's one screen by the band. In the DOM the h1 comes first (reading
+   starts at the name); on a phone the order is the DOM's: name, claim and actions, facts, band. */
+main > .hero.hero--editorial { height: auto; min-height: 0; padding-bottom: 0; }
+.hero--editorial > .wrap.hero__grid { height: auto; display: block; }
+.hero__top { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); column-gap: var(--gutter); row-gap: var(--s-6); }
+.hero__top > * { grid-column: 1 / -1; min-width: 0; }
+.hero--editorial .hero__name { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(76px, 16.4vw, 236px); line-height: .84; letter-spacing: -.065em; text-wrap: wrap; }
+.hero__line { display: block; }
+@media (min-width: 640px) { .hero__line { white-space: nowrap; } }
+.hero__side { display: flex; flex-direction: column; gap: var(--s-5); }
+.hero__claim { margin: 0; max-width: 30ch; color: var(--ink); font-size: clamp(19px, .9vw + 11px, 24px); line-height: 1.32; letter-spacing: -.012em; text-wrap: pretty; }
+/* the CV beside the filled button: a text link, underlined, on the button's height */
+.hero--editorial .btn.btn--secondary { background: none; border: 0; border-bottom: 1.5px solid currentColor; border-radius: 0; padding-inline: 0; }
+/* the facts row: a hairline over four short columns, each a mono label and its fact */
+.hero__metas { margin: 0; padding-top: 14px; border-top: 1px solid var(--ink); display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--s-5) var(--gutter); }
+.hero__metas dt, .hero__band-label { font: 400 12px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.hero__metas dd { margin: 8px 0 0; color: var(--ink); font-size: 15px; line-height: 1.4; overflow-wrap: break-word; }
+.hero__links { display: flex; flex-wrap: wrap; gap: 0 .45em; }
+.hero__links a { color: var(--ink); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--ink) 35%, transparent); text-underline-offset: 3px; }
+.hero__links a:hover { text-decoration-color: currentColor; }
+.hero__links a:not(:last-child)::after { content: "·"; display: inline-block; margin-left: .45em; color: var(--muted); text-decoration: none; }
+/* the band: the Envo panel, a low strip of it, under its mono label; it leads to the case (pointer only) */
+.hero__band { margin: var(--s-7) 0 0; display: grid; gap: 12px; }
+.hero__band-link { display: block; color: inherit; text-decoration: none; }
+.hero__band .bframe { box-shadow: none; }
+.hero__band-link:hover .bframe { border-color: color-mix(in oklab, var(--ink) 35%, transparent); }
+/* a laptop: the facts on top, the words down to the band. The claim and the actions sit beside "Flores" from 1280,
+   where they are shorter than its line; at 1024-1279 they ran taller and climbed into "Martin", so there they go under
+   the name, on its left line */
+@media (min-width: 1024px) {
+  .hero__top { min-height: calc(100svh - var(--nav) - var(--hgap) - 160px - var(--s-6)); grid-template-rows: auto minmax(0, 1fr) auto; row-gap: 0; }
+  .hero__metas { grid-row: 1; }
+  .hero__name { grid-row: 2; align-self: end; margin-top: var(--s-8); }
+  .hero__side { grid-row: 3; margin-top: var(--s-6); max-width: 560px; }
+  .hero__band { margin-top: var(--s-6); }
 }
-.hero__art > .ly-piece--main.ly-piece--main { top: var(--win-top); }
-.hero__art > .bframe.ly-piece--main .bframe__view { background: #f4f7f2; }
-.hero__art > .hero-note { left: var(--s-4); top: calc(var(--win-top) + var(--win-h) - var(--note-over)); bottom: auto; width: 300px; z-index: 2; }
-/* the words in the middle of the frame's height, not on its top line: on top they left the lower half of their column
-   empty beside the window (the kit's collage puts them at the top, layout.css) */
-@media (min-width: 1024px) { .hero--collage .hero__text { align-self: center; } }
-@media (max-width: 1023px) { .hero__art { --hero-in: var(--s-6); --after: 56px; } .hero__art > .hero-note { display: none; } }
-@media (max-width: 639px) { .hero__art { --hero-in: var(--s-4); } }
-.hero-note { display: grid; gap: 10px; padding: 16px 18px; border-radius: var(--r-md); background: #fff; color: #161616; font: 400 14px/1.4 var(--font-text); box-shadow: 0 0 0 1px rgb(0 0 0 / .06), var(--note-shadow); }
-.hero-note__row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
-.hero-note__row b { font-weight: 500; font-size: 15px; }
-.hero-note__chip { display: inline-flex; align-items: center; gap: 6px; height: 24px; padding: 0 10px; border-radius: 99px; background: var(--p-accent); color: var(--p-accent-ink); font-size: 13px; font-weight: 500; }
-.hero-note__line { display: flex; align-items: center; gap: 10px; margin: 0; }
-.hero-note__line i { display: inline-grid; place-items: center; flex: none; width: 22px; height: 22px; border-radius: 50%; background: #ececec; color: #3a3a3a; font: 500 12px/1 var(--font-mono); font-style: normal; }
-.hero-note__line b { font-weight: 500; }
+@media (min-width: 1280px) {
+  .hero__name { grid-row: 2 / 4; }
+  .hero__side { grid-row: 3; grid-column: 8 / -1; align-self: end; margin-top: 0; max-width: none; }
+}
+@media (min-width: 640px) and (max-width: 1023px) {
+  .hero__metas { order: -1; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero__side { max-width: 520px; }
+}
+/* a phone: the name on three lines, a quarter of the width tall; the CV a text link of its own width under the button */
+@media (max-width: 639px) {
+  .hero--editorial .hero__name { font-size: clamp(76px, 25vw, 120px); }
+  .hero__metas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .hero--editorial .btn-row .btn.btn--secondary { align-self: flex-start; width: auto; }
+  .hero__band { margin-top: var(--s-6); }
+}
 
 /* ---------------------------------------------------------------- the three cases: three compositions */
 .case__grid { align-items: start; }

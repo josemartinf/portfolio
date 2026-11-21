@@ -24,9 +24,15 @@ const es = {
   cv: "Descargar el CV (PDF)",
   hero: {
     seeProjects: "Ver los proyectos",
-    noteLabel: "Un pedido de Envo: entra, se guarda junto con su aviso y el repartidor lo recibe por Telegram",
-    noteOrder: "Pedido DEMO-0001", noteChip: "Avisado",
-    noteSteps: [["", "Entra", " el pedido"], ["", "Se guarda", " junto con su aviso"], ["El repartidor lo recibe por ", "Telegram", ""]] as [string, string, string][],
+    /** la frase junto al apellido (la primera oración de `tagline` ya está en "Hago") */
+    claim: "Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
+    /** la fila de datos: el rótulo chico y su dato ("Hoy" sale de currentFact) */
+    metas: {
+      now: "Hoy", build: "Hago", buildValue: "Backend, integraciones y automatización con IA",
+      since: "Desde", sinceValue: "2019, siempre en banca y fintech", write: "Escribime", email: "Email",
+    },
+    /** el rótulo de la captura de Envo que asoma al pie de la entrada */
+    bandLabel: "Envo · panel de operación",
   },
   statement: {
     title: "Del testing al backend",
@@ -106,9 +112,12 @@ const en: Ui = {
   cv: "Download CV (PDF)",
   hero: {
     seeProjects: "See the projects",
-    noteLabel: "An Envo order: it comes in, it is saved together with its notification, and the courier gets it on Telegram",
-    noteOrder: "Order DEMO-0001", noteChip: "Notified",
-    noteSteps: [["The order ", "comes in", ""], ["", "Saved", " with its notification"], ["The courier gets it on ", "Telegram", ""]],
+    claim: "I build order, inventory and payment systems that keep working when something fails.",
+    metas: {
+      now: "Now", build: "I build", buildValue: "Backend, integrations and AI automation",
+      since: "Since", sinceValue: "2019, always in banking and fintech", write: "Write to me", email: "Email",
+    },
+    bandLabel: "Envo · operations panel",
   },
   statement: {
     title: "From testing to backend",

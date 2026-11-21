@@ -1,41 +1,41 @@
 import { cvHref, site } from "@/lib/site";
-import type { Locale } from "@/i18n";
+import { type Locale, localePath } from "@/i18n";
 import { content } from "@/i18n/content";
 import { ui } from "@/i18n/ui";
 import { BrowserFrame } from "@/components/Frame";
 
-/* hero collage (repartido): el texto en span-5; a la derecha el marco con el efecto painterly-landscape
-   (system.js lo monta con assets/effects/fx.js), una ventana de Envo con su bloque "Salud del sistema" (lo que
-   comprueba solo: la API, la base, el worker, los avisos y Telegram), que sale por el borde derecho del marco,
-   y una sola tarjeta bajo su esquina inferior izquierda que repite el viaje de un pedido, en palabras de negocio:
-   entra, se guarda junto con su aviso y el repartidor lo recibe por Telegram.
-   El botón lleno del hero es "Ver los proyectos"; el secundario descarga el CV (el email está en el cierre). */
-// el fondo: un atardecer en pizarra con colinas salvia, enfocado lo justo para leerse como paisaje y no como una mancha
-// gris; el horizonte baja por debajo de la ventana y la colina sube hacia la derecha, donde queda el disco de pausa
-const fxPalette = JSON.stringify({ bg: "#2b3a45", accent: "#a3bf8c" });
-const fxParams = JSON.stringify({ blur: 0.4, brush: 0.7, slope: 14, side: 1, hillY: 0.1, horizon: 0.66, calm: 0.15, calmX: 0.2, calmY: 0.85 });
-// el h1: la entrada (motion.js) pone cada palabra de cada nodo de texto en su propia caja, y entre dos cajas el renglón
-// puede cortar. Con la coma en otro nodo (lo que deja React con {nombre}, …) o un espacio duro entre los apellidos (la
-// entrada lo parte como cualquier espacio), corta distinto que el texto quieto y la coma salta al terminar. Por eso la
-// coma va en el mismo texto que el apellido y los dos apellidos en un span sin corte, que vale igual en las dos formas.
-const nameStart = site.name.split(" ").slice(0, -2).join(" ");
-const nameEnd = site.name.split(" ").slice(-2).join(" ");
+/* La entrada editorial (spec 2026-11-20-portada-editorial): el nombre enorme en dos renglones, la frase y las dos
+   acciones junto al apellido, la fila de datos (dónde trabaja hoy, qué hace, desde cuándo, por dónde escribirle) y,
+   al pie, la captura del panel de Envo que asoma y pide bajar. En el DOM el h1 va primero (la lectura empieza por el
+   nombre); en escritorio la fila de datos se dibuja arriba (site.css, grid-template-areas).
+   El botón lleno es "Ver los proyectos"; el secundario descarga el CV (el email está en el cierre). */
+// el nombre en dos renglones: todo menos el apellido, y el apellido. Cada renglón es un span propio: la entrada
+// (motion.js) pone cada palabra en su caja, y los renglones cortan igual durante la entrada y al terminar.
+const words = site.name.split(" ");
+const nameStart = words.slice(0, -1).join(" ");
+const nameEnd = words.at(-1);
 
 export function Hero({ locale = "es" }: { locale?: Locale }) {
-  const t = ui[locale], { envoHealthShot, currentFact } = content(locale);
-  return <section className="hero hero--collage" data-enter aria-labelledby="hero-h"><div className="wrap"><div className="hero-text grid hero__grid">
-    <div className="hero__text span-5">
-      <h1 id="hero-h">{`${nameStart} `}<span className="hero__name-end">{`${nameEnd},`}</span>{" Software Engineer"}</h1>
-      <p className="hero__lead">{t.tagline}</p>
+  const t = ui[locale], m = t.hero.metas, { currentFact, caseBySlug } = content(locale);
+  const ext = { target: "_blank", rel: "noopener noreferrer" } as const;
+  return <section className="hero hero--editorial" data-enter aria-labelledby="hero-h"><div className="wrap hero__grid"><div className="hero__top">
+    <h1 id="hero-h" className="hero__name"><span className="hero__line">{nameStart}</span> <span className="hero__line">{nameEnd}</span><span className="sr-only">, Software Engineer</span></h1>
+    <div className="hero__side">
+      <p className="hero__claim">{t.hero.claim}</p>
       <div className="btn-row"><a className="btn btn--primary" href="#proyectos">{t.hero.seeProjects}</a><a className="btn btn--secondary" href={cvHref(locale)} download>{t.cv}</a></div>
-      <p className="hero__proof">{currentFact}</p>
     </div>
-    <div className="hero__art span-6 start-7" data-fx="painterly-landscape" data-fx-seed="4867" data-fx-palette={fxPalette} data-fx-params={fxParams}>
-      <BrowserFrame shot={envoHealthShot} label={`Envo · ${envoHealthShot.title}`} className="ly-piece ly-piece--main" sizes="(max-width: 639px) 360px, 600px" eager />
-      <div className="ly-piece ly-piece--note hero-note" role="img" aria-label={t.hero.noteLabel} data-ly-steps="700">
-        <div className="hero-note__row" aria-hidden="true"><b>{t.hero.noteOrder}</b><span className="hero-note__chip" data-step data-step-at="4">{t.hero.noteChip}</span></div>
-        {t.hero.noteSteps.map(([before, bold, after], i) => <p key={bold} className="hero-note__line" aria-hidden="true" data-step><i>{i + 1}</i><span>{before}<b>{bold}</b>{after}</span></p>)}
-      </div>
+    <dl className="hero__metas">
+      <div><dt>{m.now}</dt><dd>{currentFact.split(" · ")[0]}</dd></div>
+      <div><dt>{m.build}</dt><dd>{m.buildValue}</dd></div>
+      <div><dt>{m.since}</dt><dd>{m.sinceValue}</dd></div>
+      <div><dt>{m.write}</dt><dd className="hero__links"><a href="#contacto">{m.email}</a><a href={site.linkedin} {...ext}>LinkedIn</a><a href={site.github} {...ext}>GitHub</a></dd></div>
+    </dl>
     </div>
-  </div></div></section>;
+    <figure className="hero__band">
+      <figcaption className="hero__band-label">{t.hero.bandLabel}</figcaption>
+      <a className="hero__band-link" href={localePath(locale, "/envo")} tabIndex={-1} aria-hidden="true">
+        <BrowserFrame shot={caseBySlug("envo").heroShot} sizes="(max-width: 639px) 92vw, 1280px" crop={2.6} />
+      </a>
+    </figure>
+  </div></section>;
 }

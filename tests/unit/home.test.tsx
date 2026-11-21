@@ -39,6 +39,33 @@ describe("home", () => {
     expect(ld).toMatchObject({ "@type": "Person", name: site.name, sameAs: expect.arrayContaining([site.github]) });
   });
 
+  // Revisión 2026-11-20 (portada editorial): el nombre enorme, la fila de datos, la frase con las dos acciones y la
+  // captura de Envo que asoma; sin el paisaje, la tarjeta del pedido ni la línea de abajo.
+  it("renders the editorial hero", () => {
+    render(<Home />);
+    const hero = document.querySelector(".hero.hero--editorial")!;
+    expect(hero).not.toBeNull();
+    expect(screen.getByRole("heading", { level: 1 })).toHaveAccessibleName("José Martin Flores, Software Engineer");
+    const metas = [...hero.querySelectorAll(".hero__metas dt")].map((d) => d.textContent);
+    expect(metas).toEqual(["Hoy", "Hago", "Desde", "Escribime"]);
+    const dd = [...hero.querySelectorAll(".hero__metas dd")];
+    expect(dd[0]).toHaveTextContent(/^Software Engineer en Naranja X$/);
+    expect(dd[0].textContent).not.toMatch(/SSR/);
+    expect(dd[1]).toHaveTextContent("Backend, integraciones y automatización con IA");
+    expect(dd[2]).toHaveTextContent("2019, siempre en banca y fintech");
+    expect([...dd[3].querySelectorAll("a")].map((a) => a.getAttribute("href"))).toEqual(["#contacto", site.linkedin, site.github]);
+    dd[3].querySelectorAll("a[target=_blank]").forEach((a) => expect(a.getAttribute("rel")).toContain("noopener"));
+    expect(hero.querySelector(".hero__claim")).toHaveTextContent("Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.");
+    const band = hero.querySelector("figure.hero__band")!;
+    expect(band.querySelector("figcaption")).toHaveTextContent("Envo · panel de operación");
+    const bandLink = band.querySelector("a")!;
+    expect(bandLink).toHaveAttribute("href", "/envo");
+    expect(bandLink).toHaveAttribute("tabindex", "-1");
+    expect(bandLink).toHaveAttribute("aria-hidden", "true");
+    expect(band.querySelector("img")!.getAttribute("src")).toBe("/projects/envo-panel.webp");
+    expect(hero.querySelector("[data-fx], .hero-note, .hero__proof")).toBeNull();
+  });
+
   it("shows the parts and status of every case, the status of every site, and no empty tech-sheet part", () => {
     render(<Home />);
     const parts = (slug: string) => (document.querySelector(`[data-project='${slug}'] .parts`)?.textContent ?? "").split(" · ").filter(Boolean);
