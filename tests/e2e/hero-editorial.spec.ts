@@ -115,8 +115,69 @@ test("case hero lead keeps the read step", async ({ page }) => {
   }
 });
 
+// el botón lleno sigue al tema: negro con texto blanco en claro (por el sistema y por el botón de la barra), lima con
+// texto negro en oscuro
 test("primary button follows the theme", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/");
-  await expect(page.locator(".hero .btn--primary")).toHaveCSS("background-color", "rgb(15, 15, 15)");
+  const btn = page.locator(".hero .btn--primary");
+  await expect(btn).toHaveCSS("background-color", "rgb(15, 15, 15)");
+  await expect(btn).toHaveCSS("color", "rgb(255, 255, 255)");
+  await page.emulateMedia({ colorScheme: "dark" });
+  await page.goto("/");
+  await expect(btn).toHaveCSS("background-color", "rgb(218, 250, 156)");
+  await expect(btn).toHaveCSS("color", "rgb(15, 15, 15)");
+  const toggle = page.locator(".nav [data-theme-toggle]").first();
+  if (!(await toggle.isVisible())) await page.locator(".nav__toggle").click();
+  await page.locator("[data-theme-toggle]:visible").first().click();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "light");
+  await expect(btn).toHaveCSS("background-color", "rgb(15, 15, 15)");
+  await expect(btn).toHaveCSS("color", "rgb(255, 255, 255)");
+});
+
+// el h1 se llama "José Martin Flores, Software Engineer" también después de la entrada (motion.js devuelve sus nodos
+// y saca su aria-label; un span sr-only de bloque dejaba "Flores , Software")
+test("h1 is named with the role after the entrance", async ({ page }) => {
+  await page.goto("/");
+  await page.waitForTimeout(2500);
+  const snap = await page.locator(".hero h1").ariaSnapshot();
+  expect(snap).toContain("José Martin Flores, Software Engineer");
+});
+
+// en el teléfono el nombre va en tres renglones (José / Martin / Flores) en todo el ancho bajo 640, y no cambia de
+// tamaño de golpe al cruzar 640
+for (const width of [390, 480, 560, 600, 639]) {
+  test(`phone name runs three lines at ${width}px`, async ({ page }, info) => {
+    test.skip(info.project.name !== "desktop");
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const lines = await page.locator(".hero__name").evaluate((h) => {
+      const tops = new Set<number>();
+      h.querySelectorAll(".hero__line").forEach((l) => { const r = document.createRange(); r.selectNodeContents(l); [...r.getClientRects()].forEach((c) => c.width > 1 && tops.add(Math.round(c.top))); });
+      return tops.size;
+    });
+    expect(lines).toBe(3);
+  });
+}
+test("name size is continuous across 640", async ({ page }, info) => {
+  test.skip(info.project.name !== "desktop");
+  const size = async (w: number) => { await page.setViewportSize({ width: w, height: 900 }); await page.goto("/"); return page.locator(".hero__name").evaluate((h) => parseFloat(getComputedStyle(h).fontSize)); };
+  expect(Math.abs((await size(639)) - (await size(640)))).toBeLessThanOrEqual(2);
+});
+
+// "Ver los proyectos" baja a la grilla: su flecha apunta abajo
+test("see-the-projects arrow points down", async ({ page }) => {
+  await page.goto("/");
+  const rot = await page.locator(".hero .btn--primary").evaluate((b) => getComputedStyle(b, "::after").rotate);
+  expect(rot).toBe("90deg");
+});
+
+// la 404 queda como estaba: su encabezado sin la línea editorial ni la grilla de dos columnas
+test("404 keeps its plain head", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/404.html");
+  const head = page.locator(".section-head").first();
+  await expect(head).toHaveCSS("border-bottom-width", "0px");
+  // la del kit: una columna de 760px como máximo (la editorial corre todo el ancho en 12 columnas)
+  await expect(head).toHaveCSS("max-width", "760px");
 });

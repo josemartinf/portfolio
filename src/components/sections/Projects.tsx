@@ -38,7 +38,7 @@ function tilesOf(locale: Locale): Tile[] {
       slug: c.slug, name: c.name, tag: c.tag, lead: c.lead, facts: c.homeFacts, status: c.status,
       urls: c.liveUrl ? [c.liveUrl] : [], caseHref: localePath(locale, `/${c.slug}`),
       shot: c.slug === "envo" ? envoHealthShot : c.heroShot,
-      phone: c.slug === "stockie" ? undefined : c.roles.flatMap((r) => r.shots).find((s) => s.frame === "phone"),
+      phone: c.roles.flatMap((r) => r.shots).find((s) => s.frame === "phone"),
     })),
     ...sites.map((s) => ({
       slug: s.slug, name: s.name, tag: s.tag, lead: s.summary, status: s.status,
@@ -69,7 +69,7 @@ export function Projects({ locale = "es" }: { locale?: Locale }) {
       <h2 id="proyectos-h">{t.title}<sup className="projects__count" aria-hidden="true">({String(tiles.length).padStart(2, "0")})</sup></h2>
       <p>{t.lead}</p>
     </div>
-    <ul className="pgrid">{tiles.map((p) => <li key={p.slug} className={`ptile ptile--${p.size}`} data-project={p.slug}>
+    <ul className="pgrid">{tiles.map((p) => <li key={p.slug} className={`ptile ptile--${p.size}${p.caseHref ? " ptile--case" : ""}`} data-project={p.slug}>
       <p className="ptile__top"><span className="ptile__n">{p.n}</span> · <Tag tag={p.tag} locale={locale} /></p>
       <Media t={p} />
       <div className="ptile__body">
