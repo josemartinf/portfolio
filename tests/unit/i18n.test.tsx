@@ -53,6 +53,11 @@ describe("i18n", () => {
     for (const sel of [".hero", "#como-trabajo", "#proyectos", "#stockie", "#club-zapateo", "#proyectos-mas"]) {
       expect(document.querySelector(sel)?.textContent ?? "", sel).not.toMatch(HOME_JARGON);
     }
+    // la entrada editorial, en inglés
+    expect([...document.querySelectorAll(".hero__metas dt")].map((d) => d.textContent)).toEqual(["Now", "I build", "Since", "Write to me"]);
+    expect(document.querySelector(".hero__metas dd")).toHaveTextContent(/^Software Engineer at Naranja X$/);
+    expect(document.querySelector(".hero__band figcaption")).toHaveTextContent("Envo · operations panel");
+    expect(document.querySelector(".hero__band a")).toHaveAttribute("href", "/en/envo");
     const ld = JSON.parse(document.querySelector('script[type="application/ld+json"]')!.innerHTML);
     expect(ld.url).toBe(`${site.url}/en`);
   });
