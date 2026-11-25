@@ -75,6 +75,8 @@ const es = {
     collage: (name: string, roles: string) => `Pantallas de ${name} por rol: ${roles}`,
     problem: "El problema", screens: "Pantallas por rol", architecture: "Arquitectura", decisions: "Decisiones técnicas",
     quality: "Calidad y evidencia", sheet: "Ficha técnica",
+    /** en un teléfono, el botón que abre una captura entera ("Ampliar: Alertas y salud") y el que la cierra */
+    zoom: "Ampliar", zoomClose: "Cerrar la captura",
   },
   notFound: {
     title: "Página no encontrada | José Martin Flores",
@@ -154,6 +156,7 @@ const en: Ui = {
     collage: (name: string, roles: string) => `${name} screens by role: ${roles}`,
     problem: "The problem", screens: "Screens by role", architecture: "Architecture", decisions: "Technical decisions",
     quality: "Quality and evidence", sheet: "Tech summary",
+    zoom: "Enlarge", zoomClose: "Close the screenshot",
   },
   notFound: {
     title: "Page not found | José Martin Flores",

@@ -29,8 +29,55 @@ for (const list of document.querySelectorAll("[data-peek]")) {
     const key = n.closest("[data-peek-to]").dataset.peekTo;
     n.setAttribute("aria-pressed", String([...list.querySelectorAll("[data-peek-for]")].some((p) => p.dataset.peekFor === key && !p.hidden)));
   });
+  // en un teléfono la lista es una fila que se desliza: la pantalla elegida queda a la vista. Mientras la fila se corre,
+  // el botón vecino pasa bajo el puntero y el kit (pointerenter) lo elegía: ahí solo eligen el toque y el foco
+  const slides = (row) => row.scrollWidth > row.clientWidth + 1 && getComputedStyle(row).overflowX === "auto";
+  list.querySelector(".rows")?.addEventListener("pointerenter", (e) => { if (slides(e.currentTarget)) e.stopPropagation(); }, true);
+  names.forEach((n) => n.addEventListener("click", () => {
+    const row = n.closest(".rows");
+    if (!slides(row)) return;
+    const li = n.closest("li").getBoundingClientRect(), box = row.getBoundingClientRect();
+    row.scrollBy({ left: li.left - box.left - (box.width - li.width) / 2, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  }));
   for (const p of list.querySelectorAll("[data-peek-for]")) new MutationObserver(mark).observe(p, { attributes: true, attributeFilter: ["hidden"] });
   mark();
+}
+
+// Un teléfono muestra un encuadre de cada captura de un caso (src/data/phone-focus.ts); un toque la abre entera, a un
+// tamaño que se lee y se recorre con el dedo. El botón cubre la captura y solo se ve bajo 640 px (site.css). Un <dialog>
+// modal: Escape, el gesto de volver y el botón lo cierran, y el foco vuelve a la captura.
+const zoomable = document.querySelector("main[data-zoom]");
+if (zoomable && typeof HTMLDialogElement === "function") {
+  const dialog = document.createElement("dialog");
+  dialog.className = "zoom";
+  dialog.innerHTML = '<div class="zoom__bar"><p class="zoom__title"></p><button type="button" class="zoom__close"><svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M4 4l10 10M14 4L4 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></button></div><div class="zoom__view" tabindex="0" autofocus></div>';
+  const title = dialog.querySelector(".zoom__title"), view = dialog.querySelector(".zoom__view"), close = dialog.querySelector(".zoom__close");
+  close.setAttribute("aria-label", zoomable.dataset.zoomClose);
+  close.addEventListener("click", () => dialog.close());
+  dialog.addEventListener("close", () => { view.replaceChildren(); document.documentElement.classList.remove("zoom-open"); });
+  document.body.append(dialog);
+
+  for (const frame of zoomable.querySelectorAll(".bframe:not(.ly-piece)")) {
+    const img = frame.querySelector("img"), name = frame.querySelector(".bframe__label").dataset.label;
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "shot-zoom";
+    btn.setAttribute("aria-label", `${zoomable.dataset.zoom}: ${name}`);
+    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true"><path d="M11 3h4v4M7 15H3v-4M15 3l-5 5M3 15l5-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+    btn.addEventListener("click", () => {
+      const full = new Image(1600, img.height);
+      full.alt = img.alt;
+      full.src = img.getAttribute("src");
+      title.textContent = name;
+      dialog.setAttribute("aria-label", name);
+      view.replaceChildren(full);
+      document.documentElement.classList.add("zoom-open");
+      dialog.showModal();
+      // abre donde estaba el encuadre, no en la barra lateral
+      view.scrollTo({ left: Number(frame.style.getPropertyValue("--m-x") || 0) * full.getBoundingClientRect().width });
+    });
+    frame.querySelector(".bframe__view").append(btn);
+  }
 }
 
 // El tema: el que el visitante eligió (guardado) o el de su sistema, que RootShell ya puso en <html data-theme> antes de
