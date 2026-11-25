@@ -1,25 +1,26 @@
 import type { Education, Job } from "./types";
 
-/** Frase del extracto de LinkedIn, para el dato duro del hero. */
-export const currentFact: string = "Software Engineer en Naranja X · 7 años en banca y fintech";
+/** La frase del perfil del CV. SIAHO.net era de otro rubro: banca y fintech desde Banco Hipotecario (2020). */
+export const currentFact: string = "Software Engineer en Naranja X · en banca y fintech desde 2020";
 
-/** Del PDF de LinkedIn. Solo lo que dice ahí: nada interno de Naranja X. */
+/** Del PDF de LinkedIn y lo que confirmó José (2026-11-25): el desarrollo backend es del puesto actual y la etapa de QA
+ *  es solo de pruebas. Nada interno de Naranja X. */
 export const jobs: Job[] = [
   {
     company: "Naranja X",
-    role: "Software Engineer SSR · AI Automation",
+    role: "Software Engineer · AI Automation",
     from: "2026-08",
     to: null,
     summary:
-      "Diseño e implemento agentes de IA y sistemas multiagente con n8n y LangGraph, pipelines de RAG e integraciones por APIs REST, webhooks y MCP. Los servicios corren en AWS EKS con PostgreSQL y Kafka (Amazon MSK), y los monitoreo en producción con Datadog.",
+      "Diseño e implemento agentes de IA y sistemas multiagente con n8n y LangGraph, pipelines de RAG e integraciones por APIs REST, webhooks y MCP. Desarrollo servicios backend con TypeScript, Node.js y NestJS en arquitectura hexagonal, y procesos asíncronos con Kafka (Amazon MSK), idempotencia y patrón Outbox, con pruebas unitarias, de integración y end-to-end. Corren en AWS EKS con PostgreSQL y los monitoreo en producción con Datadog.",
   },
   {
     company: "Naranja X",
-    role: "QA Automation Engineer SSR",
+    role: "QA Automation Engineer",
     from: "2022-02",
     to: "2026-08",
     summary:
-      "Desarrollé servicios backend con TypeScript, Node.js y NestJS en arquitectura hexagonal, y procesos asíncronos con Kafka (Amazon MSK), idempotencia y patrón Outbox, con pruebas unitarias, de integración y end-to-end.",
+      "Automaticé pruebas end-to-end con Playwright, pruebas de API y pruebas de carga y rendimiento. De ahí pasé a Software Engineer.",
   },
   {
     company: "Ualá",
@@ -53,6 +54,9 @@ export const education: Education = {
   from: "2013",
   to: "2017",
 };
+
+/** Los idiomas del CV y de Contacto. */
+export const languages: string = "Español nativo, inglés intermedio";
 
 /** El stack por área, con los íconos reales de public/assets/icons. */
 export const stackGroups: { label: string; items: { name: string; icon: string }[] }[] = [

@@ -6,7 +6,11 @@ test("el h1 nombra a José Martin Flores y el rol actual no es QA", async ({ pag
   const h1 = page.getByRole("heading", { level: 1 });
   await expect(h1).toContainText("José Martin Flores");
   const hero = await page.locator(".hero").innerText();
-  expect(hero).not.toMatch(/\bQA\b/);
+  // QA solo como el origen, en "Desde" (revisión 2026-11-25); ni en el rol actual ni en ninguna otra parte de la entrada
+  const metas = page.locator(".hero__metas dd");
+  await expect(metas.nth(0)).not.toContainText(/\bQA\b/);
+  await expect(metas.nth(2)).toContainText("2019 en QA");
+  expect(hero.match(/\bQA\b/g)).toHaveLength(1);
   expect(hero).toMatch(/Software Engineer/);
   expect(await page.locator("body").innerText()).not.toMatch(/postulator/i);
 });

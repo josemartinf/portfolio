@@ -21,6 +21,18 @@ for (const btn of document.querySelectorAll("[data-copy]")) {
   });
 }
 
+// Las listas de pantallas de los casos (peek de system.js cambia la captura con el foco, el puntero o un toque): acá se
+// dice cuál está elegida, para un lector de pantalla.
+for (const list of document.querySelectorAll("[data-peek]")) {
+  const names = [...list.querySelectorAll("[data-peek-to] [role='button']")];
+  const mark = () => names.forEach((n) => {
+    const key = n.closest("[data-peek-to]").dataset.peekTo;
+    n.setAttribute("aria-pressed", String([...list.querySelectorAll("[data-peek-for]")].some((p) => p.dataset.peekFor === key && !p.hidden)));
+  });
+  for (const p of list.querySelectorAll("[data-peek-for]")) new MutationObserver(mark).observe(p, { attributes: true, attributeFilter: ["hidden"] });
+  mark();
+}
+
 // El tema: el que el visitante eligió (guardado) o el de su sistema, que RootShell ya puso en <html data-theme> antes de
 // pintar. El botón de la barra nace oculto (sin script no puede cambiar nada) y dice a qué tema cambia. Mientras el
 // visitante no elija, la página sigue al sistema también si este cambia con la página abierta.

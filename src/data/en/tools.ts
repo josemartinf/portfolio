@@ -8,11 +8,6 @@ export const tools: ToolProject[] = [
     tag: "personal",
     summary:
       "A driver for using the Redragon SS-550 stream deck on a Mac, with a web panel to configure its 15 keys. I adapted it from the open-source project redragon-streamdeck-linux.",
-    layers: [
-      "Keys that control Spotify, Discord, OBS and Claude Code",
-      "Shows in real time whether the microphone or camera is on in Meet",
-      "The panel went from loading in 1.5 s to 0.9 s",
-    ],
     sheet: {
       architecture: "A Node process on macOS that talks to the device over HIDAPI and serves the web panel and the REST API; a LaunchAgent starts it.",
       stack: ["Node.js", "TypeScript", "Express", "HIDAPI (node-hid)", "CoreAudio", "LaunchAgent"],

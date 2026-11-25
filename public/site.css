@@ -146,7 +146,7 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
 .hero__metas dt, .hero__band-label { font: 400 12px/1.2 var(--font-mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
 .hero__metas dd { margin: 8px 0 0; color: var(--ink); font-size: 15px; line-height: 1.4; overflow-wrap: break-word; text-wrap: balance; }
 .hero__links { display: flex; flex-wrap: wrap; gap: 0 .45em; }
-.hero__links a { color: var(--ink); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--ink) 35%, transparent); text-underline-offset: 3px; }
+.hero__links a { display: inline-block; min-height: 24px; color: var(--ink); text-decoration: underline; text-decoration-color: color-mix(in oklab, var(--ink) 35%, transparent); text-underline-offset: 3px; }
 .hero__links a:hover { text-decoration-color: currentColor; }
 .hero__links a:not(:last-child)::after { content: "·"; content: "·" / ""; display: inline-block; margin-left: .45em; color: var(--muted); text-decoration: none; }
 /* the band: the Envo panel, a low strip of it, under its mono label; it leads to the case (pointer only) */
@@ -675,3 +675,14 @@ main.home .statement > .wrap { border-top: 1px solid var(--p-ink); padding-top: 
 .footer .nav__logo img.brand-mark { width: 28px; height: 28px; }
 .footer__domain { font-family: var(--font-mono); letter-spacing: 0; }
 .nowrap { white-space: nowrap; }
+
+/* En escritorio el kit da a cada sección un alto fijo de una pantalla. En un caso, con una pantalla baja (una notebook) o una
+   ficha larga, el contenido se pasaba de su sección: la ficha se montaba sobre Contacto. Acá ese alto es un mínimo. En una
+   pantalla alta, donde todo entra, solo cambia la ficha. */
+@media (min-width: 1280px) {
+  main.case-page > .case-sheet { height: auto; min-height: calc(var(--h, 1) * 100svh); }
+}
+@media (min-width: 1280px) and (max-height: 880px) {
+  main.case-page > .section:not(.hero, [data-moment]) { height: auto; min-height: calc(var(--h, 1) * 100svh); }
+  main.case-page > .case-screens.g2:not([data-moment]) > .wrap { height: auto; margin-bottom: 0; }
+}

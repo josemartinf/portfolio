@@ -30,7 +30,7 @@ describe("case pages", () => {
         // y los otros dos casos, más la vuelta a la portada
         cases.filter((c) => c.slug !== study.slug).forEach((c) => expect(document.querySelector(`a[href='/${c.slug}']`)).not.toBeNull());
         expect(document.querySelector(`a[href='/${study.slug}']`)).toBeNull();
-        expect(screen.getByRole("link", { name: /Volver a la portada/ })).toHaveAttribute("href", "/");
+        expect(screen.getByRole("link", { name: /Volver al inicio/ })).toHaveAttribute("href", "/");
       });
 
       it("draws its architecture as a kit diagram with every node", () => {
@@ -79,13 +79,16 @@ describe("case pages", () => {
         study.parts.forEach((p) => expect(hero.textContent).toContain(p));
         // las partes también en la ficha, que se ve a todo ancho (el hero las resume en una línea en tablet y teléfono)
         expect(labels).toContain("Partes");
+        // revisión 2026-11-25: qué hice yo, cuándo y en qué estado está; el resultado solo si existe
+        ["Mi rol", "Cuándo", "Estado"].forEach((l) => expect(labels).toContain(l));
+        expect(labels.includes("Resultado")).toBe(study.result !== undefined);
         study.parts.forEach((p) => expect(ficha.textContent).toContain(p));
         expect(hero.textContent).toContain(study.status.split(" en ")[0]);
         // la cifra dura del hero (copy-fact) es una de las que constan en el caso
         expect(hero.querySelector(".case-hero__status")!.textContent).toContain(study.heroFact);
-        // el stack de la ficha: un muro de baldosas con su ícono y su nombre, una imagen para un lector de pantalla
-        const wall = ficha.querySelector("ul.case-stack[role='img']")!;
-        expect(wall.getAttribute("aria-label")).toBe(`Stack: ${study.sheet.stack.join(", ")}`);
+        // el stack de la ficha: un muro de baldosas con su ícono y su nombre, una lista de verdad
+        const wall = ficha.querySelector("ul.case-stack")!;
+        expect(wall).not.toHaveAttribute("role");
         expect(wall.querySelectorAll("li.case-stack__tile")).toHaveLength(study.sheet.stack.length);
         document.querySelectorAll(".sheet dd").forEach((dd) => expect(dd.textContent!.trim().length).toBeGreaterThan(0));
       });
@@ -136,6 +139,17 @@ describe("case pages", () => {
     expect(document.querySelector("#ficha .t-stat")).toBeNull();
   });
 
+  it("offers its list of screens as buttons, never as bare focusable rows", () => {
+    cases.forEach((study) => {
+      render(<CaseStudyPage study={study} />);
+      document.querySelectorAll("[data-peek-to]").forEach((li) => {
+        expect(li).not.toHaveAttribute("tabindex");
+        expect(li.querySelector("[role='button'][tabindex='0']")).not.toBeNull();
+      });
+      cleanup();
+    });
+  });
+
   it("names a frame short on a phone when its title runs long (M10)", () => {
     cases.forEach((study) => {
       render(<CaseStudyPage study={study} />);
@@ -166,10 +180,10 @@ describe("case pages", () => {
 
   it("Envo and Stockie roll their verified figures; Club Zapateo pins its chapters", () => {
     render(<CaseStudyPage study={cases[0]} />);
-    expect([...document.querySelectorAll("#calidad [data-moment='counter-rolls'] .t-stat")].map((e) => e.textContent)).toEqual(["2938", "84", "150", "86"]);
+    expect([...document.querySelectorAll("#calidad [data-moment='counter-rolls'] .t-stat")].map((e) => e.textContent)).toEqual(["3065", "87", "150", "86"]);
     cleanup();
     render(<CaseStudyPage study={cases[1]} />);
-    expect([...document.querySelectorAll("#calidad [data-moment='counter-rolls'] .t-stat")].map((e) => e.textContent)).toEqual(["16", "12", "59", "31"]);
+    expect([...document.querySelectorAll("#calidad [data-moment='counter-rolls'] .t-stat")].map((e) => e.textContent)).toEqual(["16", "12", "65", "30"]);
     cleanup();
     render(<CaseStudyPage study={cases[2]} />);
     expect(document.querySelector("section#pantallas[data-moment='pinned-chapters']")).not.toBeNull();

@@ -15,8 +15,8 @@ export const site: {
   github: string;
 } = {
   name: "José Martin Flores",
-  role: "Software Engineer · Backend, integraciones y automatización con IA",
-  tagline: "Backend, integraciones y automatización con IA. Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
+  role: "Software Engineer · Backend, integraciones y automatización",
+  tagline: "Backend, integraciones y automatización. Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
   cv: "/cv-jose-martin-flores.pdf",
   cvEn: "/cv-jose-martin-flores-en.pdf",
   location: "Buenos Aires, Argentina",

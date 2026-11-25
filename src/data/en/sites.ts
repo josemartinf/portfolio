@@ -10,11 +10,6 @@ export const sites: SiteProject[] = [
       "Two auto parts stores in Venezuela, one for Fiat and one for Jeep, Dodge and Chrysler. Each has its own public site and inventory system, which later became Stockie.",
     // La búsqueda de MonJeep es de texto en español (plurales, sin acentos) sobre nombre, marca y modelos, más números de
     // pieza parciales: no es semántica ni corrige errores de tipeo (monjeep/lib/productos/producto-search.ts).
-    layers: [
-      "GlobalFia: a quote builder that puts together the WhatsApp order from the model, year and part",
-      "MonJeep: a single search box for name, brand or car model that ignores accents and plurals",
-      "MonJeep: installment payments with Cashea and a catalog you can filter by brand",
-    ],
     parts: ["GlobalFia landing page", "MonJeep landing page", "Inventory system"],
     focus: [
       "Database: search with tsvector and pg_trgm, kept up to date by triggers",
@@ -52,11 +47,6 @@ export const sites: SiteProject[] = [
     tag: "client",
     summary:
       "An online store for design objects. Customers build their cart, and the finished order reaches the store over WhatsApp or email.",
-    layers: [
-      "Catalog by category and product pages with a gallery",
-      "Color and size variants on every product",
-      "A cart that's saved between visits",
-    ],
     parts: ["Catalog", "Product page", "Cart", "Checkout via WhatsApp or email"],
     focus: ["UX/UI: gallery, color and size variants, and a persistent cart"],
     status: "Live: moodi-home.store",
@@ -84,11 +74,6 @@ export const sites: SiteProject[] = [
     tag: "client",
     summary:
       "A bilingual site, in Spanish and English, for an aircraft detailing company.",
-    layers: [
-      "Form inquiries reach the team by email, so they can reply straight to the client",
-      "An automatic, bilingual confirmation for the client",
-      "Custom-designed emails",
-    ],
     parts: ["Bilingual landing page", "Validated form", "Emails via Resend"],
     focus: ["Forms: server-side validation and a client confirmation that doesn't block the response"],
     status: "Live: aether-aerospace.com",

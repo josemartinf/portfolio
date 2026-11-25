@@ -13,7 +13,7 @@ describe("site links", () => {
   });
 
   it("presents the current role and a neutral WhatsApp message", () => {
-    expect(site.role).toBe("Software Engineer · Backend, integraciones y automatización con IA");
+    expect(site.role).toBe("Software Engineer · Backend, integraciones y automatización");
     expect(site.whatsapp.defaultMessage).toBe("Hola José, vi tu portafolio.");
     expect(decodeURIComponent(whatsappHref().split("text=")[1])).toBe("Hola José, vi tu portafolio.");
     expect(site).not.toHaveProperty("backing");

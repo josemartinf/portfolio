@@ -13,11 +13,11 @@ import { ui } from "../src/i18n/ui";
 const T = {
   es: {
     role: site.role, profile: "Empecé en QA y hoy desarrollo backend, integraciones y automatización con IA. Diseño cada sistema empezando por cómo puede fallar: reintentos, idempotencia, alertas y tests.",
-    h: { profile: "Perfil", experience: "Experiencia", projects: "Proyectos", sites: "Sitios en producción", personal: "Proyecto personal", stack: "Stack", education: "Formación" },
+    h: { profile: "Perfil", experience: "Experiencia", projects: "Proyectos", sites: "Sitios en producción", personal: "Proyecto personal", stack: "Stack", education: "Formación", languages: "Idiomas" },
   },
   en: {
-    role: "Software Engineer · Backend, integrations and AI automation", profile: "I started in QA and today I build backend, integrations and AI automation. I design every system around how it could fail: retries, idempotency, alerts and tests.",
-    h: { profile: "Profile", experience: "Experience", projects: "Projects", sites: "Sites in production", personal: "Personal project", stack: "Stack", education: "Education" },
+    role: "Software Engineer · Backend, integrations and automation", profile: "I started in QA and today I build backend, integrations and AI automation. I design every system around how it could fail: retries, idempotency, alerts and tests.",
+    h: { profile: "Profile", experience: "Experience", projects: "Projects", sites: "Sites in production", personal: "Personal project", stack: "Stack", education: "Education", languages: "Languages" },
   },
 };
 
@@ -36,7 +36,7 @@ function byCompany(list: Job[]) {
 }
 
 function render(locale: Locale): string {
-const t = T[locale], { cases, sites, tools, currentFact, education, jobs, stackGroups } = content(locale);
+const t = T[locale], { cases, sites, tools, currentFact, education, jobs, languages, stackGroups } = content(locale);
 const months = ui[locale].experience.months;
 const month = (ym: string) => { const [y, m] = ym.split("-"); return `${months[Number(m) - 1]} ${y}`; };
 const range = (from: string, to: string | null) => `${month(from)} – ${to ? month(to) : ui[locale].experience.present}`;
@@ -59,17 +59,18 @@ const siteLinks = sites.map((s) => `${esc(s.name)} (${[s.liveUrl, ...(s.moreLink
 const driver = tools[0];
 const homeUrl = `${site.url}${locale === "en" ? "/en" : ""}`;
 
-return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>CV — ${esc(site.name)}</title>
+return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title>CV | ${esc(site.name)}</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@400..700&display=swap">
 <style>
   @page { size: A4; margin: 15mm 16mm; }
   * { box-sizing: border-box; }
   body { margin: 0; font: 400 9.6pt/1.42 "Familjen Grotesk", system-ui, sans-serif; color: #161616; }
-  a { color: inherit; text-decoration: underline; text-decoration-color: #b5b5b5; text-underline-offset: 2px; }
+  a { color: inherit; white-space: nowrap; text-decoration: underline; text-decoration-color: #b5b5b5; text-underline-offset: 2px; }
   h1 { font-size: 24pt; font-weight: 500; letter-spacing: -0.02em; margin: 0; line-height: 1.05; }
   .role-line { font-size: 11pt; margin: 4px 0 0; }
   .contact { margin: 8px 0 0; color: #3d3d3d; font-size: 9pt; }
+  .contact--links { margin-top: 2px; }
   .contact span + span::before { content: " · "; color: #9a9a9a; }
   section { margin-top: 16px; }
   h2 { font-size: 8.4pt; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: #6a6a6a; margin: 0 0 6px; padding-bottom: 4px; border-bottom: 1px solid #dcdcdc; }
@@ -88,7 +89,8 @@ return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title
 <header>
   <h1>${esc(site.name)}</h1>
   <p class="role-line">${esc(t.role)}</p>
-  <p class="contact"><span>${esc(site.location)}</span><span>${link(`mailto:${site.email}`, site.email)}</span><span>${esc(site.whatsapp.display)}</span><span>${link(site.linkedin)}</span><span>${link(site.github)}</span><span>${link(homeUrl)}</span></p>
+  <p class="contact"><span>${esc(site.location)}</span><span>${link(`mailto:${site.email}`, site.email)}</span><span>${esc(site.whatsapp.display)}</span></p>
+  <p class="contact contact--links"><span>${link(site.linkedin)}</span><span>${link(site.github)}</span><span>${link(homeUrl)}</span></p>
 </header>
 <section><h2>${t.h.profile}</h2>
   <p>${esc(currentFact)}. ${esc(t.profile)}</p>
@@ -100,6 +102,7 @@ return `<!doctype html><html lang="${locale}"><head><meta charset="utf-8"><title
 </section>
 <section><h2>${t.h.stack}</h2><dl class="stack">${stackGroups.map((g) => `<dt>${esc(g.label)}</dt><dd>${g.items.map((i) => esc(i.name)).join(", ")}</dd>`).join("")}</dl></section>
 <section><h2>${t.h.education}</h2><div class="item"><div class="item__head"><h3>${esc(education.degree)}</h3><span class="when">${esc(education.from)} – ${esc(education.to)}</span></div><p>${esc(education.school)}</p></div></section>
+<section><h2>${t.h.languages}</h2><p>${esc(languages)}</p></section>
 </body></html>`;
 }
 
