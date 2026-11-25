@@ -16,7 +16,7 @@ export const site: {
 } = {
   name: "José Martin Flores",
   role: "Software Engineer · Backend, integraciones y automatización",
-  tagline: "Backend, integraciones y automatización. Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
+  tagline: "Backend, integraciones y automatización. Más de siete años en software. Desarrollo sistemas para empresas y productos propios.",
   cv: "/cv-jose-martin-flores.pdf",
   cvEn: "/cv-jose-martin-flores-en.pdf",
   location: "Buenos Aires, Argentina",

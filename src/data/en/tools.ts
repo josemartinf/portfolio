@@ -7,7 +7,7 @@ export const tools: ToolProject[] = [
     name: "Redragon SS-550 driver for macOS",
     tag: "personal",
     summary:
-      "A driver for using the Redragon SS-550 stream deck on a Mac, with a web panel to configure its 15 keys. I adapted it from the open-source project redragon-streamdeck-linux.",
+      "A driver and web panel to use and configure the 15 keys of the Redragon SS-550 stream deck on a Mac. Adapted from the open-source project redragon-streamdeck-linux.",
     sheet: {
       architecture: "A Node process on macOS that talks to the device over HIDAPI and serves the web panel and the REST API; a LaunchAgent starts it.",
       stack: ["Node.js", "TypeScript", "Express", "HIDAPI (node-hid)", "CoreAudio", "LaunchAgent"],

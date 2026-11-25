@@ -53,7 +53,7 @@ describe("home", () => {
     expect(dd[2]).toHaveTextContent("2019 en QA, 2020 en banca y fintech");
     expect([...dd[3].querySelectorAll("a")].map((a) => a.getAttribute("href"))).toEqual(["#contacto", site.linkedin, site.github]);
     dd[3].querySelectorAll("a[target=_blank]").forEach((a) => expect(a.getAttribute("rel")).toContain("noopener"));
-    expect(hero.querySelector(".hero__claim")).toHaveTextContent("Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.");
+    expect(hero.querySelector(".hero__claim")).toHaveTextContent("Más de siete años en software. Desarrollo sistemas para empresas y productos propios.");
     const band = hero.querySelector("figure.hero__band")!;
     expect(band.querySelector("figcaption")).toHaveTextContent("Envo · panel de operación");
     const bandLink = band.querySelector("a")!;
@@ -108,6 +108,10 @@ describe("home", () => {
     expect(document.querySelector("[data-project='envo'] .status a")).toHaveAttribute("rel", expect.stringContaining("noopener"));
     expect(document.querySelector("a[href*='envo-demo.tech/admin'], a[href*='envo-demo.tech/login']")).toBeNull();
     expect(document.querySelector("#proyectos")!.textContent).not.toMatch(/Arquitectura|Prácticas|Patrones|Enfoque|Partes/);
+    // el perfil es amplio: cuatro áreas, sin encasillarse en stock y pagos
+    expect(document.querySelector("#como-trabajo h2")).toHaveTextContent("Qué hago");
+    expect([...document.querySelectorAll("#como-trabajo dt")].map((d) => d.textContent)).toEqual(["Backend", "Integraciones", "Automatización con IA", "Calidad"]);
+    expect(document.querySelector(".hero__claim")!.textContent).not.toMatch(/stock|pedido|pago/i);
     // R2: el statement no le atribuye CI a Envo.
     expect(document.querySelector("#como-trabajo")!.textContent).not.toMatch(/3065|Envo[^.]*CI/);
   });

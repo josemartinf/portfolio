@@ -7,7 +7,7 @@ export const sites: SiteProject[] = [
     name: "GlobalFia and MonJeep",
     tag: "client",
     summary:
-      "Two auto parts stores in Venezuela, one for Fiat and one for Jeep, Dodge and Chrysler. Each has its own public site and inventory system, which later became Stockie.",
+      "Public sites and inventory systems for two auto parts stores in Venezuela: one for Fiat, the other for Jeep, Dodge and Chrysler.",
     // La búsqueda de MonJeep es de texto en español (plurales, sin acentos) sobre nombre, marca y modelos, más números de
     // pieza parciales: no es semántica ni corrige errores de tipeo (monjeep/lib/productos/producto-search.ts).
     parts: ["GlobalFia landing page", "MonJeep landing page", "Inventory system"],
@@ -46,7 +46,7 @@ export const sites: SiteProject[] = [
     name: "Moodi Home",
     tag: "client",
     summary:
-      "An online store for design objects. Customers build their cart, and the finished order reaches the store over WhatsApp or email.",
+      "An online store for design objects, with a cart and orders over WhatsApp or email.",
     parts: ["Catalog", "Product page", "Cart", "Checkout via WhatsApp or email"],
     focus: ["UX/UI: gallery, color and size variants, and a persistent cart"],
     status: "Live: moodi-home.store",

@@ -21,7 +21,7 @@ export const jobs: Job[] = [
     from: "2022-02",
     to: "2026-08",
     summary:
-      "I automated end-to-end tests with Playwright, API tests, and load and performance tests. From there I moved into software engineering.",
+      "I automated end-to-end tests with Playwright, API tests, and load and performance tests.",
   },
   {
     company: "Ualá",

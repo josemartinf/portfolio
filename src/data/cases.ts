@@ -48,12 +48,12 @@ const envo: CaseStudy = {
   lead: "Pedidos y entregas con varios repartidores, por Telegram y WhatsApp.",
   moment: "counter-rolls",
   homeFacts: [
-    "Ningún aviso falla en silencio: si no se puede entregar, se guarda y se reintenta, y si al final no sale, abre una alerta",
-    "Cobros en pesos, dólares y euros, y la caja de cada repartidor separada por moneda",
-    "3065 pruebas automáticas, más las del navegador, con chequeos de accesibilidad",
+    "Avisos con reintentos automáticos y una alerta si alguno no se puede entregar",
+    "Cobros en pesos, dólares y euros, con la caja de cada repartidor por moneda",
+    "3065 pruebas automáticas, además de las de navegador, con chequeos de accesibilidad",
   ],
   problem:
-    "Una operación de entregas con varios repartidores recibe pedidos por Telegram y WhatsApp, cobra en pesos, dólares y euros, y avisa a cada parte en cada paso del pedido. Si un aviso se pierde, el pedido queda trabado; si un cobro se registra dos veces, la caja no cierra. Construí Envo para que ningún aviso falle en silencio y ningún cobro se registre dos veces.",
+    "Una operación de entregas con varios repartidores recibe pedidos por Telegram y WhatsApp, cobra en pesos, dólares y euros, y avisa a cada parte en cada paso del pedido. Si un aviso se pierde, el pedido se detiene; si un cobro se registra dos veces, la caja no cierra. Envo centraliza esa operación, controla la entrega de los avisos y evita registrar un cobro dos veces.",
   heroShot: {
     src: "/projects/envo-panel.webp",
     alt: "Resumen del panel de operación de Envo con la demo Almacén del Parque",
@@ -73,7 +73,7 @@ const envo: CaseStudy = {
       summary:
         [
           "El panel tiene 12 módulos. Desde pedidos se asigna el repartidor, se revisan los comprobantes, se edita y se cargan incidencias.",
-          "Alrededor están los clientes con saldo y referidos, los productos, el inventario por ubicación, las zonas con recargos por lluvia, noche y feriado, y la caja de repartidores con sus liquidaciones.",
+          "También gestiona clientes con saldo y referidos, productos, inventario por ubicación, zonas con recargos por lluvia, noche y feriado, y la caja de repartidores con sus liquidaciones.",
           "En configuración se definen las ventanas de entrega, el envío prioritario, las cuentas de pago y la cotización, que sale de DolarApi con reglas de vigencia.",
         ],
       shots: [envoShots.orders, envoShots.cash, envoShots.zones, envoShots.inventory],
@@ -125,7 +125,7 @@ const envo: CaseStudy = {
   decisions: [
     {
       title: "Outbox transaccional con circuit breaker",
-      why: "Cada aviso queda en una outbox que el worker reclama con FOR UPDATE SKIP LOCKED, con diez intentos y backoff. Si n8n está caído, el circuit breaker pospone los envíos sin gastar intentos, hasta seis horas: un aviso más viejo que eso ya no le sirve a nadie. Lo que no sale queda en una dead letter que abre una alerta.",
+      why: "Cada aviso queda en una outbox que el worker reclama con FOR UPDATE SKIP LOCKED, con diez intentos y backoff. Si n8n está caído, el circuit breaker pospone los envíos sin gastar intentos, hasta seis horas, porque después el aviso deja de ser útil. Los que no se entregan quedan en una dead letter que abre una alerta.",
     },
     {
       title: "Comandos idempotentes con un orden único de bloqueos",
@@ -133,23 +133,23 @@ const envo: CaseStudy = {
     },
     {
       title: "Caja de repartidores append-only",
-      why: "La caja solo suma movimientos, nunca los edita, y cada movimiento lleva una clave de deduplicación. Un reintento no duplica plata.",
+      why: "La caja solo suma movimientos, nunca los edita, y cada movimiento lleva una clave de deduplicación. Un reintento no duplica importes.",
     },
     {
       title: "Chequeos nocturnos de invariantes",
-      why: "Cada noche se verifican stock, reservas y caja. Si algo no cuadra se abre una alerta crítica, y el mismo chequeo la cierra cuando vuelve a cuadrar.",
+      why: "Cada noche se verifican stock, reservas y caja. Ante una diferencia se abre una alerta crítica, y el mismo chequeo la cierra cuando se corrige.",
     },
     {
       title: "Migraciones SQL con checksum",
-      why: "Las 86 migraciones están escritas en SQL, sin ORM, y cada una guarda su checksum: una migración ya aplicada no cambia sin que se note.",
+      why: "Las 86 migraciones están escritas en SQL, sin ORM, y cada una guarda su checksum, que permite detectar si cambia una migración ya aplicada.",
     },
     {
       title: "Autenticación, firmas y límites",
       why: "Contraseñas con argon2id, TOTP con protección contra reutilización y reautenticación para acciones sensibles. Los eventos hacia n8n van firmados con HMAC y timestamp, el rate limiting corre en PostgreSQL y los archivos privados se recodifican a WebP.",
     },
   ],
-  decisionsLead: "Lo que hace que un aviso no falle en silencio y que un cobro no se registre dos veces.",
-  qualityLead: "Lo que corre en npm test y en las suites e2e, con las cifras del repositorio.",
+  decisionsLead: "Cómo se controla la entrega de los avisos y se evita registrar un cobro dos veces.",
+  qualityLead: "Resultados de npm test y de las suites e2e, con las cifras del repositorio.",
   quality: [
     "Integración contra PGlite y contra PostgreSQL real, con contratos compartidos entre los dos motores.",
     "70 de las 87 suites e2e incluyen chequeos de accesibilidad con axe.",
@@ -217,12 +217,12 @@ const stockie: CaseStudy = {
   lead: "Stock, depósitos y ventas para comercios de repuestos en Venezuela, en bolívares y dólares.",
   moment: "counter-rolls",
   homeFacts: [
-    "Margen real de cada venta: sabe de qué compra salió cada producto y a cuánto se pagó",
-    "Nunca vende lo que no hay: si dos vendedores van por la última unidad, la vende uno solo",
-    "Cada venta queda en dólares y en bolívares, con la tasa oficial del día",
+    "Margen real por venta, calculado con el costo de cada lote de compra",
+    "Control de stock en ventas simultáneas, sin sobreventa",
+    "Ventas registradas en dólares y bolívares, con la tasa oficial del día",
   ],
   problem:
-    "Un comercio de repuestos en Venezuela vende en mostrador, por WhatsApp y a crédito, cobra con Pago Móvil, POS, efectivo, Zelle o USDT, y le debe a proveedores en dólares y en bolívares. Con una tasa que cambia todos los días, saber cuánto stock queda y cuánto costó lo vendido exige que cada movimiento guarde su lote, su costo y su tasa. Stockie nació de los sistemas que hice para MonJeep y GlobalFia, que resuelven eso.",
+    "Un comercio de repuestos en Venezuela vende en mostrador, por WhatsApp y a crédito, cobra con Pago Móvil, POS, efectivo, Zelle o USDT, y le debe a proveedores en dólares y en bolívares. Con una tasa que cambia todos los días, saber cuánto stock queda y cuánto costó lo vendido exige que cada movimiento guarde su lote, su costo y su tasa. Stockie nació de los sistemas que desarrollé para MonJeep y GlobalFia.",
   heroShot: {
     src: "/projects/stockie-dashboard.webp",
     alt: "Dashboard de Stockie con las ventas y el stock de la demo de ferretería",
@@ -291,19 +291,19 @@ const stockie: CaseStudy = {
     },
     {
       title: "Tasa BCV diaria, con carga manual",
-      why: "La tasa oficial se toma del sitio del Banco Central de Venezuela (BCV) una vez por día y también se puede cargar a mano. La carga automática nunca pisa una tasa manual.",
+      why: "La tasa oficial se toma del sitio del Banco Central de Venezuela (BCV) una vez por día y también se puede cargar a mano. La carga automática no reemplaza una tasa manual.",
     },
     {
       title: "Paneles por vendedor, en páginas y en API",
       why: "El administrador habilita paneles a cada vendedor, y el permiso se aplica en la página y en la API: un vendedor no llega a un dato por una URL directa.",
     },
   ],
-  decisionsLead: "Lo que mantiene exactos el stock y el costo de lo vendido, con dos monedas y una tasa que cambia cada día.",
+  decisionsLead: "Cómo se mantienen exactos el stock y el costo de lo vendido, con dos monedas y una tasa diaria.",
   // Los tests de integración de stock-core (npm run test:db, desde el 18 de noviembre de 2026): lo que se prueba contra
   // PostgreSQL real. Las 25 pantallas siguen en el hero (heroFact).
-  qualityLead: "Lo que corre en npm run test:db contra PostgreSQL real: el costo FIFO y el bloqueo de stock en cada operación que lo toca.",
+  qualityLead: "Resultados de npm run test:db contra PostgreSQL real: el costo FIFO y el bloqueo de stock en cada operación que lo toca.",
   quality: [
-    "Dos ventas de la última unidad al mismo tiempo: la segunda espera el bloqueo y corta por falta de stock.",
+    "Dos ventas de la última unidad al mismo tiempo: la segunda espera el bloqueo y se rechaza por falta de stock.",
     "Diez ventas contra cinco unidades: se venden cinco, en orden FIFO, y ningún lote queda negativo.",
     "Sin el SELECT … FOR UPDATE, los dos tests de ventas simultáneas fallan.",
     "Transferir, ajustar, anular una venta o cerrar y anular una compra mientras hay una venta en curso: el stock de cada depósito sigue siendo la suma de sus lotes y ningún lote queda negativo.",
@@ -322,7 +322,7 @@ const stockie: CaseStudy = {
   focus: ["Base de datos: costo FIFO por lote y stock bloqueado con SELECT … FOR UPDATE"],
   role: "Diseño y desarrollo completos",
   period: "Desde febrero de 2026",
-  standing: "MonJeep y GlobalFia usan hoy su propia versión. La demo usa datos ficticios que vuelven a cero cada semana.",
+  standing: "MonJeep y GlobalFia usan hoy su propia versión. La demo usa datos ficticios que se reinician cada semana.",
   status: "MonJeep y GlobalFia usan hoy su propia versión · demo en stockie.envo-demo.tech",
   heroFact: "25 pantallas",
   /** La demo pública: entra al panel con datos demo, sin login. Nunca /admin ni /login. */
@@ -358,15 +358,15 @@ const clubZapateo: CaseStudy = {
   lead: "Venta de entradas con Mercado Pago y control de acceso en la puerta.",
   moment: "pinned-chapters",
   homeFacts: [
-    "Nunca emite más entradas que la capacidad, aunque muchas compras lleguen juntas",
-    "Si el aviso de Mercado Pago no llega, el panel encuentra el pago y emite la entrada, si queda cupo",
-    "252 pruebas automáticas que corren solas en cada cambio del código",
+    "Emisión limitada a la capacidad del evento, también con compras simultáneas",
+    "Conciliación con Mercado Pago: detecta pagos sin entrada y la emite si queda cupo",
+    "252 pruebas automáticas en cada cambio del código",
   ],
   problem:
-    "Club Zapateo vende entradas con Mercado Pago y las controla en la puerta con un QR. Si el aviso de un pago no llega, alguien pagó y no tiene entrada. Si dos compras llegan juntas, se pueden emitir entradas por encima de la capacidad. Si un QR sirve en otro evento, la puerta deja pasar a quien no corresponde.",
+    "Club Zapateo vende entradas con Mercado Pago y las controla en la puerta con un QR. Si el aviso de un pago no llega, el comprador se queda sin entrada. Si dos compras llegan al mismo tiempo, se pueden emitir entradas por encima de la capacidad. Si un QR sirve para otro evento, puede ingresar quien no corresponde.",
   heroShot: { ...zapateoShots.dashboard, focus: { x: 0.18, y: 0.08, w: 0.64 } },
   heroSets: [
-    { label: "Sitio público", line: "Los eventos salen de la base; se paga con Mercado Pago y cada entrada llega por email con su QR.", main: { ...zapateoShots.home, focus: { x: 0.04, y: 0.075, w: HERO_MAIN_W } }, side: zapateoShots.door },
+    { label: "Sitio público", line: "Eventos publicados desde el panel, pago con Mercado Pago y entradas por email con su QR.", main: { ...zapateoShots.home, focus: { x: 0.04, y: 0.075, w: HERO_MAIN_W } }, side: zapateoShots.door },
     { label: "Administración", line: "Conciliación con Mercado Pago, con simulación antes de aplicar, y eventos con afiche.", main: { ...zapateoShots.reconciliation, focus: { x: 0.185, y: 0.125, w: HERO_MAIN_W } }, side: { ...zapateoShots.events, focus: { x: 0.5, y: 0.2, w: HERO_SIDE_W } } },
     { label: "Puerta", line: "PIN, evento activo, QR o código y contadores en vivo.", main: zapateoShots.door, side: { ...zapateoShots.dashboard, focus: { x: 0.18, y: 0.08, w: HERO_SIDE_W } } },
   ],
@@ -375,19 +375,19 @@ const clubZapateo: CaseStudy = {
     {
       role: "Público y comprador",
       summary:
-        "Los eventos salen de la base de datos. El comprador paga con el checkout de Mercado Pago, recibe un email con un QR por entrada y puede verificar el estado de su entrada en una página pública. La animación 3D de la portada, hecha con Spline, tiene un modo liviano para equipos lentos y para quien pide reducir movimiento.",
+        "El sitio toma los eventos de la base de datos. El comprador paga con el checkout de Mercado Pago, recibe un email con un QR por entrada y puede verificar el estado de su entrada en una página pública. La animación 3D de la portada, hecha con Spline, tiene un modo liviano para equipos lentos y para quien pide reducir movimiento.",
       shots: [zapateoShots.home],
     },
     {
       role: "Administración",
       summary:
-        "Vive en un subdominio propio, aislado por middleware. Tiene el dashboard con recaudación, entradas emitidas y usadas, pagos sin entrada y vendidas contra capacidad; eventos con afiches que se crean, publican, pausan y archivan; conciliación con Mercado Pago, búsqueda de órdenes y emisión manual.",
+        "Funciona en un subdominio propio, aislado por middleware. Incluye el dashboard con recaudación, entradas emitidas y usadas, pagos sin entrada y vendidas contra capacidad; eventos con afiches que se crean, publican, pausan y archivan; conciliación con Mercado Pago, búsqueda de órdenes y emisión manual.",
       shots: [zapateoShots.reconciliation, zapateoShots.events],
     },
     {
       role: "Staff de puerta",
       summary:
-        "Entra con un PIN y elige el evento activo, para que una entrada no sirva en otro. Escanea el QR con la cámara o tipea el código, y ve los contadores en vivo.",
+        "Entra con un PIN y elige el evento activo, para que una entrada no sirva en otro. Escanea el QR con la cámara o ingresa el código, y ve los contadores en vivo.",
       shots: [zapateoShots.door],
     },
   ],
@@ -431,10 +431,10 @@ const clubZapateo: CaseStudy = {
       why: "Contraseñas con scrypt, sesiones en cookies firmadas httpOnly con sameSite strict y el PIN de la puerta comparado en tiempo constante. Los datos se validan con Zod.",
     },
   ],
-  decisionsLead: "Lo que impide emitir entradas por encima de la capacidad o repetidas, y lo que encuentra los pagos que quedaron sin entrada.",
-  qualityLead: "Lo que consta en el repositorio: los tests y el CI que los corre.",
+  decisionsLead: "Cómo se evita emitir entradas repetidas o por encima de la capacidad, y cómo se detectan los pagos sin entrada.",
+  qualityLead: "Los tests del repositorio y el CI que los ejecuta.",
   /* evidencia, no la lista de prácticas de la ficha: la cifra de tests, su cobertura y el CI como visual */
-  quality: ["La cobertura de los tests se mide en el CI, en el mismo paso que los corre."],
+  quality: ["La cobertura de los tests se mide en el CI, en el mismo paso que los ejecuta."],
   qualityPanel: {
     title: "CI en GitHub Actions",
     alt: "El CI de GitHub Actions de Club Zapateo corre lint, tipos, los tests con cobertura y el build.",

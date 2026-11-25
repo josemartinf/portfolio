@@ -1,7 +1,6 @@
-/* El statement de la portada (sección propia, una vez, justo después del hero: es lo que distingue el perfil): la moment liquid-type repartida en el titular, que ondula
-   bajo el puntero y vuelve a quedar nítido; en touch y con movimiento reducido queda quieto. A la derecha, un caso
-   de cada una de esas cuatro cosas, dicho como resultado: el mecanismo (la outbox, la idempotencia, los motores de
-   prueba) vive en la página de cada caso. */
+/* Qué hago (sección propia, justo después del hero): la moment liquid-type en el titular, que ondula bajo el puntero y
+   vuelve a quedar nítido; en touch y con movimiento reducido queda quieto. A la derecha, las cuatro áreas de trabajo con
+   lo que uso en cada una; el detalle vive en Experiencia y en la página de cada caso. */
 import type { Locale } from "@/i18n";
 import { ui } from "@/i18n/ui";
 
