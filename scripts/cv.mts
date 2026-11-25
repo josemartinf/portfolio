@@ -12,11 +12,11 @@ import { ui } from "../src/i18n/ui";
 /* Los textos propios del CV (los títulos y el perfil); los datos salen de src/data por idioma, como en el sitio. */
 const T = {
   es: {
-    role: site.role, profile: "Empecé en QA y hoy desarrollo backend, integraciones y automatización con IA. Diseño cada sistema empezando por cómo puede fallar: reintentos, idempotencia, alertas y tests.",
+    role: site.role, profile: "Empecé en QA: durante siete años mi trabajo fue preguntar qué pasa si un pago entra dos veces o si un mensaje no llega. Hoy lo respondo con código, en backend, integraciones y automatización con IA: idempotencia, reintentos, alertas y tests.",
     h: { profile: "Perfil", experience: "Experiencia", projects: "Proyectos", sites: "Sitios en producción", personal: "Proyecto personal", stack: "Stack", education: "Formación", languages: "Idiomas" },
   },
   en: {
-    role: "Software Engineer · Backend, integrations and automation", profile: "I started in QA and today I build backend, integrations and AI automation. I design every system around how it could fail: retries, idempotency, alerts and tests.",
+    role: "Software Engineer · Backend, integrations and automation", profile: "I started in QA: for seven years my job was to ask what happens if a payment comes in twice or if a message never arrives. Today I answer that in code, across backend, integrations and AI automation: idempotency, retries, alerts and tests.",
     h: { profile: "Profile", experience: "Experience", projects: "Projects", sites: "Sites in production", personal: "Personal project", stack: "Stack", education: "Education", languages: "Languages" },
   },
 };

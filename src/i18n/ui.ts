@@ -8,10 +8,10 @@ const es = {
     title: "José Martin Flores | Software Engineer",
     description: "Software Engineer en Naranja X. Sistemas de pedidos, stock y pagos, con tres casos por dentro: Envo, Stockie y Club Zapateo.",
     caseTitle: (name: string) => `${name}: caso de estudio | José Martin Flores`,
-    ogAlt: "José Martin Flores, Software Engineer. Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
+    ogAlt: "José Martin Flores, Software Engineer. Programo lo que pasa cuando alguien toca “Comprar”: entra el pago, baja el stock, sale el pedido.",
     knowsAbout: ["Backend", "TypeScript", "Node.js", "PostgreSQL", "Kafka", "Integraciones", "Automatización con IA"],
   },
-  tagline: "Backend, integraciones y automatización. Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
+  tagline: "Backend, integraciones y automatización. Programo lo que pasa cuando alguien toca “Comprar”: entra el pago, baja el stock, sale el pedido.",
   footerLede: "Backend, integraciones y automatización.",
   whatsappMessage: "Hola José, vi tu portafolio.",
   nav: {
@@ -25,8 +25,8 @@ const es = {
   cv: "Descargar el CV (PDF)",
   hero: {
     seeProjects: "Ver los proyectos",
-    /** la frase junto al apellido (la primera oración de `tagline` ya está en "Trabajo en") */
-    claim: "Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.",
+    /** la frase junto al apellido (la primera oración de `tagline` ya está en "Trabajo en"); los espacios duros dejan cada paso en un solo renglón */
+    claim: "Programo lo que pasa cuando alguien toca “Comprar”: entra\u00a0el\u00a0pago, baja\u00a0el\u00a0stock, sale\u00a0el\u00a0pedido.",
     /** la fila de datos: el rótulo chico y su dato ("Hoy": el rol, sin el seniority, y la empresa de jobs[0]) */
     metas: {
       now: "Hoy", nowValue: (company: string) => `Software Engineer en ${company.replace(" ", "\u00a0")}, en automatización con IA`, build: "Trabajo en", buildValue: "Backend, integraciones y automatización",
@@ -36,11 +36,11 @@ const es = {
     bandLabel: "Envo · panel de operación",
   },
   statement: {
-    title: "Empiezo por lo que puede fallar",
-    line: "Empecé en QA en 2019 y hoy soy Software Engineer en Naranja X. Antes de construir algo, defino qué pasa si un mensaje no llega, si un pago entra dos veces o si un servicio se cae.",
+    title: "¿Y si el pago entra dos veces?",
+    line: "Durante siete años, en QA, mi trabajo fue hacer preguntas así. Hoy es responderlas con código: qué pasa si un mensaje no llega, si un servicio se cae o si la caja no cierra.",
     proof: [
-      ["Ningún aviso falla en silencio", "Si Telegram no responde, Envo guarda el aviso y reintenta; si no logra entregarlo, abre una alerta."],
       ["Ninguna entrada duplicada", "En Club Zapateo, si Mercado Pago repite el aviso de un pago, la entrada se emite una sola vez."],
+      ["Ningún aviso falla en silencio", "Si Telegram no responde, Envo guarda el aviso y reintenta; si no logra entregarlo, abre una alerta."],
       ["Controles cada noche", "Envo revisa que el stock, las reservas y la caja cuadren; si algo no cierra, abre una alerta y la cierra cuando vuelve a cuadrar."],
       ["Probado con PostgreSQL real", "Las pruebas de Envo corren también contra un PostgreSQL real, no solo contra una base embebida."],
     ] as [string, string][],
@@ -91,10 +91,10 @@ const en: Ui = {
     title: "José Martin Flores | Software Engineer",
     description: "Software Engineer at Naranja X. Order, inventory and payment systems, with three case studies: Envo, Stockie and Club Zapateo.",
     caseTitle: (name: string) => `${name}: case study | José Martin Flores`,
-    ogAlt: "José Martin Flores, Software Engineer. I build order, inventory and payment systems that keep working when something fails.",
+    ogAlt: "José Martin Flores, Software Engineer. I build what happens when someone hits “Buy”: the payment comes in, the stock goes down, the order goes out.",
     knowsAbout: ["Backend", "TypeScript", "Node.js", "PostgreSQL", "Kafka", "Integrations", "AI automation"],
   },
-  tagline: "Backend, integrations and automation. I build order, inventory and payment systems that keep working when something fails.",
+  tagline: "Backend, integrations and automation. I build what happens when someone hits “Buy”: the payment comes in, the stock goes down, the order goes out.",
   footerLede: "Backend, integrations and automation.",
   whatsappMessage: "Hi José, I saw your portfolio.",
   nav: {
@@ -107,7 +107,7 @@ const en: Ui = {
   cv: "Download CV (PDF)",
   hero: {
     seeProjects: "View projects",
-    claim: "I build order, inventory and payment systems that keep working when something fails.",
+    claim: "I build what happens when someone hits “Buy”: the payment comes in, the stock goes down, the order goes out.",
     metas: {
       now: "Now", nowValue: (company: string) => `Software Engineer at ${company.replace(" ", "\u00a0")}, in AI automation`, build: "I work on", buildValue: "Backend, integrations and automation",
       since: "Since", sinceValue: "2019 in QA, 2020 in banking and fintech", write: "Get in touch", email: "Email",
@@ -115,11 +115,11 @@ const en: Ui = {
     bandLabel: "Envo · operations dashboard",
   },
   statement: {
-    title: "I start with what can fail",
-    line: "I started in QA in 2019, and today I'm a software engineer at Naranja X. Before I build anything, I work out what happens if a message never arrives, if a payment comes in twice or if a service goes down.",
+    title: "What if the payment comes in twice?",
+    line: "For seven years in QA, my job was to ask questions like that one. Today it's to answer them in code: what happens if a message never arrives, if a service goes down or if the cash doesn't add up.",
     proof: [
-      ["No notification fails silently", "If Telegram doesn't respond, Envo stores the notification and retries; if it can't be delivered, it opens an alert."],
       ["No duplicate tickets", "In Club Zapateo, if Mercado Pago repeats a payment notification, the ticket is issued only once."],
+      ["No notification fails silently", "If Telegram doesn't respond, Envo stores the notification and retries; if it can't be delivered, it opens an alert."],
       ["Nightly checks", "Envo verifies that stock, reservations and cash add up; if something is off, it opens an alert and closes it once everything adds up again."],
       ["Tested with real PostgreSQL", "Envo's tests also run against a real PostgreSQL server, not just an embedded database."],
     ],
