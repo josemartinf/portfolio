@@ -28,7 +28,7 @@ function Entry({ company, roles, locale }: { company: string; roles: Job[]; loca
   return <li className="grid tl__item">
     <div className="tl__when span-5"><h3>{company}</h3><p className="tl__date">{span}</p></div>
     <div className="tl__roles span-6 start-7">{roles.map((r) => <div className="tl__role" key={r.role}>
-      <p className="tl__title">{r.role}{roles.length > 1 && <span className="tl__range"> · {range(r)}</span>}</p>
+      <p className="tl__title">{r.role}{roles.length > 1 && <span className="tl__range"><span className="tl__sep"> · </span>{range(r)}</span>}</p>
       <p>{r.summary}</p>
     </div>)}</div>
   </li>;

@@ -186,9 +186,7 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
    105px, the size it has at 640 (16.4vw), so nothing jumps there; the CV a text link of its own width under the button */
 @media (max-width: 639px) {
   .hero--editorial .hero__name { font-size: clamp(76px, 25vw, 105px); max-width: 3.6em; }
-  .hero__metas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .hero--editorial .btn-row .btn.btn--secondary { align-self: flex-start; width: auto; }
-  .hero__band { margin-top: var(--s-6); }
 }
 
 /* ---------------------------------------------------------------- the tech sheet (case pages) */
@@ -267,10 +265,7 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
 @media (max-width: 639px) {
   .projects__head { flex-direction: column; align-items: flex-start; }
   .ptile, .ptile--l, .ptile--m { grid-column: 1 / -1; }
-  .ptile__top { padding: 20px 20px; }
-  .ptile__media { height: 240px; padding-left: 20px; }
-  .ptile--s .ptile__media { height: 200px; }
-  .ptile__phone { top: 20px; right: 20px; width: 96px; }
+  .ptile__top { padding: 18px 20px 14px; }
   .ptile__body { padding: 0 20px 22px; }
 }
 
@@ -301,13 +296,10 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
 .stack__tile { display: inline-grid; place-items: center; flex: none; width: 32px; height: 32px; border-radius: var(--r-sm); background: #fff; }
 .stack__tile > img.ic { width: 20px; height: 20px; object-fit: contain; }
 @media (min-width: 640px) and (max-width: 1023px) { .stack__group.stack__group { grid-column: auto / span 4; } }
-@media (max-width: 639px) { .stack__groups { row-gap: var(--s-6); } .stack__group.stack__group { grid-column: auto / span 6; } }
 
 /* ---------------------------------------------------------------- the close: the line under the h2, the button its own width */
 .closing__cta .section-head p { margin: 0; }
 .closing__cta.close--type > .btn { align-self: flex-start; width: auto; }
-/* a phone: the close's button across the column, as the hero's (one width rule for the page's buttons) */
-@media (max-width: 639px) { .closing__cta.close--type > .btn { align-self: stretch; width: 100%; } }
 /* a case page: the close's button as large as the hero's (layout.css, hero--triptych), so the page draws one size */
 .closing--case .closing__cta > .btn { height: 64px; padding-inline: var(--s-6); font-size: var(--t-lead); }
 @media (min-width: 1024px) and (max-width: 1279px) { .closing--case .closing__cta > .btn { height: 56px; font-size: var(--t-body); } }
@@ -328,10 +320,6 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
   .sheet { gap: var(--s-2); }
 }
 @media (max-width: 639px) {
-  /* one screen grown to what it holds (min-height one screen): a section that holds a screen and a bit never becomes
-     two screens with a hole under it; the timeline, past a screen and a half, is two */
-  .statement { --hm: 1; }
-  .experience { --hm: 2; }
   /* a .fill grows to its screen but never shrinks under what it holds (a narrow phone, 320px, runs the words longer) */
   main > .section > .wrap > .fill { flex: 1 0 auto; min-height: auto; }
   .tl__study { margin-top: var(--s-7); }
@@ -373,11 +361,6 @@ main.case-page > [data-moment="pinned-chapters"].is-live .mo-pc__visual.mo-pc__v
   /* live from 1024px: the stage is one screen and sticks (the kit's tablet rule grows every .wrap to its section, which
      would make the stage two screens tall and never stick) */
   main.case-page > [data-moment="pinned-chapters"][data-moment].is-live > .mo-pc__grid { flex: none; }
-}
-/* a phone: a section at least one screen and two when what it holds runs past a screen and a half (the ficha, the
-   decisions of Envo), so the next section never shows on the second screen of it */
-@media (max-width: 639px) {
-  .case-page--envo #decisiones, .case-page--envo #ficha, .case-page--stockie #ficha, .case-page--club-zapateo #ficha { --hm: 2; }
 }
 /* a part of a capture, larger (BrowserFrame focus): the view keeps its proportion and the capture moves under it */
 .bframe--focus .bframe__view img { position: absolute; left: var(--bf-left); top: var(--bf-top); width: var(--bf-img-w); height: auto; max-width: none; object-fit: fill; }
@@ -493,9 +476,8 @@ main code { font-family: var(--font-mono); font-size: .88em; letter-spacing: 0; 
 .case-arch__panel > .dg { position: absolute; inset: var(--s-6) var(--s-6); width: auto; }
 .case-arch .section-head p { max-width: 70ch; }
 @media (max-width: 639px) {
-  /* a phone: the panel takes what the screen leaves under the heading and the diagram spreads over it (its compact
-     places are fractions of the panel), so neither the panel nor the screen holds an empty band (M1, M8) */
-  main.case-page > .section > .wrap > .case-arch__panel { --ratio: 0px; flex: 1 1 auto; height: auto; min-height: 420px; padding: 0; }
+  /* a phone: the diagram's compact places are fractions of the panel, so the panel has a height of its own */
+  main.case-page > .section > .wrap > .case-arch__panel { --ratio: 0px; flex: none; height: 460px; padding: 0; }
   .case-arch__panel > .dg { position: absolute; inset: var(--s-5); }
 }
 
@@ -558,47 +540,19 @@ main code { font-family: var(--font-mono); font-size: .88em; letter-spacing: 0; 
   .case-figures > * { grid-column: auto; }
 }
 @media (max-width: 639px) {
-  /* the hero's collage gives way first when the words run long (a 34-character name stays one screen) */
-  .case-hero .ly-collage { min-height: 220px; }
-  /* the problem's text and its window a step further apart, the stack's marks a row further apart: each of these
-     sections ends near its screen's foot, so the air before the next is the page's one gap */
-  .case-problem .case-split { row-gap: var(--s-7); }
-  .case-stack { row-gap: var(--s-5); }
-  /* an odd last mark takes its row (two marks a row on a phone) */
-  .case-stack__tile:last-child:nth-child(odd) { grid-column: 1 / -1; }
-  /* Pantallas holds two screens on a phone: the roles' lists and gaps a little tighter */
   .case-role { row-gap: var(--s-5); }
-  .case-role__text { gap: var(--s-3); }
-  .case-role__list { margin-top: 0; }
-  .case-role__list li { padding-block: 8px; }
-  /* Club Zapateo's chapters at rest, two screens: each window bare (no lit ground around it), the door's phone smaller */
-  .case-chapters:not(.is-live) .mo-pc__step { padding-left: var(--s-4); }
-  .case-chapters:not(.is-live) .mo-pc__steps { gap: var(--s-4); }
-  .case-chapters:not(.is-live) .mo-pc__visual--lit:has(> .bframe) { padding: 0; background: none; }
-  /* the door's phone beside its few lines, at a phone's width, not under them with empty ground either side */
-  .case-chapters:not(.is-live) .mo-pc__step:has(.pframe) { grid-template-columns: minmax(0, 1fr) 140px; grid-template-rows: auto 1fr; column-gap: var(--s-4); align-items: start; align-content: start; }
-  .case-chapters:not(.is-live) .mo-pc__step:has(.pframe) > .mo-pc__visual { grid-column: 2; grid-row: 1 / span 2; margin: 0; padding: 0; background: none; aspect-ratio: auto; }
-  .case-chapters:not(.is-live) .mo-pc__visual--lit > .pframe { width: 100%; }
-  /* at rest the moment is as tall as its steps (moments.md); on a phone that is two screens exactly, so the next
-     section never shows on its second screen */
-  main.case-page > [data-moment="pinned-chapters"][data-moment]:not(.is-live) { min-height: calc(2 * 100vh); min-height: calc(2 * 100lvh); }
+  /* Club Zapateo's chapters at rest: each window bare (no lit ground around it), as every window of the page */
+  .case-chapters:not(.is-live) .mo-pc__visual--lit:has(> .bframe) { padding: 0; background: none; overflow: visible; }
   .case-sheet .sheet__row { grid-template-columns: minmax(0, 1fr); }
   .case-figures .t-stat, .case-quality__figures .t-stat { font-size: 30px; }
   .case-figures { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .case-figures > * { grid-column: auto; }
-  .case-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* counter-rolls (I7): each digit column one line, clipped (the kit's 1em window), and its top and foot faded over the
    line's empty part (Familjen Grotesk's digits sit from .23em to .91em of a line-height 1), so a rolling strip never
    shows a sliver of the digit above or below outside the digit's own band; at rest the digit is whole */
 .mo-cr__col { height: 1em; line-height: 1; overflow: hidden; -webkit-mask-image: linear-gradient(to bottom, transparent .16em, #000 .22em, #000 .92em, transparent .97em); mask-image: linear-gradient(to bottom, transparent .16em, #000 .22em, #000 .92em, transparent .97em); }
-/* Club Zapateo's problem on a phone: its dashboard window a little taller (the figures and the events under them,
-   larger), so the section ends near its screen's foot and the air before the chapters stays the page's gap */
-@media (max-width: 639px) {
-  .case-page--club-zapateo #problema .bframe--focus .bframe__view { aspect-ratio: 1.2; }
-  .case-page--club-zapateo #problema .bframe--focus .bframe__view img { --bf-img-w: 196.078%; --bf-left: -35.294%; --bf-top: -11.765%; }
-}
 
 /* fix round 2 (R3): the air a short section leaves goes inside it, a step at a time, so no visible blank band runs past
    400px. Each step stays smaller than the gap after the section. */
@@ -609,10 +563,6 @@ main code { font-family: var(--font-mono); font-size: .88em; letter-spacing: 0; 
   .case-quality .case-figures { margin-top: calc(var(--s-9) + var(--s-8)); }
   /* Club Zapateo's two rows of decisions, each a step taller */
   .case-page--club-zapateo #decisiones .case-decisions > * { padding-top: var(--s-7); padding-bottom: var(--s-7); }
-}
-/* a phone: Envo's six decisions (two screens) a step apart each */
-@media (max-width: 639px) {
-  .case-page--envo #decisiones .case-decisions > * { padding-top: var(--s-6); padding-bottom: var(--s-7); }
 }
 
 /* ================================================================ the home, as tall as what it holds (review 2026-11-18)
@@ -685,4 +635,177 @@ main.home .statement > .wrap { border-top: 1px solid var(--p-ink); padding-top: 
 @media (min-width: 1280px) and (max-height: 880px) {
   main.case-page > .section:not(.hero, [data-moment]) { height: auto; min-height: calc(var(--h, 1) * 100svh); }
   main.case-page > .case-screens.g2:not([data-moment]) > .wrap { height: auto; margin-bottom: 0; }
+}
+
+/* ================================================================ the phone (under 640px; 2026-11-25)
+   The same pages, in the same order, for a hand: what a desktop capture shows can be read (one part of it, larger, and
+   the whole of it a tap away), every control is 44px, and a section is as tall as what it holds, with one gap between
+   sections. Nothing here reaches a tablet or a desktop, except the touch feedback and the phone lying down, at the end. */
+.shot-zoom, .zoom:not([open]) { display: none; }
+@media (max-width: 639px) {
+  /* ---------------- rhythm: one gap (48 + 64px) between sections, and an anchor lands with its heading clear of the bar */
+  main.case-page > .section:not(.hero), main.case-page > [data-moment="pinned-chapters"][data-moment]:not(.is-live), footer.closing.closing--case {
+    height: auto; min-height: 0; padding: var(--s-8) 0 var(--s-7);
+  }
+  main.case-page > .section:not(.hero) > .wrap { height: auto; }
+  main.case-page > .section.g2 > .wrap { row-gap: var(--s-7); }
+  main.case-page > .section.g2:not(.g2m) > .wrap > :last-child { margin-block: 0; }
+  footer.closing.closing--case { padding-bottom: var(--s-6); }
+  main > .section[id], footer[id] { scroll-margin-top: 20px; }
+
+  /* ---------------- the bar: one filled button on the first screen (the page's own), so the bar's is an outline */
+  .nav:not(.is-open) .nav__actions .btn.btn--primary { background: none; border-color: var(--line-strong); color: var(--ink); }
+  /* the sheet: the words at a heading's size, and a landscape phone still holds them */
+  .nav.is-open .nav__link { height: clamp(52px, 10svh, 76px); font: 500 clamp(28px, 5svh, 40px)/1 var(--font-display); letter-spacing: -.04em; }
+
+  /* ---------------- a capture: the part that says something, at a size that reads (src/data/phone-focus.ts) */
+  .bframe.bframe--m .bframe__view { aspect-ratio: var(--m-ratio, 1.1); }
+  .bframe.bframe--m .bframe__view > img { position: absolute; left: 0; top: 0; width: calc(100% / var(--m-w)); height: auto; max-width: none; object-fit: fill; translate: calc(var(--m-x) * -100%) calc(var(--m-y) * -100%); }
+  /* the whole capture, a tap away (a case's windows; site.js) */
+  .shot-zoom { position: absolute; inset: 0; z-index: 1; display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; }
+  .shot-zoom > svg { position: absolute; right: 12px; bottom: 12px; box-sizing: border-box; width: 36px; height: 36px; padding: 9px; border-radius: var(--r-sm); background: rgb(15 15 15 / .82); color: #fff; box-shadow: 0 0 0 1px rgb(255 255 255 / .22); }
+  .shot-zoom:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; }
+  html.zoom-open { overflow: hidden; }
+  .zoom[open] { position: fixed; inset: 0; display: flex; flex-direction: column; box-sizing: border-box; width: 100%; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0; background: #0f0f0f; color: #fff; }
+  .zoom__bar { flex: none; display: flex; align-items: center; justify-content: space-between; gap: var(--s-3); padding: calc(6px + env(safe-area-inset-top)) 12px 6px var(--gut); border-bottom: 1px solid rgb(255 255 255 / .14); }
+  .zoom__title { min-width: 0; overflow: hidden; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+  .zoom__close { flex: none; display: grid; place-items: center; width: 44px; height: 44px; border: 0; border-radius: var(--r-sm); background: none; color: inherit; }
+  .zoom__close:focus-visible { outline: 2px solid #fff; outline-offset: -4px; }
+  .zoom__view { flex: 1 1 auto; min-height: 0; display: flex; overflow: auto; overscroll-behavior: contain; padding-bottom: env(safe-area-inset-bottom); outline: none; }
+  .zoom__view > img { flex: none; width: auto; max-width: none; height: max(78svh, 520px); margin-block: auto; aspect-ratio: 1.6; }
+
+  /* ---------------- the hero */
+  /* the kit underlines a secondary and the hero draws a rule under it: here, the rule alone, as wide as the words */
+  .hero--editorial .btn-row .btn.btn--secondary { text-decoration: none; height: 44px; margin-top: 4px; }
+  /* the facts as rows: label and fact on one line, so nothing breaks into a narrow column */
+  .hero__metas { grid-template-columns: minmax(0, 1fr); gap: 0; padding-top: 0; }
+  .hero__metas > div { display: grid; grid-template-columns: 92px minmax(0, 1fr); column-gap: var(--s-3); align-items: baseline; padding: 13px 0; border-bottom: 1px solid var(--line); }
+  .hero__metas dd { margin: 0; }
+  .hero__links a { line-height: 24px; padding-block: 10px; margin-block: -10px; }
+  .hero__band { margin-top: var(--s-6); }
+  .hero__band .bframe--m { --m-ratio: 1.3; }
+
+  /* ---------------- what I do: the line nearer its areas, a hairline over each */
+  .statement__proof { margin-top: var(--s-2); gap: 0; }
+  .statement__proof > div { padding: var(--s-4) 0; border-top: 1px solid var(--line); }
+  .statement__proof > div:last-child { padding-bottom: 0; }
+
+  /* ---------------- the projects */
+  .projects__count { font-size: 13px; }
+  .ptile { position: relative; }
+  .ptile__media { height: 264px; padding-left: 20px; }
+  .ptile--s .ptile__media { height: 236px; }
+  .ptile__media .bframe--m { --m-ratio: 1.15; }
+  .ptile--s .ptile__media .bframe--m { --m-ratio: 1.4; }
+  /* Envo's is a low strip of a capture: wider, so its window reaches the block's foot as the others' do */
+  .ptile[data-project="envo"] .ptile__media .bframe { width: 140%; }
+  /* the window runs off the right edge: its title sits after the dots, where the phone over it does not hide it */
+  .ptile__media .bframe__label { text-align: left; margin-right: 0; }
+  .ptile__media::after { background: linear-gradient(transparent 74%, var(--p-surface)); }
+  .ptile__phone { top: 46px; right: 20px; width: 106px; }
+  .ptile__facts li { padding: 11px 0; }
+  .ptile__link { height: 48px; }
+  /* a case's whole block is its link (the status's own link stays above it) */
+  .ptile--case .ptile__link.btn { position: static; }
+  .ptile--case .ptile__link::before { content: ""; position: absolute; inset: 0; z-index: 1; }
+  /* (pressed, the kit scales a button, and a transform would shrink that area to the button under the finger) */
+  .ptile--case .ptile__body .ptile__link.btn.btn--secondary:active { transform: none; }
+  /* a status's link, its own destination: a 44px target on the text's own line (a layer over it, since the kit draws a
+     link's underline at its padding's foot) */
+  :is(.ptile__status, .case-hero__status) { line-height: 1.7; }
+  /* (the layers sit under every link's own text, so two links on consecutive lines never take each other's touch; the
+     paragraph rises over its tile's whole-block link and lets the rest of its text through to it) */
+  :is(.ptile__status, .case-hero__status) { position: relative; z-index: 2; pointer-events: none; }
+  :is(.ptile__status, .case-hero__status) a { position: relative; display: inline-block; pointer-events: auto; }
+  :is(.ptile__status, .case-hero__status) a::before { content: ""; position: absolute; inset: -10px 0; z-index: -1; }
+
+  /* ---------------- experience: a company to a block, its role over its dates */
+  .tl { gap: 0; }
+  .tl__item { row-gap: var(--s-4); padding: var(--s-5) 0; border-top: 1px solid var(--line); }
+  .tl__item:first-child { padding-top: 0; border-top: 0; }
+  .tl__role + .tl__role { margin-top: var(--s-5); }
+  .tl__range { display: block; margin: 2px 0 6px; font-size: var(--t-small); }
+  .tl__sep { display: none; }
+  .tl__roles p, .tl__study p { line-height: 1.5; }
+  .tl__study { margin-top: 0; padding-top: var(--s-5); border-top: 1px solid var(--line); }
+
+  /* ---------------- stack: two even columns, an area never broken between them */
+  .stack__groups { display: block; columns: 2; column-gap: var(--gutter); }
+  .stack__group { break-inside: avoid; padding-bottom: var(--s-6); }
+  .stack__group:last-child { padding-bottom: 0; }
+
+  /* ---------------- a case's hero: the words, then the window across the column, the same size on the three */
+  main.case-page > .hero.case-hero { min-height: 0; padding-bottom: var(--s-6); }
+  .case-hero .case-hero__parts { font-size: 14px; }
+  .case-hero__cta { margin-top: var(--s-5); }
+  .case-hero__cta > .btn--primary { height: 48px; }
+  .hero--triptych.case-hero .ly-collage { --win-w: 100cqw; flex: none; height: calc((100vw - 2 * var(--gut)) / 1.15 + 34px); min-height: 0; margin-block: var(--s-6) 0; }
+  /* Club Zapateo's window is lower than the others' on a desktop (its phone stands beside it): here it stands alone */
+  .case-hero .case-set--side-phone > .case-piece--main .bframe__view { aspect-ratio: 1.15; }
+
+  /* ---------------- a case's screens: the list of screens is a row of chips over the window it changes */
+  .case-lede { font-size: var(--t-body); line-height: 1.55; }
+  .case-problem .case-split, .case-more .case-split { row-gap: var(--s-6); }
+  .case-role__text { gap: var(--s-4); }
+  .case-role__text > .rows.case-role__list { display: flex; gap: var(--s-2); margin: var(--s-2) calc(-1 * var(--gut)) 0; padding: 2px var(--gut); overflow-x: auto; overscroll-behavior-x: contain; scrollbar-width: none; border: 0; }
+  .case-role__list::-webkit-scrollbar { display: none; }
+  .case-role__text > .rows.case-role__list > li { flex: none; display: block; min-height: 0; padding: 0; border: 0; }
+  .case-role__list [data-peek-to] .rows__name { display: inline-flex; align-items: center; height: 44px; padding: 0 var(--s-4); border: 1px solid var(--line-strong); border-radius: var(--r-btn); font: 500 15px/1 var(--font-text); letter-spacing: 0; white-space: nowrap; cursor: pointer; }
+  .case-role__list [data-peek-to] .rows__name[aria-pressed="true"] { border-color: var(--ink); background: var(--ink); color: var(--bg); }
+  .case-role__list [data-peek-to] .rows__name::after { content: none; }
+  .case-screens .group + .group { padding-top: var(--s-6); border-top: 1px solid var(--line); }
+  /* Club Zapateo's three places, stacked: words across the column, then their window; a hairline between them */
+  .case-chapters:not(.is-live) .mo-pc__steps { gap: var(--s-6); }
+  [data-moment="pinned-chapters"].case-chapters:not(.is-live) .mo-pc__step { padding: 0; border: 0; }
+  [data-moment="pinned-chapters"].case-chapters:not(.is-live) .mo-pc__step + .mo-pc__step { padding-top: var(--s-6); border-top: 1px solid var(--line); }
+  [data-moment="pinned-chapters"].case-chapters:not(.is-live) .mo-pc__step p { max-width: none; }
+  .case-chapters:not(.is-live) .mo-pc__visual--lit:has(> .pframe) { padding: var(--s-5) var(--s-6); border-radius: var(--r-lg); }
+
+  /* ---------------- a case's decisions, figures and sheet */
+  .case-decisions > li { padding: var(--s-5) 0; }
+  .case-decisions > li:first-child { padding-top: 0; border-top: 0; }
+  .case-decisions > li:last-child { padding-bottom: 0; }
+  .case-quality__list li p { font-size: var(--t-body); }
+  .case-figures { margin-top: var(--s-7); }
+  .case-sheet .sheet { gap: var(--s-5); }
+  .case-sheet .sheet__row { gap: 4px; }
+  .case-sheet__right .sheet__row:first-child { padding-bottom: 0; }
+  .case-sheet__grid { row-gap: var(--s-5); }
+  /* the stack as the home's: the mark and its name on one line */
+  .case-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 var(--gutter); margin-top: var(--s-1); }
+  .case-stack__tile { flex-direction: row; align-items: center; min-height: 44px; padding: 0; font-size: 15px; }
+  .case-stack__tile > img.ic, .case-stack__tile > .ic-land { flex: none; width: 24px; height: 24px; }
+
+  /* ---------------- the close */
+  .closing__cta { gap: var(--s-5); }
+  .email-copy { flex-direction: column; align-items: stretch; gap: var(--s-4); }
+  .email-copy__addr { display: flex; align-items: center; min-height: 44px; }
+  .email-copy__btn, .closing--case .closing__cta .email-copy__btn { height: 48px; }
+  .closing__cta.close--type > .btn.btn--secondary, .closing--case .closing__cta > .btn.btn--secondary { height: 44px; font-size: var(--t-body); }
+  .closing__links .footer__lede { font-size: var(--t-body); }
+  .footer ul { font-size: 15px; }
+  .footer :is(h3, h4):not(.closing__cta *) { margin-bottom: var(--s-1); }
+  .footer__legal { flex-direction: column; gap: var(--s-1); padding-top: var(--s-4); }
+  /* a case's close: the other two cases first, across the column (the way on after a long page), then the two columns */
+  .closing--case .footer__col:nth-child(2) { grid-column: 1 / -1; }
+  .closing--case .footer__col:nth-child(2) li { border-bottom: 1px solid var(--line); }
+  .closing--case .footer__col:nth-child(2) ul a { width: 100%; min-height: 56px; font: 500 20px/1.2 var(--font-display); letter-spacing: -.02em; }
+}
+
+/* ---------------- a phone lying down (and the notch on its side): the name first, at the height the screen has */
+@media (min-width: 640px) and (max-width: 1023px) {
+  :root { --gut: max(48px, env(safe-area-inset-left), env(safe-area-inset-right)); }
+}
+@media (min-width: 640px) and (max-width: 1023px) and (max-height: 500px) {
+  .hero__metas { order: 0; }
+  .hero--editorial .hero__name { font-size: min(16.4vw, 27svh); }
+  .nav.is-open .nav__links { padding-bottom: 136px; }
+}
+
+/* ---------------- touch: what a finger presses answers (no hover to do it), without the browser's grey flash */
+@media (hover: none) {
+  a, button, [role="button"] { -webkit-tap-highlight-color: transparent; }
+  .ptile--case:active { border-color: color-mix(in oklab, var(--ink) 45%, transparent); }
+  :is(.hero__links, .ptile__status, .status, .footer) a:active, .email-copy__addr:active, .nav__link:active { opacity: .6; }
+  .shot-zoom:active > svg { transform: scale(.94); }
 }

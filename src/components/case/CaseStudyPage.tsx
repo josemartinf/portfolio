@@ -60,10 +60,10 @@ function Set({ set, index }: { set: HeroSet; index: number }) {
   return <div className={`ly-collage__set case-set ${phone ? "case-set--phone" : "case-set--browser"}${sidePhone ? " case-set--side-phone" : ""}${index === 0 ? " is-on" : ""}`} aria-hidden={index === 0 ? undefined : true}>
     {phone
       ? <PhoneFrame shot={set.main} className="ly-piece case-piece case-piece--main" />
-      : <BrowserFrame shot={set.main} focus={set.main.focus} crop={sidePhone ? HERO_MAIN_CROP_LOW : HERO_MAIN_CROP} className="ly-piece case-piece case-piece--main" sizes={HERO_MAIN_SIZES} eager={eager} />}
+      : <BrowserFrame shot={set.main} focus={set.main.focus} phone={false} crop={sidePhone ? HERO_MAIN_CROP_LOW : HERO_MAIN_CROP} className="ly-piece case-piece case-piece--main" sizes={HERO_MAIN_SIZES} eager={eager} />}
     {set.side && (sidePhone
       ? <PhoneFrame shot={set.side} className="ly-piece case-piece case-piece--side" />
-      : <BrowserFrame shot={set.side} focus={set.side.focus} crop={HERO_SIDE_CROP} className="ly-piece case-piece case-piece--side" sizes={HERO_SIDE_SIZES} />)}
+      : <BrowserFrame shot={set.side} focus={set.side.focus} phone={false} crop={HERO_SIDE_CROP} className="ly-piece case-piece case-piece--side" sizes={HERO_SIDE_SIZES} />)}
     <div className="ly-piece case-piece case-note"><b>{set.label}</b><span>{set.line}</span></div>
   </div>;
 }
@@ -330,7 +330,8 @@ export function CaseStudyPage({ study, locale = "es" }: { study: CaseStudy; loca
   return <>
     <MomentPreload id={study.moment} />
     <Nav locale={locale} path={`/${study.slug}`} links={ui[locale].case.nav} logoHref={localePath(locale, "/")} />
-    <main id="top" className={`case-page case-page--${study.slug}`}>
+    {/* data-zoom*: lo que dice el botón que abre una captura entera en un teléfono (public/site.js) */}
+    <main id="top" className={`case-page case-page--${study.slug}`} data-zoom={ui[locale].case.zoom} data-zoom-close={ui[locale].case.zoomClose}>
       <Hero study={study} locale={locale} />
       <Problem study={study} locale={locale} />
       {study.moment === "pinned-chapters" ? <Chapters study={study} locale={locale} /> : <Screens study={study} locale={locale} />}
