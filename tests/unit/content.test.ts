@@ -4,8 +4,11 @@ import { caseBySlug, cases } from "@/data/cases";
 import { sites } from "@/data/sites";
 import { tools } from "@/data/tools";
 import { education, jobs, stackGroups, stackIcons } from "@/data/profile";
-import { allCopy, FORBIDDEN_COPY, FORBIDDEN_ORIGIN, SECRET_PATTERNS } from "@/data/copy-guard";
+import { allCopy, FORBIDDEN_COPY, FORBIDDEN_ORIGIN, privatePatterns, SECRET_PATTERNS } from "@/data/copy-guard";
 import { site } from "@/lib/site";
+import { content } from "@/i18n/content";
+import { ui } from "@/i18n/ui";
+import { isKitExtra } from "../../scripts/prune-kit.mjs";
 
 describe("content", () => {
   it("cases are the three approved, in order", () => expect(cases.map((c) => c.slug)).toEqual(["envo", "stockie", "club-zapateo"]));
@@ -48,7 +51,7 @@ describe("content", () => {
 
   it("stockie keeps its real use and links its public demo, never /admin or /login", () => {
     const stockie = caseBySlug("stockie");
-    expect(stockie.status).toBe("En uso en MonJeep y GlobalFia · demo en stockie.envo-demo.tech");
+    expect(stockie.status).toBe("MonJeep y GlobalFia usan hoy su propia versión · demo en stockie.envo-demo.tech");
     expect(stockie.liveUrl).toBe("https://stockie.envo-demo.tech/demo");
     expect(stockie.demoUrl).toBe("https://stockie.envo-demo.tech/demo");
     expect(JSON.stringify(cases)).not.toMatch(/stockie\.envo-demo\.tech\/(admin|login|dashboard)/);
@@ -114,7 +117,7 @@ describe("content", () => {
     const stockieCopy = JSON.stringify(stockie);
     // las cifras de Stockie van como fila de counter-rolls en Calidad, con sus tests de integración primero
     expect(stockie.figures?.in).toBe("calidad");
-    expect(stockie.figures?.items.map((f) => `${f.value} ${f.label}`)).toEqual(["16 tests de integración contra PostgreSQL real", "12 tests unitarios de la búsqueda", "59 rutas de API", "31 modelos"]);
+    expect(stockie.figures?.items.map((f) => `${f.value} ${f.label}`)).toEqual(["16 tests de integración contra PostgreSQL real", "12 tests unitarios de la búsqueda", "65 rutas de API", "30 modelos"]);
     expect(stockie.quality.join(" ")).toContain("SELECT … FOR UPDATE");
     ["dos precios más uno manual", "historial de precios", "modelos compatibles", "búsqueda por SKU sin importar los acentos", "defectuosos quedan fuera de stock", "límite diario", "WebUSB o USB"].forEach((f) => expect(stockieCopy).toContain(f));
   });
@@ -132,13 +135,35 @@ describe("content", () => {
   it("every diagram icon exists in public/assets/icons", () =>
     cases.forEach((c) => c.diagram.nodes.forEach((n) => { if (n.icon) expect(existsSync(`public/assets/icons/${n.icon}.svg`)).toBe(true); })));
 
+  // Revisión 2026-11-25: las promesas de la portada que el código de cada proyecto contradecía. Un aviso de Envo muere a los
+  // diez intentos o a las seis horas; el checkout de Club Zapateo no reserva cupo, así que alguien puede pagar sin entrada.
+  it("promises only what the code does, in both languages", () => {
+    const copy = allCopy();
+    [/ningún aviso se pierde/i, /cobro doble/i, /todo el que paga/i, /nunca vende más entradas/i, /base real/i, /siempre en banca/i, /no notification (gets|is) lost/i, /double charges/i, /everyone who pays/i, /always in banking/i].forEach((r) => expect(copy).not.toMatch(r));
+    expect(JSON.stringify(jobs)).not.toMatch(/\bSSR\b/);
+  });
+
+  it("every case says the role, when and its real standing, and only prints a result that exists", () =>
+    (["es", "en"] as const).forEach((l) => content(l).cases.forEach((c) => {
+      [c.role, c.period, c.standing].forEach((v) => expect(v.trim().length, `${l} ${c.slug}`).toBeGreaterThan(0));
+      if (c.result !== undefined) expect(c.result.trim()).toMatch(/\d/);
+    })));
+
+  it("every page description fits a search result (160 characters)", () =>
+    (["es", "en"] as const).forEach((l) => [ui[l].meta.description, ...content(l).cases.map((c) => c.tagline)].forEach((d) => expect(d.length, d).toBeLessThanOrEqual(160))));
+
+  it("publishes only the kit files the site asks for", () => {
+    ["effects/gallery.html", "ui/_lab/selftest.html", "moments/_demo/demo.css", "moments/liquid-hover/moment.js", "backgrounds/pick.mjs"].forEach((f) => expect(isKitExtra(f), f).toBe(true));
+    ["system.css", "ui/ui.js", "moments/moments.js", "moments/lib.js", "moments/liquid-type/moment.js", "icons/n8n.svg", "diagrams/presets.json"].forEach((f) => expect(isKitExtra(f), f).toBe(false));
+  });
+
   it("the copy guard catches what it must", () => {
     const hit = (text: string, list: RegExp[]) => list.some((r) => r.test(text));
     expect(hit("Contratame para tu negocio", FORBIDDEN_COPY)).toBe(true);
     expect(hit("Quiero potenciar tu marca", FORBIDDEN_COPY)).toBe(true);
     expect(hit("Comandos con idempotencia", FORBIDDEN_COPY)).toBe(false);
-    expect(hit("origen" + "-a", FORBIDDEN_ORIGIN)).toBe(true);
-    expect(hit("origen" + "-b", FORBIDDEN_ORIGIN)).toBe(true);
+    expect(hit("un dato privado", privatePatterns('["dato[ -]privado"]'))).toBe(true);
+    expect(privatePatterns(null)).toEqual([]);
     expect(hit("postgres://u:p@h/db", SECRET_PATTERNS)).toBe(true);
   });
 });

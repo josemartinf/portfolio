@@ -45,12 +45,12 @@ describe("home", () => {
     expect(hero).not.toBeNull();
     expect(screen.getByRole("heading", { level: 1 })).toHaveAccessibleName("José Martin Flores, Software Engineer");
     const metas = [...hero.querySelectorAll(".hero__metas dt")].map((d) => d.textContent);
-    expect(metas).toEqual(["Hoy", "Hago", "Desde", "Escribime"]);
+    expect(metas).toEqual(["Hoy", "Trabajo en", "Desde", "Escribime"]);
     const dd = [...hero.querySelectorAll(".hero__metas dd")];
-    expect(dd[0]).toHaveTextContent(/^Software Engineer en Naranja X$/);
+    expect(dd[0]).toHaveTextContent(/^Software Engineer en Naranja X, en automatización con IA$/);
     expect(dd[0].textContent).not.toMatch(/SSR/);
-    expect(dd[1]).toHaveTextContent("Backend, integraciones y automatización con IA");
-    expect(dd[2]).toHaveTextContent("2019, siempre en banca y fintech");
+    expect(dd[1]).toHaveTextContent(/^Backend, integraciones y automatización$/);
+    expect(dd[2]).toHaveTextContent("2019 en QA, 2020 en banca y fintech");
     expect([...dd[3].querySelectorAll("a")].map((a) => a.getAttribute("href"))).toEqual(["#contacto", site.linkedin, site.github]);
     dd[3].querySelectorAll("a[target=_blank]").forEach((a) => expect(a.getAttribute("rel")).toContain("noopener"));
     expect(hero.querySelector(".hero__claim")).toHaveTextContent("Hago sistemas de pedidos, stock y pagos que siguen funcionando cuando algo falla.");
@@ -102,14 +102,14 @@ describe("home", () => {
     // un nombre con guion y número ("SS-550") no se corta en el guion
     expect(rd.querySelector("h3 .nowrap")).toHaveTextContent("SS-550");
     expect(document.querySelector("[data-project='repuestos'] a[href='/stockie']")).not.toBeNull();
-    expect(screen.getByText(/En uso en MonJeep y GlobalFia/)).toBeInTheDocument();
+    expect(screen.getByText(/MonJeep y GlobalFia usan hoy su propia versión/)).toBeInTheDocument();
     // Ruling D: la demo pública de Envo, como link externo a /demo (nunca /admin ni /login).
     expect(document.querySelector("[data-project='envo'] .status a")).toHaveAttribute("href", "https://envo-demo.tech/demo");
     expect(document.querySelector("[data-project='envo'] .status a")).toHaveAttribute("rel", expect.stringContaining("noopener"));
     expect(document.querySelector("a[href*='envo-demo.tech/admin'], a[href*='envo-demo.tech/login']")).toBeNull();
     expect(document.querySelector("#proyectos")!.textContent).not.toMatch(/Arquitectura|Prácticas|Patrones|Enfoque|Partes/);
     // R2: el statement no le atribuye CI a Envo.
-    expect(document.querySelector("#como-trabajo")!.textContent).not.toMatch(/2938|Envo[^.]*CI/);
+    expect(document.querySelector("#como-trabajo")!.textContent).not.toMatch(/3065|Envo[^.]*CI/);
   });
 
   it("tags every project: the cases, the client sites and the personal one", () => {
@@ -134,6 +134,12 @@ describe("home", () => {
     });
   });
 
+  // Revisión 2026-11-25: en un teléfono el nombre de la barra no se ve; el link lo lleva en su aria-label.
+  it("names the logo link even when its text is hidden", () => {
+    render(<Home />);
+    document.querySelectorAll(".nav__logo").forEach((a) => expect(a).toHaveAccessibleName(site.name));
+  });
+
   it("keeps contact neutral: email, LinkedIn, GitHub and WhatsApp as text links", () => {
     render(<Home />);
     const contact = document.querySelector("#contacto")!;
@@ -142,6 +148,7 @@ describe("home", () => {
     expect(contact.querySelector(`button[data-copy='${site.email}']`)).not.toBeNull();
     expect(contact.querySelector("a[download]")).toHaveAttribute("href", site.cv);
     ["LinkedIn", "GitHub", "WhatsApp"].forEach((name) => expect(contact.textContent).toContain(name));
+    expect(contact.textContent).toContain("Buenos Aires (GMT-3)");
     expect(contact.textContent).not.toMatch(/contratame|presupuesto|disponible/i);
   });
 });

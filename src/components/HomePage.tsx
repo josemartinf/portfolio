@@ -24,7 +24,7 @@ function person(locale: Locale) {
     name: site.name,
     jobTitle: "Software Engineer",
     url: `${site.url}${localePath(locale, "/") === "/" ? "" : localePath(locale, "/")}`,
-    image: `${site.url}/og.jpg`,
+    image: `${site.url}${locale === "en" ? "/og-en.jpg" : "/og.jpg"}`,
     worksFor: { "@type": "Organization", name: content(locale).jobs[0].company },
     address: { "@type": "PostalAddress", addressLocality: "Buenos Aires", addressCountry: "AR" },
     sameAs: [site.linkedin, site.github],

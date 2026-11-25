@@ -2,10 +2,10 @@ import type { Education, Job } from "../types";
 
 /* Espejo en inglés de ../profile.ts: las mismas empresas, fechas, cargos e íconos; solo cambia el texto. */
 
-/** Frase del extracto de LinkedIn, para el dato duro del hero. */
-export const currentFact = "Software Engineer at Naranja X · 7 years in banking and fintech";
+/** La frase del perfil del CV. */
+export const currentFact = "Software Engineer at Naranja X · in banking and fintech since 2020";
 
-/** Del PDF de LinkedIn. Solo lo que dice ahí: nada interno de Naranja X. */
+/** Como en ../profile.ts: nada interno de Naranja X. */
 export const jobs: Job[] = [
   {
     company: "Naranja X",
@@ -13,7 +13,7 @@ export const jobs: Job[] = [
     from: "2026-08",
     to: null,
     summary:
-      "I design and build AI agents and multi-agent systems with n8n and LangGraph, RAG pipelines, and integrations over REST APIs, webhooks and MCP. The services run on AWS EKS with PostgreSQL and Kafka (Amazon MSK), and I monitor them in production with Datadog.",
+      "I design and build AI agents and multi-agent systems with n8n and LangGraph, RAG pipelines, and integrations over REST APIs, webhooks and MCP. I build backend services with TypeScript, Node.js and NestJS using hexagonal architecture, and asynchronous processing with Kafka (Amazon MSK), idempotency and the Outbox pattern, covered by unit, integration and end-to-end tests. They run on AWS EKS with PostgreSQL, and I monitor them in production with Datadog.",
   },
   {
     company: "Naranja X",
@@ -21,7 +21,7 @@ export const jobs: Job[] = [
     from: "2022-02",
     to: "2026-08",
     summary:
-      "I built backend services with TypeScript, Node.js and NestJS using hexagonal architecture, and asynchronous processing with Kafka (Amazon MSK), idempotency and the Outbox pattern, covered by unit, integration and end-to-end tests.",
+      "I automated end-to-end tests with Playwright, API tests, and load and performance tests. From there I moved into software engineering.",
   },
   {
     company: "Ualá",
@@ -51,10 +51,13 @@ export const jobs: Job[] = [
 
 export const education: Education = {
   school: "Universidad Nororiental Gran Mariscal de Ayacucho (UGMA)",
-  degree: "Systems Engineering",
+  degree: "Systems Engineering (Ingeniería en Sistemas)",
   from: "2013",
   to: "2017",
 };
+
+/** Los idiomas del CV y de Contacto. */
+export const languages = "Native Spanish, intermediate English";
 
 /** El stack por área, con los íconos reales de public/assets/icons. */
 export const stackGroups: { label: string; items: { name: string; icon: string }[] }[] = [

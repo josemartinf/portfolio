@@ -48,7 +48,8 @@ export interface Decision {
 
 export interface RoleView {
   role: string;
-  summary: string;
+  /** Un párrafo, o varios cuando el rol hace muchas cosas. */
+  summary: string | string[];
   shots: Shot[];
 }
 
@@ -116,6 +117,12 @@ export interface CaseStudy {
   parts: string[];
   /** Puntos de enfoque que el código demuestra. */
   focus: string[];
+  /** Qué hice yo, cuándo, y en qué estado está de verdad (lo que confirmó José el 2026-11-25). */
+  role: string;
+  period: string;
+  standing: string;
+  /** El resultado, con una cifra real. Opcional: sin ella la fila no aparece. Nunca se inventa ni se estima. */
+  result?: string;
   /** Logros y estado: en producción, quién lo usa. Nada inventado. */
   status: string;
   /** Una cifra que consta, junto al estado en el hero (el dato duro del primer pantallazo). */
@@ -130,7 +137,6 @@ export interface SiteProject {
   name: string;
   tag: ProjectTag;
   summary: string;
-  layers: string[];
   sheet: TechSheet;
   liveUrl: string;
   /** Otros sitios de la misma entrada (GlobalFia y MonJeep comparten una). */
@@ -150,7 +156,6 @@ export interface ToolProject {
   name: string;
   tag: ProjectTag;
   summary: string;
-  layers: string[];
   sheet: TechSheet;
   shot?: Shot;
 }

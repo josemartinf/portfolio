@@ -6,6 +6,8 @@ out/
 .env*
 !.env.example
 .DS_Store
+# Cadenas privadas del guard de textos (src/data/copy-guard.ts)
+.copy-guard.local.json
 *.log
 # Notas de diseño internas (no públicas)
 docs/superpowers/
