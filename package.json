@@ -9,8 +9,9 @@
     "lint": "eslint .",
     "test": "vitest run",
     "check:out": "tsx scripts/check-out.mjs",
-    "postbuild": "node scripts/strip-next-runtime.mjs out",
-    "cv": "tsx scripts/cv.mts"
+    "postbuild": "node scripts/strip-next-runtime.mjs out && node scripts/prune-kit.mjs",
+    "cv": "tsx scripts/cv.mts",
+    "og": "tsx scripts/og.mts"
   },
   "dependencies": {
     "next": "16.4.6",
