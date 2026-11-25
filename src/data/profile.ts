@@ -20,7 +20,7 @@ export const jobs: Job[] = [
     from: "2022-02",
     to: "2026-08",
     summary:
-      "Automaticé pruebas end-to-end con Playwright, pruebas de API y pruebas de carga y rendimiento. De ahí pasé a Software Engineer.",
+      "Automaticé pruebas end-to-end con Playwright, pruebas de API y pruebas de carga y rendimiento.",
   },
   {
     company: "Ualá",

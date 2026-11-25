@@ -46,12 +46,12 @@ const envo: CaseStudy = {
   lead: "Orders and deliveries with a team of couriers, over Telegram and WhatsApp.",
   moment: "counter-rolls",
   homeFacts: [
-    "No notification fails silently: if it can't be delivered it's stored and retried, and if it never goes out, it opens an alert",
-    "Payments in pesos, dollars and euros, with each courier's cash kept separate by currency",
+    "Notifications with automatic retries and an alert when one can't be delivered",
+    "Payments in pesos, dollars and euros, with each courier's cash tracked by currency",
     "3,065 automated tests, plus browser tests with accessibility checks",
   ],
   problem:
-    "A delivery operation with several couriers takes orders over Telegram and WhatsApp, gets paid in pesos, dollars and euros, and notifies every party at every step of an order. If a notification gets lost, the order gets stuck; if a payment is recorded twice, the cash doesn't balance. I built Envo so that no notification fails silently and no payment is recorded twice.",
+    "A delivery operation with several couriers takes orders over Telegram and WhatsApp, gets paid in pesos, dollars and euros, and notifies every party at every step of an order. If a notification gets lost, the order gets stuck; if a payment is recorded twice, the cash doesn't balance. Envo centralizes that operation, tracks the delivery of every notification and prevents a payment from being recorded twice.",
   heroShot: {
     src: "/projects/envo-panel.webp",
     alt: "Overview of the Envo operations dashboard, showing the Almacén del Parque demo",
@@ -71,7 +71,7 @@ const envo: CaseStudy = {
       summary:
         [
           "The dashboard has 12 modules. Orders is where couriers are assigned, receipts are reviewed, and edits and incidents are logged.",
-          "Around it are customers with balances and referrals, products, inventory by location, zones with rain, night and holiday surcharges, and courier cash with settlements.",
+          "It also manages customers with balances and referrals, products, inventory by location, zones with rain, night and holiday surcharges, and courier cash with settlements.",
           "Settings cover delivery windows, priority delivery, payment accounts and the exchange rate, which is pulled from DolarApi with validity rules.",
         ],
       shots: [envoShots.orders, envoShots.cash, envoShots.zones, envoShots.inventory],
@@ -123,7 +123,7 @@ const envo: CaseStudy = {
   decisions: [
     {
       title: "Transactional outbox with a circuit breaker",
-      why: "Every notification goes into an outbox that the worker claims with FOR UPDATE SKIP LOCKED, with ten attempts and backoff. If n8n is down, the circuit breaker defers sending without burning attempts, for up to six hours: a notification older than that is no longer useful to anyone. Whatever doesn't go out lands in a dead letter queue that opens an alert.",
+      why: "Every notification goes into an outbox that the worker claims with FOR UPDATE SKIP LOCKED, with ten attempts and backoff. If n8n is down, the circuit breaker defers sending without using up attempts, for up to six hours, because after that the notification is no longer useful. Those that can't be delivered end up in a dead letter queue that opens an alert.",
     },
     {
       title: "Idempotent commands with a single lock order",
@@ -131,23 +131,23 @@ const envo: CaseStudy = {
     },
     {
       title: "Append-only courier cash ledger",
-      why: "The cash ledger only adds entries, never edits them, and each entry carries a deduplication key. A retry never double-counts money.",
+      why: "The cash ledger only adds entries, never edits them, and each entry carries a deduplication key. A retry doesn't duplicate amounts.",
     },
     {
       title: "Nightly invariant checks",
-      why: "Stock, reservations and cash are verified every night. If something doesn't add up, a critical alert opens, and the same check closes it once everything adds up again.",
+      why: "Stock, reservations and cash are verified every night. Any difference opens a critical alert, and the same check closes it once it is corrected.",
     },
     {
       title: "SQL migrations with checksums",
-      why: "All 86 migrations are written in SQL, with no ORM, and each one stores its checksum: a migration that has already been applied can't change unnoticed.",
+      why: "All 86 migrations are written in SQL, with no ORM, and each one stores its checksum, which reveals any change to a migration that has already been applied.",
     },
     {
       title: "Authentication, signatures and rate limiting",
       why: "Passwords hashed with argon2id, TOTP with replay protection and re-authentication for sensitive actions. Events sent to n8n are signed with HMAC and a timestamp, rate limiting runs in PostgreSQL and private files are re-encoded to WebP.",
     },
   ],
-  decisionsLead: "What keeps a notification from failing silently and a payment from being recorded twice.",
-  qualityLead: "What runs in npm test and in the e2e suites, with the numbers from the repository.",
+  decisionsLead: "How notification delivery is tracked and duplicate payment records are prevented.",
+  qualityLead: "Results from npm test and the e2e suites, with the numbers from the repository.",
   quality: [
     "Integration tests against PGlite and against real PostgreSQL, with contracts shared between the two engines.",
     "70 of the 87 e2e suites include accessibility checks with axe.",
@@ -215,12 +215,12 @@ const stockie: CaseStudy = {
   lead: "Inventory, warehouses and sales for auto parts stores in Venezuela, in bolívares and dollars.",
   moment: "counter-rolls",
   homeFacts: [
-    "The real margin on every sale: it knows which purchase each product came from and what was paid for it",
-    "It never sells what isn't in stock: if two salespeople go for the last unit, only one of them sells it",
-    "Every sale is recorded in dollars and in bolívares, at the day's official rate",
+    "Real margin per sale, calculated from the cost of each purchase lot",
+    "Stock control across simultaneous sales, with no overselling",
+    "Sales recorded in dollars and bolívares, at the day's official rate",
   ],
   problem:
-    "An auto parts store in Venezuela sells over the counter, over WhatsApp and on credit, accepts Pago Móvil, POS terminals, cash, Zelle or USDT, and owes suppliers in both dollars and bolívares. With an exchange rate that changes every day, knowing how much stock is left and what the goods sold actually cost requires every movement to store its lot, its cost and its rate. Stockie grew out of the systems I built for MonJeep and GlobalFia, which solve that.",
+    "An auto parts store in Venezuela sells over the counter, over WhatsApp and on credit, accepts Pago Móvil, POS terminals, cash, Zelle or USDT, and owes suppliers in both dollars and bolívares. With an exchange rate that changes every day, knowing how much stock is left and what the goods sold actually cost requires every movement to store its lot, its cost and its rate. Stockie grew out of the systems I built for MonJeep and GlobalFia.",
   heroShot: {
     src: "/projects/stockie-dashboard.webp",
     alt: "Stockie dashboard with sales and stock from the hardware store demo",
@@ -289,17 +289,17 @@ const stockie: CaseStudy = {
     },
     {
       title: "Daily BCV rate, with manual entry",
-      why: "The official rate is fetched from the Central Bank of Venezuela (BCV) website once a day, and it can also be entered manually. The automatic fetch never overwrites a manually entered rate.",
+      why: "The official rate is fetched from the Central Bank of Venezuela (BCV) website once a day, and it can also be entered manually. The automatic fetch does not replace a manually entered rate.",
     },
     {
       title: "Per-salesperson panels, enforced on pages and in the API",
       why: "The admin enables panels for each salesperson, and the permission is enforced on the page and in the API: a salesperson can't reach data through a direct URL.",
     },
   ],
-  decisionsLead: "What keeps stock and the cost of goods sold accurate, with two currencies and an exchange rate that changes every day.",
+  decisionsLead: "How stock and the cost of goods sold stay accurate, with two currencies and a daily exchange rate.",
   // Los tests de integración de stock-core (npm run test:db, desde el 18 de noviembre de 2026): lo que se prueba contra
   // PostgreSQL real. Las 25 pantallas siguen en el hero (heroFact).
-  qualityLead: "What runs in npm run test:db against real PostgreSQL: FIFO costing and stock locking in every operation that touches them.",
+  qualityLead: "Results from npm run test:db against real PostgreSQL: FIFO costing and stock locking in every operation that touches them.",
   quality: [
     "Two sales of the last unit at the same time: the second waits for the lock and is rejected for insufficient stock.",
     "Ten sales against five units: five go through, in FIFO order, and no lot goes negative.",
@@ -356,15 +356,15 @@ const clubZapateo: CaseStudy = {
   lead: "Ticket sales with Mercado Pago and access control at the door.",
   moment: "pinned-chapters",
   homeFacts: [
-    "It never issues more tickets than an event's capacity, even when many purchases come in at once",
-    "If Mercado Pago's notification never arrives, the admin panel finds the payment and issues the ticket, if there's capacity left",
-    "252 automated tests that run on their own with every code change",
+    "Ticket issuing limited to the event's capacity, including simultaneous purchases",
+    "Reconciliation with Mercado Pago: finds payments without a ticket and issues it if there's capacity left",
+    "252 automated tests on every code change",
   ],
   problem:
-    "Club Zapateo sells tickets through Mercado Pago and checks them at the door with a QR code. If a payment notification doesn't arrive, someone has paid and has no ticket. If two purchases arrive at the same time, tickets can be issued past capacity. If a QR code works at another event, the door lets in someone who shouldn't be there.",
+    "Club Zapateo sells tickets through Mercado Pago and checks them at the door with a QR code. If a payment notification doesn't arrive, the buyer is left without a ticket. If two purchases arrive at the same time, tickets can be issued past capacity. If a QR code works at another event, someone without a valid ticket can get in.",
   heroShot: { ...zapateoShots.dashboard, focus: { x: 0.18, y: 0.08, w: 0.64 } },
   heroSets: [
-    { label: "Public site", line: "Events come from the database; payment goes through Mercado Pago and each ticket arrives by email with its QR code.", main: { ...zapateoShots.home, focus: { x: 0.04, y: 0.075, w: HERO_MAIN_W } }, side: zapateoShots.door },
+    { label: "Public site", line: "Events published from the admin panel, payment through Mercado Pago and tickets by email with their QR code.", main: { ...zapateoShots.home, focus: { x: 0.04, y: 0.075, w: HERO_MAIN_W } }, side: zapateoShots.door },
     { label: "Administration", line: "Mercado Pago reconciliation, with a dry run before changes are applied, and events with posters.", main: { ...zapateoShots.reconciliation, focus: { x: 0.185, y: 0.125, w: HERO_MAIN_W } }, side: { ...zapateoShots.events, focus: { x: 0.5, y: 0.2, w: HERO_SIDE_W } } },
     { label: "Door", line: "PIN, active event, QR scan or typed code, and live counters.", main: zapateoShots.door, side: { ...zapateoShots.dashboard, focus: { x: 0.18, y: 0.08, w: HERO_SIDE_W } } },
   ],
@@ -373,7 +373,7 @@ const clubZapateo: CaseStudy = {
     {
       role: "Visitors and buyers",
       summary:
-        "Events come from the database. Buyers pay through Mercado Pago checkout, get an email with one QR code per ticket and can check their ticket's status on a public page. The 3D animation on the home page, made with Spline, has a lightweight mode for slow devices and for visitors who prefer reduced motion.",
+        "The site loads events from the database. Buyers pay through Mercado Pago checkout, get an email with one QR code per ticket and can check their ticket's status on a public page. The 3D animation on the home page, made with Spline, has a lightweight mode for slow devices and for visitors who prefer reduced motion.",
       shots: [zapateoShots.home],
     },
     {
@@ -429,7 +429,7 @@ const clubZapateo: CaseStudy = {
       why: "Passwords hashed with scrypt, sessions in signed httpOnly cookies with sameSite strict, and the door PIN compared in constant time. Input is validated with Zod.",
     },
   ],
-  decisionsLead: "What prevents issuing tickets past capacity or twice, and what finds the payments left without a ticket.",
+  decisionsLead: "How duplicate and over-capacity tickets are prevented, and how payments without a ticket are found.",
   qualityLead: "What the repository shows: the tests and the CI that runs them.",
   /* evidencia, no la lista de prácticas de la ficha: la cifra de tests, su cobertura y el CI como visual */
   quality: ["Test coverage is measured in CI, in the same step that runs the tests."],
