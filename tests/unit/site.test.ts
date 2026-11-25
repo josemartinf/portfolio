@@ -8,7 +8,7 @@ describe("site links", () => {
   });
 
   it("prepares email links and exposes the LinkedIn profile", () => {
-    expect(mailtoHref("Proyecto")).toBe("mailto:jmfmarin25@gmail.com?subject=Proyecto");
+    expect(mailtoHref("Proyecto")).toBe("mailto:contacto@joseflores.codes?subject=Proyecto");
     expect(site.linkedin).toBe("https://www.linkedin.com/in/jmfmarin/");
   });
 

@@ -135,6 +135,10 @@ main > .hero.hero--editorial > .wrap.hero__grid { height: auto; display: block; 
 .hero--editorial .hero__name { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(76px, 16.4vw, 236px); line-height: .84; letter-spacing: -.065em; text-wrap: wrap; }
 .hero__line { display: block; }
 @media (min-width: 640px) { .hero__line { white-space: nowrap; } }
+/* a name never takes a hyphen: a Safari not yet updated ignores the kit's hyphenate-limit-chars (10 4 4) and broke
+   "Mar- / tin" on a phone. Its own -webkit- limits give every heading there the kit's 4 letters on each side */
+.hero__name { hyphens: manual; -webkit-hyphens: manual; }
+h1, h2, h3, h4 { -webkit-hyphenate-limit-before: 4; -webkit-hyphenate-limit-after: 4; }
 .hero__side { display: flex; flex-direction: column; gap: var(--s-5); }
 .hero__claim { margin: 0; max-width: 30ch; color: var(--ink); font-size: clamp(19px, .9vw + 11px, 24px); line-height: 1.32; letter-spacing: -.012em; text-wrap: pretty; }
 /* the CV beside the filled button: a text link, underlined, on the button's height */
