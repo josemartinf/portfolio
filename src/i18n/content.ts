@@ -12,7 +12,7 @@ import * as enProfile from "@/data/en/profile";
 /* Los datos del sitio en un idioma: los casos, los sitios, la herramienta y el perfil (src/data, y su espejo en
    src/data/en con las mismas formas). Lo que no es texto (slugs, capturas, íconos, fechas) sale igual en los dos. */
 type Cases = Pick<typeof esCases, "cases" | "caseBySlug" | "envoHealthShot">;
-type Profile = Pick<typeof esProfile, "currentFact" | "jobs" | "education" | "stackGroups">;
+type Profile = Pick<typeof esProfile, "currentFact" | "languages" | "jobs" | "education" | "stackGroups">;
 function bundle(c: Cases, s: Pick<typeof esSites, "sites">, t: Pick<typeof esTools, "tools">, p: Profile) {
   return {
     cases: c.cases,
@@ -21,6 +21,7 @@ function bundle(c: Cases, s: Pick<typeof esSites, "sites">, t: Pick<typeof esToo
     sites: s.sites,
     tools: t.tools,
     currentFact: p.currentFact,
+    languages: p.languages,
     jobs: p.jobs,
     education: p.education,
     stackGroups: p.stackGroups,

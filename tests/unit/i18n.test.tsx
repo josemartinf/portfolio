@@ -45,7 +45,7 @@ describe("i18n", () => {
     expect(screen.getAllByRole("link", { name: /Read the case study/ }).map((a) => a.getAttribute("href"))).toEqual(["/en/envo", "/en/stockie", "/en/club-zapateo"]);
     expect(document.querySelector(".hero .btn--secondary")).toHaveAttribute("href", site.cvEn);
     expect(document.querySelector("#contacto a[download]")).toHaveAttribute("href", site.cvEn);
-    expect([...document.querySelectorAll(".tag")].map((t) => t.textContent)).toEqual(expect.arrayContaining(["Client", "Product", "Personal"]));
+    expect([...document.querySelectorAll(".tag")].map((t) => t.textContent)).toEqual(expect.arrayContaining(["Client", "Own product", "Personal"]));
     expect(document.querySelector(".tl__date")?.textContent).toMatch(/present$/);
     // Stockie, desde la tarjeta de GlobalFia y MonJeep, en inglés
     expect(document.querySelector("[data-project='repuestos'] a[href='/en/stockie']")).not.toBeNull();
@@ -54,8 +54,8 @@ describe("i18n", () => {
       expect(document.querySelector(sel)?.textContent ?? "", sel).not.toMatch(HOME_JARGON);
     }
     // la entrada editorial, en inglés
-    expect([...document.querySelectorAll(".hero__metas dt")].map((d) => d.textContent)).toEqual(["Now", "I build", "Since", "Get in touch"]);
-    expect(document.querySelector(".hero__metas dd")).toHaveTextContent(/^Software Engineer at Naranja X$/);
+    expect([...document.querySelectorAll(".hero__metas dt")].map((d) => d.textContent)).toEqual(["Now", "I work on", "Since", "Get in touch"]);
+    expect(document.querySelector(".hero__metas dd")).toHaveTextContent(/^Software Engineer at Naranja X, in AI automation$/);
     expect(document.querySelector(".hero__band figcaption")).toHaveTextContent("Envo · operations dashboard");
     expect(document.querySelector(".hero__band a")).toHaveAttribute("href", "/en/envo");
     const ld = JSON.parse(document.querySelector('script[type="application/ld+json"]')!.innerHTML);
@@ -97,7 +97,7 @@ describe("i18n", () => {
     expect([...close.querySelectorAll(".footer__col a")].map((a) => a.getAttribute("href")).filter((h) => h?.startsWith("/"))).toEqual(["/en/stockie", "/en/club-zapateo", "/en", "/en#proyectos", "/en#experiencia", "/en#stack"]);
     expect(close.querySelector("a[download]")).toHaveAttribute("href", site.cvEn);
     // ninguna palabra de la interfaz en castellano
-    expect(document.body.textContent).not.toMatch(/Ver la arquitectura|Ficha técnica|Pantallas por rol|Volver a la portada|Siguiente caso/);
+    expect(document.body.textContent).not.toMatch(/Ver la arquitectura|Ficha técnica|Pantallas por rol|Volver al inicio|Siguiente caso/);
   });
 
   it("the Spanish case page links its English version", () => {

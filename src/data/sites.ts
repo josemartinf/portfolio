@@ -9,11 +9,6 @@ export const sites: SiteProject[] = [
       "Dos casas de repuestos en Venezuela, una de Fiat y otra de Jeep, Dodge y Chrysler. Cada una tiene su sitio público y su sistema de stock, que después se convirtió en Stockie.",
     // La búsqueda de MonJeep es de texto en español (plurales, sin acentos) sobre nombre, marca y modelos, más números de
     // pieza parciales: no es semántica ni corrige errores de tipeo (monjeep/lib/productos/producto-search.ts).
-    layers: [
-      "GlobalFia: un cotizador que arma el pedido por WhatsApp con modelo, año y repuesto",
-      "MonJeep: un buscador por nombre, marca o modelo de auto desde un solo campo, sin importar acentos ni plurales",
-      "MonJeep: pago en cuotas con Cashea y catálogo filtrable por marca",
-    ],
     parts: ["Landing de GlobalFia", "Landing de MonJeep", "Sistema de stock"],
     focus: [
       "Base de datos: búsqueda con tsvector y pg_trgm mantenida por triggers",
@@ -51,11 +46,6 @@ export const sites: SiteProject[] = [
     tag: "client",
     summary:
       "Tienda online de objetos de diseño. El cliente arma su carrito y el pedido llega listo por WhatsApp o por email.",
-    layers: [
-      "Catálogo por categorías y fichas con galería",
-      "Variantes de color y tamaño en cada producto",
-      "Un carrito que se guarda entre visitas",
-    ],
     parts: ["Catálogo", "Ficha de producto", "Carrito", "Checkout por WhatsApp o email"],
     focus: ["UX/UI: galería, variantes de color y tamaño, y carrito persistente"],
     status: "En línea: moodi-home.store",
@@ -83,11 +73,6 @@ export const sites: SiteProject[] = [
     tag: "client",
     summary:
       "Sitio bilingüe, en español e inglés, para una empresa de detailing de aeronaves.",
-    layers: [
-      "Las consultas del formulario llegan por email al equipo, listas para responderle al cliente",
-      "Una confirmación automática y bilingüe para el cliente",
-      "Emails con diseño propio",
-    ],
     parts: ["Landing bilingüe", "Formulario validado", "Emails por Resend"],
     focus: ["Formularios: validación en el servidor y una confirmación al cliente que no bloquea la respuesta"],
     status: "En línea: aether-aerospace.com",

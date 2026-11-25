@@ -12,10 +12,11 @@ export const navLinks = (locale: Locale = "es"): [string, string][] => {
 export const mainAction = (locale: Locale = "es") => ({ label: ui[locale].nav.contact, href: "#contacto" });
 
 /** La marca (el monograma JF de public/brand, el mismo del favicon y del sello para clientes) y el nombre. En la
- *  portada lleva a #top; en una página de caso, a la portada de su idioma. */
+ *  portada lleva a #top; en una página de caso, a la portada de su idioma. El nombre va en el aria-label: en un teléfono
+ *  .nav__name no se ve y el link quedaba sin nombre. */
 export function Logo({ mark = true, href = "#top" }: { mark?: boolean; href?: string }) {
   // eslint-disable-next-line @next/next/no-img-element
-  return <a className="nav__logo" href={href}>{mark && <img className="brand-mark" src="/brand/jf-mark.svg" alt="" width={26} height={26} />}<span className="nav__name">{site.name}</span></a>;
+  return <a className="nav__logo" href={href} aria-label={site.name}>{mark && <img className="brand-mark" src="/brand/jf-mark.svg" alt="" width={26} height={26} />}<span className="nav__name">{site.name}</span></a>;
 }
 
 /** El idioma y el tema, antes de la acción principal. En la barra de escritorio, "EN" y el ícono; en el menú del

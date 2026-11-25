@@ -16,12 +16,18 @@ Publicado en https://www.joseflores.codes.
 ```bash
 npm install
 npm run dev          # servidor de desarrollo
-npm run build        # genera el sitio estático en out/
+npm run build        # genera el sitio estático en out/ (y saca de out/assets lo que el kit trae solo para trabajar)
 npm run lint
-npm run check:out    # revisa out/ contra las frases, el origen y los secretos prohibidos
+npm run check:out    # revisa out/ contra las frases, las cadenas privadas y los secretos prohibidos
+npm run cv           # genera los dos CV en PDF con los datos del sitio
+npm run og           # genera las imágenes al compartir, con out/ servido en el puerto 4173
 npx vitest run       # pruebas unitarias
 npx playwright test  # pruebas e2e
 ```
+
+En cada PR, GitHub Actions corre lint, las pruebas unitarias, el build y `check:out` (`.github/workflows/ci.yml`).
+
+Las cadenas privadas que no pueden aparecer en el sitio no están en el repo: se leen de `.copy-guard.local.json`, una lista de expresiones regulares que git ignora. Sin ese archivo esa parte de la revisión queda vacía, así que conviene correr `npm test` y `npm run check:out` en una máquina que lo tenga antes de publicar.
 
 ## Capturas
 

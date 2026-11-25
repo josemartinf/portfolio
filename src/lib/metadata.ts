@@ -6,7 +6,7 @@ import { ui } from "@/i18n/ui";
 
 /* El head de cada página, en su idioma. Cada página nombra su versión en el otro idioma (hreflang), y x-default es la
    española, la de siempre. */
-const og = { url: "/og.jpg", width: 1200, height: 630 };
+const og = (locale: Locale) => ({ url: locale === "en" ? "/og-en.jpg" : "/og.jpg", width: 1200, height: 630, alt: ui[locale].meta.ogAlt });
 
 /** Las dos versiones de una página ("/" o "/envo"), para alternates.languages. */
 export function languages(path: string) {
@@ -18,8 +18,8 @@ export function rootMetadata(locale: Locale): Metadata {
   const t = ui[locale].meta;
   return {
     metadataBase: new URL(site.url), title: t.title, description: t.description,
-    openGraph: { type: "website", locale: ogLocale[locale], title: t.title, description: t.description, images: [og] },
-    twitter: { card: "summary_large_image", title: t.title, description: t.description, images: [og.url] },
+    openGraph: { type: "website", locale: ogLocale[locale], title: t.title, description: t.description, images: [og(locale)] },
+    twitter: { card: "summary_large_image", title: t.title, description: t.description, images: [og(locale).url] },
     icons: { icon: "/icon.svg" },
     other: { "page-type": "software", "site-kind": "software" },
   };
@@ -31,7 +31,7 @@ export function homeMetadata(locale: Locale): Metadata {
   return {
     title: t.title, description: t.description,
     alternates: { canonical: url, languages: languages("/") },
-    openGraph: { type: "website", locale: ogLocale[locale], title: t.title, description: t.description, url, images: [og] },
+    openGraph: { type: "website", locale: ogLocale[locale], title: t.title, description: t.description, url, images: [og(locale)] },
   };
 }
 
@@ -44,8 +44,8 @@ export function caseMetadata(study: CaseStudy, locale: Locale = "es"): Metadata 
     title,
     description,
     alternates: { canonical: url, languages: languages(`/${study.slug}`) },
-    openGraph: { type: "article", locale: ogLocale[locale], title, description, url, images: [og] },
-    twitter: { card: "summary_large_image", title, description, images: [og.url] },
+    openGraph: { type: "article", locale: ogLocale[locale], title, description, url, images: [og(locale)] },
+    twitter: { card: "summary_large_image", title, description, images: [og(locale).url] },
   };
 }
 

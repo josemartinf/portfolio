@@ -24,6 +24,9 @@ function withCode(text: string): ReactNode {
   return text.split(CODE).map((part, i) => (i % 2 === 1 ? <code key={i}>{part}</code> : part));
 }
 
+/** El texto de un rol: un párrafo, o varios. */
+const paras = (summary: string | string[]) => (Array.isArray(summary) ? summary : [summary]).map((p) => <p key={p}>{withCode(p)}</p>);
+
 const shotKey = (s: Shot) => s.src.replace(/^.*\/(.+)\.webp$/, "$1");
 const ICONS: Record<string, string> = {
   "Next.js": "nextjs", "Next.js 14": "nextjs", TypeScript: "typescript", PostgreSQL: "postgres", "PostgreSQL (Neon)": "postgres",
@@ -118,8 +121,8 @@ function Role({ role, h3 = true }: { role: RoleView; h3?: boolean }) {
   return <div className="grid case-role" data-peek={peek ? "" : undefined}>
     <div className="span-5 case-role__text">
       {h3 ? <h3>{role.role}</h3> : null}
-      <p>{withCode(role.summary)}</p>
-      {peek && <ul className="rows case-role__list">{browser.map((s) => <li key={s.src} data-peek-to={shotKey(s)} tabIndex={0}><span className="rows__name">{s.title}</span></li>)}</ul>}
+      {paras(role.summary)}
+      {peek && <ul className="rows case-role__list">{browser.map((s) => <li key={s.src} data-peek-to={shotKey(s)}><span className="rows__name" role="button" tabIndex={0}>{s.title}</span></li>)}</ul>}
     </div>
     <div className="span-6 start-7 case-role__visual">
       {browser.map((s, i) => <BrowserFrame key={s.src} shot={s} focus={s.focus} label={s.title} sizes="(max-width: 1023px) 92vw, 1200px" dataPeekFor={peek ? shotKey(s) : undefined} hidden={i > 0 ? true : undefined} />)}
@@ -149,7 +152,7 @@ function MoreRoles({ roles, locale }: { roles: RoleView[]; locale: Locale }) {
   return <section className="section case-more" id="roles" aria-labelledby="roles-h"><div className="wrap">
     <div className="section-head"><h2 id="roles-h">{title}</h2></div>
     <div className="grid case-split fill">
-      <div className="span-5 case-more__text">{roles.map((r) => <div key={r.role}><h3>{r.role}</h3><p>{withCode(r.summary)}</p></div>)}</div>
+      <div className="span-5 case-more__text">{roles.map((r) => <div key={r.role}><h3>{r.role}</h3>{paras(r.summary)}</div>)}</div>
       {phone && <div className="span-6 start-7 frame frame--lit case-more__visual" role="img" aria-label={phone.alt}><PhoneFrame shot={{ ...phone, alt: "" }} /></div>}
     </div>
   </div></section>;
@@ -166,7 +169,7 @@ function Chapters({ study, locale }: { study: CaseStudy; locale: Locale }) {
           const shot = r.shots[0];
           return <li className="mo-pc__step" key={r.role}>
             <h3>{r.role}</h3>
-            <p>{withCode(r.summary)}</p>
+            {paras(r.summary)}
             <figure className="mo-pc__visual mo-pc__visual--lit">
               {shot.frame === "phone"
                 ? <PhoneFrame shot={shot} className="case-chapter__phone" />
@@ -262,16 +265,20 @@ function Sheet({ study, locale }: { study: CaseStudy; locale: Locale }) {
     const [topic, ...rest] = f.split(":");
     return <li key={f}><b>{topic.trim()}</b>{rest.length ? <>: {withCode(rest.join(":").trim())}</> : null}</li>;
   })}</ul>;
-  /* el stack como un muro de baldosas (una sola imagen para un lector de pantalla, como el de la portada): cada
-     baldosa con su ícono real y su nombre adentro */
-  const stack = <ul className="case-stack" role="img" aria-label={`Stack: ${study.sheet.stack.join(", ")}`}>
+  /* el stack como un muro de baldosas: cada una con su ícono real y su nombre adentro. Una lista de verdad, como la de
+     la portada (con role="img" sus ítems quedaban sin lista) */
+  const stack = <ul className="case-stack" aria-label="Stack">
     {study.sheet.stack.map((t) => <li key={t} className="case-stack__tile">{ICONS[t] && <Icon id={ICONS[t]} size={32} />}<span>{t}</span></li>)}
   </ul>;
   return <section className="section case-sheet" id="ficha" aria-labelledby="ficha-h"><div className="wrap">
     <div className="section-head"><h2 id="ficha-h">{ui[locale].case.sheet}</h2></div>
     <div className="case-body">
     <div className="grid case-sheet__grid">
-      <div className="span-5"><TechSheet sheet={study.sheet} only={["architecture", "practices"]} rows={[{ label: t.parts, content: <Parts parts={study.parts} /> }]} after={study.focus.length ? [{ label: t.focus, content: focus }] : []} locale={locale} /></div>
+      <div className="span-5"><TechSheet sheet={study.sheet} only={["architecture", "practices"]} rows={[
+        { label: t.role, content: study.role }, { label: t.period, content: study.period }, { label: t.standing, content: study.standing },
+        ...(study.result ? [{ label: t.result, content: study.result }] : []),
+        { label: t.parts, content: <Parts parts={study.parts} /> },
+      ]} after={study.focus.length ? [{ label: t.focus, content: focus }] : []} locale={locale} /></div>
       <div className="span-6 start-7">
         <TechSheet sheet={study.sheet} only={["patterns"]} after={study.sheet.stack.length ? [{ label: t.stack, content: stack }] : []} className="case-sheet__right" locale={locale} />
       </div>

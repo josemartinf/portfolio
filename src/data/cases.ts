@@ -44,16 +44,16 @@ const envo: CaseStudy = {
   name: "Envo",
   tag: "product",
   tagline:
-    "Plataforma de pedidos y entregas con varios repartidores: un panel de operación, una Mini App de Telegram para el repartidor y una página de pedidos para el cliente.",
+    "Plataforma de pedidos y entregas: panel de operación, Mini App de Telegram para el repartidor y página de pedidos para el cliente.",
   lead: "Pedidos y entregas con varios repartidores, por Telegram y WhatsApp.",
   moment: "counter-rolls",
   homeFacts: [
-    "Ningún aviso se pierde, aunque Telegram o WhatsApp estén caídos: se guarda y se manda cuando el canal vuelve",
+    "Ningún aviso falla en silencio: si no se puede entregar, se guarda y se reintenta, y si al final no sale, abre una alerta",
     "Cobros en pesos, dólares y euros, y la caja de cada repartidor separada por moneda",
-    "2938 pruebas automáticas, con chequeos de accesibilidad",
+    "3065 pruebas automáticas, más las del navegador, con chequeos de accesibilidad",
   ],
   problem:
-    "Una operación de entregas con varios repartidores recibe pedidos por Telegram y WhatsApp, cobra en pesos, dólares y euros, y avisa a cada parte en cada paso del pedido. Si un aviso se pierde, el pedido queda trabado; si un cobro se registra dos veces, la caja no cierra. Construí Envo para que ninguna de las dos cosas pase aunque un canal esté caído.",
+    "Una operación de entregas con varios repartidores recibe pedidos por Telegram y WhatsApp, cobra en pesos, dólares y euros, y avisa a cada parte en cada paso del pedido. Si un aviso se pierde, el pedido queda trabado; si un cobro se registra dos veces, la caja no cierra. Construí Envo para que ningún aviso falle en silencio y ningún cobro se registre dos veces.",
   heroShot: {
     src: "/projects/envo-panel.webp",
     alt: "Resumen del panel de operación de Envo con la demo Almacén del Parque",
@@ -71,7 +71,11 @@ const envo: CaseStudy = {
     {
       role: "Operación, en el panel",
       summary:
-        "El panel tiene 12 módulos. Para operar: pedidos con asignación de repartidor, revisión de comprobantes, edición e incidencias; clientes con saldo y referidos; productos; inventario por ubicación; zonas con recargos por lluvia, noche y feriado; y caja de repartidores con liquidaciones. En configuración se definen las ventanas de entrega, el envío prioritario, las cuentas de pago y la cotización, que sale de DolarApi con reglas de vigencia.",
+        [
+          "El panel tiene 12 módulos. Desde pedidos se asigna el repartidor, se revisan los comprobantes, se edita y se cargan incidencias.",
+          "Alrededor están los clientes con saldo y referidos, los productos, el inventario por ubicación, las zonas con recargos por lluvia, noche y feriado, y la caja de repartidores con sus liquidaciones.",
+          "En configuración se definen las ventanas de entrega, el envío prioritario, las cuentas de pago y la cotización, que sale de DolarApi con reglas de vigencia.",
+        ],
       shots: [envoShots.orders, envoShots.cash, envoShots.zones, envoShots.inventory],
     },
     {
@@ -121,7 +125,7 @@ const envo: CaseStudy = {
   decisions: [
     {
       title: "Outbox transaccional con circuit breaker",
-      why: "Cada aviso queda en una outbox que el worker reclama con FOR UPDATE SKIP LOCKED, con reintentos con backoff y una dead letter que dispara una alerta. Si un canal está caído, el circuit breaker pospone los envíos sin gastar reintentos. Ningún aviso se pierde.",
+      why: "Cada aviso queda en una outbox que el worker reclama con FOR UPDATE SKIP LOCKED, con diez intentos y backoff. Si n8n está caído, el circuit breaker pospone los envíos sin gastar intentos, hasta seis horas: un aviso más viejo que eso ya no le sirve a nadie. Lo que no sale queda en una dead letter que abre una alerta.",
     },
     {
       title: "Comandos idempotentes con un orden único de bloqueos",
@@ -144,19 +148,19 @@ const envo: CaseStudy = {
       why: "Contraseñas con argon2id, TOTP con protección contra reutilización y reautenticación para acciones sensibles. Los eventos hacia n8n van firmados con HMAC y timestamp, el rate limiting corre en PostgreSQL y los archivos privados se recodifican a WebP.",
     },
   ],
-  decisionsLead: "Lo que hace que un aviso no se pierda aunque un canal esté caído y que un cobro no se registre dos veces.",
-  qualityLead: "Lo que corre en npm test y en las specs e2e, con las cifras del repositorio.",
+  decisionsLead: "Lo que hace que un aviso no falle en silencio y que un cobro no se registre dos veces.",
+  qualityLead: "Lo que corre en npm test y en las suites e2e, con las cifras del repositorio.",
   quality: [
     "Integración contra PGlite y contra PostgreSQL real, con contratos compartidos entre los dos motores.",
-    "Las specs e2e incluyen chequeos de accesibilidad con axe.",
+    "70 de las 87 suites e2e incluyen chequeos de accesibilidad con axe.",
     "TypeScript estricto, también sobre los .mjs del worker.",
     "OpenAPI documenta 73 de las 150 rutas de la API.",
   ],
   figures: {
     in: "calidad",
     items: [
-      { value: "2938", label: "tests pasando en npm test, el 17 de noviembre de 2026" },
-      { value: "84", label: "specs e2e con axe" },
+      { value: "3065", label: "tests pasando en npm test, el 25 de noviembre de 2026" },
+      { value: "87", label: "suites e2e, 70 con axe" },
       { value: "150", label: "rutas de API" },
       { value: "86", label: "migraciones SQL, sin ORM" },
     ],
@@ -167,6 +171,9 @@ const envo: CaseStudy = {
     "Autenticación: TOTP, reautenticación y permisos granulares",
     "Base de datos: 64 tablas y 86 migraciones SQL con checksum",
   ],
+  role: "Diseño y desarrollo completos",
+  period: "Noviembre de 2026",
+  standing: "Nace de un sistema que opera con pedidos reales. La demo usa datos ficticios y solo el canal de Telegram.",
   status: "Demo en línea en envo-demo.tech",
   heroFact: "23 pantallas",
   /** La demo pública: abre el panel con datos demo, sin login. Nunca /admin ni /login. */
@@ -206,7 +213,7 @@ const stockie: CaseStudy = {
   name: "Stockie",
   tag: "product",
   tagline:
-    "Stock, depósitos y ventas para comercios de repuestos en Venezuela, con costo por lote FIFO y cobros en bolívares y dólares. Nació en MonJeep y GlobalFia, que lo usan.",
+    "Stock, depósitos y ventas para comercios de repuestos en Venezuela, con costo por lote FIFO y cobros en bolívares y dólares.",
   lead: "Stock, depósitos y ventas para comercios de repuestos en Venezuela, en bolívares y dólares.",
   moment: "counter-rolls",
   homeFacts: [
@@ -215,7 +222,7 @@ const stockie: CaseStudy = {
     "Cada venta queda en dólares y en bolívares, con la tasa oficial del día",
   ],
   problem:
-    "Un comercio de repuestos en Venezuela vende en mostrador, por WhatsApp y a crédito, cobra con Pago Móvil, POS, efectivo, Zelle o USDT, y le debe a proveedores en dólares y en bolívares. Con una tasa que cambia todos los días, saber cuánto stock queda y cuánto costó lo vendido exige que cada movimiento guarde su lote, su costo y su tasa. Stockie nació adentro de MonJeep y GlobalFia para resolver eso.",
+    "Un comercio de repuestos en Venezuela vende en mostrador, por WhatsApp y a crédito, cobra con Pago Móvil, POS, efectivo, Zelle o USDT, y le debe a proveedores en dólares y en bolívares. Con una tasa que cambia todos los días, saber cuánto stock queda y cuánto costó lo vendido exige que cada movimiento guarde su lote, su costo y su tasa. Stockie nació de los sistemas que hice para MonJeep y GlobalFia, que resuelven eso.",
   heroShot: {
     src: "/projects/stockie-dashboard.webp",
     alt: "Dashboard de Stockie con las ventas y el stock de la demo de ferretería",
@@ -233,7 +240,11 @@ const stockie: CaseStudy = {
     {
       role: "Administración",
       summary:
-        "Productos con dos precios más uno manual, historial de precios, modelos compatibles y búsqueda por SKU sin importar los acentos; solo el administrador puede vender bajo costo, y queda auditado. Depósitos, ingreso de mercadería con etiquetas TSPL por WebUSB o USB, escáner de códigos con la cámara, transferencias y ajustes. Proveedores con deudas en dólares y bolívares, pagos parciales y pedido sugerido por stock mínimo; créditos para aprobar, cobrar y anular; devoluciones, donde los defectuosos quedan fuera de stock; anulaciones con límite diario; stock fiscal, reportes y usuarios.",
+        [
+          "Productos con dos precios más uno manual, historial de precios, modelos compatibles y búsqueda por SKU sin importar los acentos. Solo el administrador puede vender bajo costo, y queda auditado.",
+          "Depósitos, ingreso de mercadería con etiquetas TSPL por WebUSB o USB, escáner de códigos con la cámara, transferencias y ajustes. En las devoluciones, los defectuosos quedan fuera de stock.",
+          "Proveedores con deudas en dólares y bolívares, pagos parciales y pedido sugerido por stock mínimo. Créditos para aprobar, cobrar y anular, anulaciones con límite diario, stock fiscal, reportes y usuarios.",
+        ],
       shots: [stockieShots.intake, stockieShots.fiscal, stockieShots.suppliers, stockieShots.credits, stockieShots.reports],
     },
     {
@@ -289,7 +300,7 @@ const stockie: CaseStudy = {
   ],
   decisionsLead: "Lo que mantiene exactos el stock y el costo de lo vendido, con dos monedas y una tasa que cambia cada día.",
   // Los tests de integración de stock-core (npm run test:db, desde el 18 de noviembre de 2026): lo que se prueba contra
-  // PostgreSQL real. Las 26 pantallas siguen en el hero (heroFact).
+  // PostgreSQL real. Las 25 pantallas siguen en el hero (heroFact).
   qualityLead: "Lo que corre en npm run test:db contra PostgreSQL real: el costo FIFO y el bloqueo de stock en cada operación que lo toca.",
   quality: [
     "Dos ventas de la última unidad al mismo tiempo: la segunda espera el bloqueo y corta por falta de stock.",
@@ -303,14 +314,17 @@ const stockie: CaseStudy = {
     items: [
       { value: "16", label: "tests de integración contra PostgreSQL real" },
       { value: "12", label: "tests unitarios de la búsqueda" },
-      { value: "59", label: "rutas de API" },
-      { value: "31", label: "modelos" },
+      { value: "65", label: "rutas de API" },
+      { value: "30", label: "modelos" },
     ],
   },
   parts: ["Panel de administración", "Punto de venta", "Impresión de etiquetas"],
   focus: ["Base de datos: costo FIFO por lote y stock bloqueado con SELECT … FOR UPDATE"],
-  status: "En uso en MonJeep y GlobalFia · demo en stockie.envo-demo.tech",
-  heroFact: "26 pantallas",
+  role: "Diseño y desarrollo completos",
+  period: "Desde febrero de 2026",
+  standing: "MonJeep y GlobalFia usan hoy su propia versión. La demo usa datos ficticios que vuelven a cero cada semana.",
+  status: "MonJeep y GlobalFia usan hoy su propia versión · demo en stockie.envo-demo.tech",
+  heroFact: "25 pantallas",
   /** La demo pública: entra al panel con datos demo, sin login. Nunca /admin ni /login. */
   liveUrl: "https://stockie.envo-demo.tech/demo",
   demoUrl: "https://stockie.envo-demo.tech/demo",
@@ -344,12 +358,12 @@ const clubZapateo: CaseStudy = {
   lead: "Venta de entradas con Mercado Pago y control de acceso en la puerta.",
   moment: "pinned-chapters",
   homeFacts: [
-    "Nunca vende más entradas que la capacidad, aunque muchas compras lleguen juntas",
-    "Todo el que paga recibe su entrada, aunque el aviso de Mercado Pago no llegue: el panel encuentra esos pagos y emite lo que falta",
+    "Nunca emite más entradas que la capacidad, aunque muchas compras lleguen juntas",
+    "Si el aviso de Mercado Pago no llega, el panel encuentra el pago y emite la entrada, si queda cupo",
     "252 pruebas automáticas que corren solas en cada cambio del código",
   ],
   problem:
-    "Club Zapateo vende entradas con Mercado Pago y las controla en la puerta con un QR. Si el aviso de un pago no llega, alguien pagó y no tiene entrada. Si dos compras llegan juntas, se puede vender por encima de la capacidad. Si un QR sirve en otro evento, la puerta deja pasar a quien no corresponde.",
+    "Club Zapateo vende entradas con Mercado Pago y las controla en la puerta con un QR. Si el aviso de un pago no llega, alguien pagó y no tiene entrada. Si dos compras llegan juntas, se pueden emitir entradas por encima de la capacidad. Si un QR sirve en otro evento, la puerta deja pasar a quien no corresponde.",
   heroShot: { ...zapateoShots.dashboard, focus: { x: 0.18, y: 0.08, w: 0.64 } },
   heroSets: [
     { label: "Sitio público", line: "Los eventos salen de la base; se paga con Mercado Pago y cada entrada llega por email con su QR.", main: { ...zapateoShots.home, focus: { x: 0.04, y: 0.075, w: HERO_MAIN_W } }, side: zapateoShots.door },
@@ -417,7 +431,7 @@ const clubZapateo: CaseStudy = {
       why: "Contraseñas con scrypt, sesiones en cookies firmadas httpOnly con sameSite strict y el PIN de la puerta comparado en tiempo constante. Los datos se validan con Zod.",
     },
   ],
-  decisionsLead: "Lo que impide vender por encima de la capacidad, emitir una entrada de más o dejar sin entrada a quien pagó.",
+  decisionsLead: "Lo que impide emitir entradas por encima de la capacidad o repetidas, y lo que encuentra los pagos que quedaron sin entrada.",
   qualityLead: "Lo que consta en el repositorio: los tests y el CI que los corre.",
   /* evidencia, no la lista de prácticas de la ficha: la cifra de tests, su cobertura y el CI como visual */
   quality: ["La cobertura de los tests se mide en el CI, en el mismo paso que los corre."],
@@ -434,6 +448,9 @@ const clubZapateo: CaseStudy = {
   figures: { in: "calidad", items: [{ value: "252", label: "tests con Vitest" }] },
   parts: ["Venta online con Mercado Pago", "Panel de administración", "Control de acceso con QR"],
   focus: ["Pagos: webhook verificado con HMAC y conciliación", "Concurrencia: emisión Serializable e idempotente"],
+  role: "Diseño y desarrollo completos",
+  period: "Marzo de 2026",
+  standing: "En producción. Las capturas usan datos de demostración.",
   status: "En producción en clubzapateo.com",
   heroFact: "252 tests",
   sheet: {
