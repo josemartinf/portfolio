@@ -70,6 +70,9 @@ export const stackGroups: { label: string; items: { name: string; icon: string }
   ] },
   { label: "Data and messaging", items: [
     { name: "PostgreSQL", icon: "/assets/icons/postgres.svg" },
+    { name: "MongoDB", icon: "/assets/icons/mongodb.svg" },
+    { name: "Redis", icon: "/assets/icons/redis.svg" },
+    { name: "Elasticsearch", icon: "/assets/icons/elasticsearch.svg" },
     { name: "Kafka", icon: "/assets/icons/kafka.svg" },
     { name: "Prisma", icon: "/assets/icons/prisma.svg" },
   ] },
@@ -82,6 +85,7 @@ export const stackGroups: { label: string; items: { name: string; icon: string }
     { name: "Kubernetes", icon: "/assets/icons/kubernetes.svg" },
     { name: "Docker", icon: "/assets/icons/docker.svg" },
     { name: "GitLab", icon: "/assets/icons/gitlab.svg" },
+    { name: "GitHub", icon: "/assets/icons/github.svg" },
     { name: "Datadog", icon: "/assets/icons/datadog.svg" },
   ] },
   { label: "Testing", items: [
