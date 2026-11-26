@@ -102,6 +102,10 @@ describe("content", () => {
     expect(JSON.stringify(education)).toMatch(/UGMA/);
     expect(stackIcons.length).toBeGreaterThanOrEqual(10);
     expect(stackGroups.every((g) => g.items.length > 0)).toBe(true);
+    // lo que José sumó el 2026-11-26: Redis, Elasticsearch y MongoDB en datos, GitHub junto a GitLab
+    const names = (label: string) => stackGroups.find((g) => g.label === label)!.items.map((i) => i.name);
+    expect(names("Datos y mensajería")).toEqual(["PostgreSQL", "MongoDB", "Redis", "Elasticsearch", "Kafka", "Prisma"]);
+    expect(names("Infraestructura")).toEqual(["AWS", "Kubernetes", "Docker", "GitLab", "GitHub", "Datadog"]);
     stackIcons.forEach((i) => {
       expect(i.icon).toMatch(/^\/assets\/icons\/[a-z0-9-]+\.svg$/);
       expect(existsSync(`public${i.icon}`)).toBe(true);

@@ -48,6 +48,18 @@
     "markUrl": "https://www.docker.com/"
   },
   {
+    "file": "elasticsearch.svg",
+    "icon": "logos:elasticsearch",
+    "name": "Elasticsearch",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://www.elastic.co/products/elasticsearch"
+  },
+  {
     "file": "github-actions.svg",
     "icon": "logos:github-actions",
     "name": "Github Actions",
@@ -58,6 +70,18 @@
     "url": "https://github.com/gilbarbara/logos",
     "trademark": true,
     "markUrl": "https://github.com/features/actions"
+  },
+  {
+    "file": "github.svg",
+    "icon": "logos:github-icon",
+    "name": "GitHub",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://github.com/"
   },
   {
     "file": "gitlab.svg",
@@ -118,6 +142,18 @@
     "url": "https://github.com/simple-icons/simple-icons",
     "trademark": true,
     "colour": "one-colour fallback in the brand hex"
+  },
+  {
+    "file": "mongodb.svg",
+    "icon": "logos:mongodb-icon",
+    "name": "MongoDB",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://www.mongodb.org/"
   },
   {
     "file": "n8n.svg",
@@ -238,6 +274,18 @@
     "url": "https://github.com/gilbarbara/logos",
     "trademark": true,
     "markUrl": "https://facebook.github.io/react/"
+  },
+  {
+    "file": "redis.svg",
+    "icon": "logos:redis",
+    "name": "Redis",
+    "kind": "colour",
+    "source": "gilbarbara/logos@d6960edc1b7309d392c76e40d3a320df7f9ff85c",
+    "author": "Gil Barbara",
+    "licence": "CC0-1.0",
+    "url": "https://github.com/gilbarbara/logos",
+    "trademark": true,
+    "markUrl": "https://redis.io/"
   },
   {
     "file": "resend.svg",
