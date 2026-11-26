@@ -6,8 +6,8 @@ import type { Locale } from "./index";
 const es = {
   meta: {
     title: "José Martin Flores | Software Engineer",
-    description: "Software Engineer en Naranja X. Backend, integraciones y automatización con IA, con tres casos por dentro: Envo, Stockie y Club Zapateo.",
-    caseTitle: (name: string) => `${name}: caso de estudio | José Martin Flores`,
+    description: "Software Engineer en Naranja X. Backend, integraciones y automatización con IA, con tres proyectos en detalle: Envo, Stockie y Club Zapateo.",
+    caseTitle: (name: string) => `${name} | José Martin Flores`,
     ogAlt: "José Martin Flores, Software Engineer. Más de siete años en software. Desarrollo sistemas para empresas y productos propios.",
     knowsAbout: ["Backend", "TypeScript", "Node.js", "PostgreSQL", "Kafka", "Integraciones", "Automatización con IA"],
   },
@@ -48,7 +48,7 @@ const es = {
   projects: {
     title: "Proyectos",
     lead: "Dos productos propios, cuatro proyectos para clientes y uno personal.",
-    seeCase: "Ver el caso", seeCaseOf: (name: string) => ` de ${name}`,
+    seeCase: "Ver el detalle", seeCaseOf: (name: string) => ` de ${name}`,
     relatedCase: "Su sistema dio origen a",
   },
   tags: { client: "Cliente", product: "Producto propio", personal: "Personal" },
@@ -61,7 +61,7 @@ const es = {
     title: "Contacto",
     lead: "Buenos Aires (GMT-3). Español nativo e inglés intermedio. Podés escribirme por email o LinkedIn.",
     caseLead: (name: string) => `Para conversar sobre ${name}, podés escribirme por email.`,
-    home: "Inicio", contact: "Contacto", cases: "Casos", backHome: "Volver al inicio", next: (name: string) => `Siguiente caso: ${name}`,
+    home: "Inicio", contact: "Contacto", cases: "Otros proyectos", backHome: "Volver al inicio", next: (name: string) => `Siguiente proyecto: ${name}`,
     legal: "Los nombres y logos de productos son marcas de sus dueños.",
     copy: "Copiar el email", copied: "Copiado", copiedStatus: "Email copiado", copyFailed: "No se pudo copiar",
   },
@@ -81,7 +81,7 @@ const es = {
   notFound: {
     title: "Página no encontrada | José Martin Flores",
     heading: "Página no encontrada",
-    text: "La dirección no existe o cambió. En el inicio están los tres casos: Envo, Stockie y Club Zapateo.",
+    text: "La dirección no existe o cambió. En el inicio están todos los proyectos.",
     back: "Volver al inicio",
   },
 };

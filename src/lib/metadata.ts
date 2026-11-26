@@ -35,7 +35,7 @@ export function homeMetadata(locale: Locale): Metadata {
   };
 }
 
-/** Una página de caso: title "<name> — caso · José Martin Flores" y la description desde la tagline. */
+/** Una página de caso: title "<name> | José Martin Flores" (en inglés "<name>: case study | …") y la description desde la tagline. */
 export function caseMetadata(study: CaseStudy, locale: Locale = "es"): Metadata {
   const title = ui[locale].meta.caseTitle(study.name);
   const description = study.tagline;

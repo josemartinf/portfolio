@@ -15,9 +15,9 @@ test("el h1 nombra a José Martin Flores y el rol actual no es QA", async ({ pag
   expect(await page.locator("body").innerText()).not.toMatch(/postulator/i);
 });
 
-test("tres links Ver el caso, el primero lleva a /envo", async ({ page }) => {
+test("tres links Ver el detalle, el primero lleva a /envo", async ({ page }) => {
   await page.goto("/");
-  const links = page.getByRole("link", { name: /^Ver el caso/ });
+  const links = page.getByRole("link", { name: /^Ver el detalle/ });
   await expect(links).toHaveCount(3);
   const hrefs = await links.evaluateAll((els) => els.map((el) => el.getAttribute("href")));
   expect(hrefs).toEqual(["/envo", "/stockie", "/club-zapateo"]);

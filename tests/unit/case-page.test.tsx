@@ -26,7 +26,8 @@ describe("case pages", () => {
 
       it("links the next case, round the three", () => {
         render(<CaseStudyPage study={study} />);
-        expect(screen.getByRole("link", { name: /Siguiente caso/ })).toHaveAttribute("href", `/${next(i).slug}`);
+        expect(screen.getByRole("heading", { name: "Otros proyectos" })).not.toBeNull();
+        expect(screen.getByRole("link", { name: /Siguiente proyecto/ })).toHaveAttribute("href", `/${next(i).slug}`);
         // y los otros dos casos, más la vuelta a la portada
         cases.filter((c) => c.slug !== study.slug).forEach((c) => expect(document.querySelector(`a[href='/${c.slug}']`)).not.toBeNull());
         expect(document.querySelector(`a[href='/${study.slug}']`)).toBeNull();

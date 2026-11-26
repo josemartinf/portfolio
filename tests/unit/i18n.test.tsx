@@ -97,7 +97,7 @@ describe("i18n", () => {
     expect([...close.querySelectorAll(".footer__col a")].map((a) => a.getAttribute("href")).filter((h) => h?.startsWith("/"))).toEqual(["/en/stockie", "/en/club-zapateo", "/en", "/en#proyectos", "/en#experiencia", "/en#stack"]);
     expect(close.querySelector("a[download]")).toHaveAttribute("href", site.cvEn);
     // ninguna palabra de la interfaz en castellano
-    expect(document.body.textContent).not.toMatch(/Ver la arquitectura|Ficha técnica|Pantallas por rol|Volver al inicio|Siguiente caso/);
+    expect(document.body.textContent).not.toMatch(/Ver la arquitectura|Ficha técnica|Pantallas por rol|Volver al inicio|Siguiente proyecto/);
   });
 
   it("the Spanish case page links its English version", () => {
