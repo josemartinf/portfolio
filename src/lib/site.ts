@@ -27,7 +27,7 @@ export const site: {
     display: "+54 9 11 2407-8165",
     defaultMessage: "Hola José, vi tu portafolio.",
   },
-  email: "jmfmarin25@gmail.com",
+  email: "contacto@joseflores.codes",
   linkedin: "https://www.linkedin.com/in/jmfmarin/",
   github: "https://github.com/josemartinf",
 };

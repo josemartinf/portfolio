@@ -44,7 +44,7 @@ test("idioma, imagen para compartir, contactos y sin rastros del origen", async 
   await expect(page.locator("html")).toHaveAttribute("lang", "es");
   expect(await page.locator('meta[property="og:image"]').getAttribute("content")).toMatch(/^https:\/\//);
   await expect(page.locator('a[href^="https://wa.me/5491124078165"]')).not.toHaveCount(0);
-  await expect(page.locator('a[href^="mailto:jmfmarin25@gmail.com"]')).not.toHaveCount(0);
+  await expect(page.locator('a[href^="mailto:contacto@joseflores.codes"]')).not.toHaveCount(0);
   const html = await page.content();
   for (const re of FORBIDDEN_ORIGIN) expect(html).not.toMatch(re);
 });

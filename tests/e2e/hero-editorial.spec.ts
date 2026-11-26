@@ -159,6 +159,17 @@ for (const width of [390, 480, 560, 600, 639]) {
     expect(lines).toBe(3);
   });
 }
+// el nombre no se parte con guion ("José Mar- / tin"): un Safari de iPhone sin actualizar ignora el límite de letras
+// del kit (hyphenate-limit-chars) y partía "Martin", que tiene 6. El Chromium de estos tests no parte palabras en
+// español, así que se prueba la regla: el nombre no lleva guiones automáticos en ningún ancho
+for (const width of [390, 430, 1440]) {
+  test(`the name never hyphenates at ${width}px`, async ({ page }, info) => {
+    test.skip(info.project.name !== "desktop");
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    await expect(page.locator(".hero__name")).toHaveCSS("hyphens", "manual");
+  });
+}
 test("name size is continuous across 640", async ({ page }, info) => {
   test.skip(info.project.name !== "desktop");
   const size = async (w: number) => { await page.setViewportSize({ width: w, height: 900 }); await page.goto("/"); return page.locator(".hero__name").evaluate((h) => parseFloat(getComputedStyle(h).fontSize)); };
