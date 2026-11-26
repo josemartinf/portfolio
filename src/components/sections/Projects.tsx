@@ -10,7 +10,7 @@ import { Tag } from "@/components/Tag";
    bloques rectos numerados. Primero los tres casos, más grandes (Envo y Stockie, Club Zapateo y GlobalFia: 7 y 5
    columnas), después los sitios y la herramienta (4, 4 y 4). Cada bloque: el número y la etiqueta en mono, la captura
    arriba (se funde con el bloque antes del texto: el texto nunca va encima de la imagen), el nombre y su línea; los
-   casos suman sus tres hechos, su estado y "Ver el caso", los sitios su estado y la línea de stack.
+   casos suman sus tres hechos, su estado y "Ver el detalle", los sitios su estado y la línea de stack.
    La captura lleva al caso o al sitio en vivo, fuera del orden del teclado (el link de texto es el mismo destino).
    Lo que salió de la portada (las partes, el diagrama de Envo, las viñetas de los sitios) sigue en cada caso. */
 

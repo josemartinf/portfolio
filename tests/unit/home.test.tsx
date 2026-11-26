@@ -11,7 +11,7 @@ describe("home", () => {
   it("renders the new portfolio home", () => {
     render(<Home />);
     expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("José Martin Flores");
-    expect(screen.getAllByRole("link", { name: /Ver el caso/ }).map((a) => a.getAttribute("href"))).toEqual(["/envo", "/stockie", "/club-zapateo"]);
+    expect(screen.getAllByRole("link", { name: /Ver el detalle/ }).map((a) => a.getAttribute("href"))).toEqual(["/envo", "/stockie", "/club-zapateo"]);
     expect(document.querySelector("#servicios")).toBeNull();
     ["#proyectos", "#experiencia", "#stack", "#contacto"].forEach((id) => expect(document.querySelector(id)).not.toBeNull());
     // Revisión 2026-11-20: una sola sección de proyectos; ya no hay "Sitios" ni "Proyecto personal" sueltos.
@@ -67,7 +67,7 @@ describe("home", () => {
   });
 
   // Revisión 2026-11-20 (portada editorial): los siete proyectos en una sola grilla de bloques numerados; los tres casos
-  // con sus tres hechos, su estado y "Ver el caso"; los sitios con su estado y su línea de stack. Las partes, el
+  // con sus tres hechos, su estado y "Ver el detalle"; los sitios con su estado y su línea de stack. Las partes, el
   // diagrama de Envo y las viñetas de los sitios salieron de la portada (siguen en las páginas de caso).
   it("lays the seven projects out as numbered tiles", () => {
     render(<Home />);
