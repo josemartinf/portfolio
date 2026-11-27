@@ -79,13 +79,13 @@ test("la foto de Contacto carga y no se monta sobre el texto", async ({ page }, 
     await page.goto("/");
     const photo = page.locator("#contacto .closing__photo");
     await photo.scrollIntoViewIfNeeded();
-    await expect.poll(() => photo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth)).toBe(432);
+    await expect.poll(() => photo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth)).toBe(288);
     const box = (await photo.boundingBox())!;
     const head = (await page.locator("#contacto .section-head").boundingBox())!;
     if (width >= 1280) {
       expect(box.x, `${width}px`).toBeGreaterThan(head.x + head.width);
       expect(Math.round(box.y), `${width}px`).toBe(Math.round(head.y));
-      expect(Math.round(box.width), `${width}px`).toBe(216);
+      expect(Math.round(box.width), `${width}px`).toBe(144);
       for (const sel of [".email-copy__addr", ".email-copy__btn", "a[download]"]) {
         const b = (await page.locator(`#contacto ${sel}`).boundingBox())!;
         expect(b.x + b.width, `${width}px ${sel}`).toBeLessThan(box.x);
@@ -94,7 +94,7 @@ test("la foto de Contacto carga y no se monta sobre el texto", async ({ page }, 
       expect(box.y + box.height, `${width}px`).toBeLessThanOrEqual(cta.y + cta.height);
     } else {
       expect(box.y + box.height, `${width}px`).toBeLessThanOrEqual(head.y);
-      expect(Math.round(box.width), `${width}px`).toBe(112);
+      expect(Math.round(box.width), `${width}px`).toBe(80);
     }
   }
 });

@@ -621,10 +621,10 @@ main.home .statement > .wrap { border-top: 1px solid var(--p-ink); padding-top: 
    La foto de José, en 4:5 y con las esquinas del sitio. Desde 1280px va en el espacio libre a la derecha del bloque, a la
    altura del título y fuera del flujo: nada se mueve, porque el bloque es más alto que la foto. Más angosto, ese espacio
    no alcanza (a 1024px quedan 104px) y la foto abre el bloque, arriba del título. */
-.closing__photo { order: -1; display: block; width: 112px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--r-sm); box-shadow: 0 0 0 1px var(--line); }
+.closing__photo { order: -1; display: block; width: 80px; height: auto; aspect-ratio: 4 / 5; object-fit: cover; border-radius: var(--r-sm); box-shadow: 0 0 0 1px var(--line); }
 @media (min-width: 1280px) {
   .closing--home .closing__cta { position: relative; }
-  .closing__photo { position: absolute; top: 0; right: 0; width: 216px; }
+  .closing__photo { position: absolute; top: 0; right: 0; width: 144px; }
 }
 
 /* ---------------------------------------------------------------- the footer's links: a 24px target at least */
