@@ -36,10 +36,10 @@ describe("assets de capturas", () => {
 });
 
 describe("la foto de Contacto", () => {
-  it("es 432x540 (4:5) y no lleva metadatos", async () => {
+  it("es 288x360 (4:5) y no lleva metadatos", async () => {
     expect(existsSync(file(site.photo))).toBe(true);
     const meta = await sharp(file(site.photo)).metadata();
-    expect([meta.width, meta.height]).toEqual([432, 540]);
+    expect([meta.width, meta.height]).toEqual([288, 360]);
     expect([meta.exif, meta.xmp, meta.icc]).toEqual([undefined, undefined, undefined]);
   });
 });

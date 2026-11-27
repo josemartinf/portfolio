@@ -17,7 +17,7 @@ export function Contact({ locale = "es" }: { locale?: Locale }) {
     <div className="closing__cta close--type">
       <div className="section-head"><h2 id="contacto-h">{t.contact.title}</h2><p>{t.contact.lead}</p></div>
       {/* eslint-disable-next-line @next/next/no-img-element -- export estático: next/image no optimiza (src/components/Shot.tsx) */}
-      <img className="closing__photo" src={site.photo} alt={site.name} width={432} height={540} loading="lazy" decoding="async" />
+      <img className="closing__photo" src={site.photo} alt={site.name} width={288} height={360} loading="lazy" decoding="async" />
       <EmailCopy locale={locale} />
       <a className="btn btn--secondary" href={cvHref(locale)} download>{t.cv}</a>
     </div>

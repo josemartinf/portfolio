@@ -9,7 +9,7 @@ export const site: {
   url: string;
   /** La marca: el dominio, escrito como firma en el pie y en el sello para clientes. */
   domain: string;
-  /** La foto de José en Contacto: 432x540 (4:5), el doble de lo que ocupa en escritorio. */
+  /** La foto de José en Contacto: 288x360 (4:5), el doble de lo que ocupa en escritorio. */
   photo: string;
   whatsapp: { number: string; display: string; defaultMessage: string };
   email: string;
