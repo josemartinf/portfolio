@@ -155,4 +155,15 @@ describe("home", () => {
     expect(contact.textContent).toContain("Buenos Aires (GMT-3)");
     expect(contact.textContent).not.toMatch(/contratame|presupuesto|disponible/i);
   });
+
+  // Pedido de José, 2026-11-27: su foto en Contacto
+  it("shows José's photo in the contact, after its heading", () => {
+    render(<Home />);
+    const contact = document.querySelector("#contacto")!;
+    const img = screen.getByRole("img", { name: site.name });
+    expect(contact.contains(img)).toBe(true);
+    expect(img).toHaveAttribute("src", site.photo);
+    // el título va antes en el código: un lector de pantalla oye primero "Contacto"
+    expect(contact.querySelector("h2")!.compareDocumentPosition(img) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+  });
 });
