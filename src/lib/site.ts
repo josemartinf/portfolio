@@ -9,6 +9,8 @@ export const site: {
   url: string;
   /** La marca: el dominio, escrito como firma en el pie y en el sello para clientes. */
   domain: string;
+  /** La foto de José en Contacto: 432x540 (4:5), el doble de lo que ocupa en escritorio. */
+  photo: string;
   whatsapp: { number: string; display: string; defaultMessage: string };
   email: string;
   linkedin: string;
@@ -22,6 +24,7 @@ export const site: {
   location: "Buenos Aires, Argentina",
   url: "https://www.joseflores.codes",
   domain: "joseflores.codes",
+  photo: "/brand/jose-martin-flores.webp",
   whatsapp: {
     number: "5491124078165",
     display: "+54 9 11 2407-8165",

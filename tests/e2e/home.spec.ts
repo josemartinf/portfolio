@@ -70,6 +70,35 @@ test("el email del cierre se lee escrito y se copia", async ({ page, context, br
   expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(email);
 });
 
+/* La foto de Contacto (2026-11-27): desde 1280px a la derecha del título y su línea, sin tocar el email ni el CV; más
+   angosto, arriba del título. */
+test("la foto de Contacto carga y no se monta sobre el texto", async ({ page }, testInfo) => {
+  const widths = testInfo.project.name === "mobile" ? [390] : [1024, 1279, 1280, 1440];
+  for (const width of widths) {
+    if (testInfo.project.name !== "mobile") await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const photo = page.locator("#contacto .closing__photo");
+    await photo.scrollIntoViewIfNeeded();
+    await expect.poll(() => photo.evaluate((img: HTMLImageElement) => img.complete && img.naturalWidth)).toBe(432);
+    const box = (await photo.boundingBox())!;
+    const head = (await page.locator("#contacto .section-head").boundingBox())!;
+    if (width >= 1280) {
+      expect(box.x, `${width}px`).toBeGreaterThan(head.x + head.width);
+      expect(Math.round(box.y), `${width}px`).toBe(Math.round(head.y));
+      expect(Math.round(box.width), `${width}px`).toBe(216);
+      for (const sel of [".email-copy__addr", ".email-copy__btn", "a[download]"]) {
+        const b = (await page.locator(`#contacto ${sel}`).boundingBox())!;
+        expect(b.x + b.width, `${width}px ${sel}`).toBeLessThan(box.x);
+      }
+      const cta = (await page.locator("#contacto .closing__cta").boundingBox())!;
+      expect(box.y + box.height, `${width}px`).toBeLessThanOrEqual(cta.y + cta.height);
+    } else {
+      expect(box.y + box.height, `${width}px`).toBeLessThanOrEqual(head.y);
+      expect(Math.round(box.width), `${width}px`).toBe(112);
+    }
+  }
+});
+
 test("robots.txt y sitemap.xml existen", async ({ request }) => {
   expect((await request.get("/robots.txt")).status()).toBe(200);
   const map = await request.get("/sitemap.xml");

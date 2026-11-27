@@ -6,6 +6,7 @@ import sharp from "sharp";
 import { cases, envoHealthShot } from "@/data/cases";
 import { sites } from "@/data/sites";
 import { tools } from "@/data/tools";
+import { site } from "@/lib/site";
 import type { Shot } from "@/data/types";
 
 const shots: Shot[] = [
@@ -31,5 +32,14 @@ describe("assets de capturas", () => {
       const m2 = await sharp(small).metadata();
       expect([m2.width, m2.height]).toEqual([800, Math.round((shot.height ?? 1000) / 2)]);
     }
+  });
+});
+
+describe("la foto de Contacto", () => {
+  it("es 432x540 (4:5) y no lleva metadatos", async () => {
+    expect(existsSync(file(site.photo))).toBe(true);
+    const meta = await sharp(file(site.photo)).metadata();
+    expect([meta.width, meta.height]).toEqual([432, 540]);
+    expect([meta.exif, meta.xmp, meta.icc]).toEqual([undefined, undefined, undefined]);
   });
 });
